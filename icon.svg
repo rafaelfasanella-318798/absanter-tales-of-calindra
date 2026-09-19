@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <rect width="128" height="128" fill="#1b1c2b" rx="16"/>
+  <circle cx="64" cy="54" r="32" fill="#5865f2"/>
+  <text x="64" y="105" font-family="monospace" font-size="18" fill="#ffffff" text-anchor="middle" font-weight="bold">ABSANTER</text>
+</svg>
