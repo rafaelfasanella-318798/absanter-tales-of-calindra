@@ -166,15 +166,15 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 ## 5. Exploração (overworld)
 
-- [ ] `[AGENTE]` Player controller top-down 4 direções (8 opcional), aceleração, colisão via `CharacterBody2D`
+- [x] `[AGENTE]` Player controller top-down 4 direções (8 opcional), aceleração, colisão via `CharacterBody2D`
 - [ ] `[AGENTE]` Animações idle/walk/run por direção via `AnimationPlayer` + `AnimatedSprite2D`
-- [ ] `[AGENTE]` Seguidores de party (Calindra segue Ragg estilo "conga line" com histórico de posições)
-- [ ] `[AGENTE]` Câmera com limites por mapa, suavização, zoom fixo pixel-perfect
-- [ ] `[AGENTE]` Sistema de interação (`Area2D` + prompt): falar, examinar, abrir baú, ler placa
+- [x] `[AGENTE]` Seguidores de party (Calindra segue Ragg estilo "conga line" com histórico de posições)
+- [x] `[AGENTE]` Câmera com limites por mapa, suavização, zoom fixo pixel-perfect
+- [x] `[AGENTE]` Sistema de interação (`Area2D` + prompt): falar, examinar, abrir baú, ler placa
 - [ ] `[AGENTE]` TileMap com camadas (chão, decoração, colisão, acima do jogador), Y-sort
 - [ ] `[AGENTE]` Importer LDtk/Tiled → cenas Godot com entidades (NPCs, baús, portas, triggers)
-- [ ] `[AGENTE]` Portas/transições entre mapas com spawn points nomeados
-- [ ] `[AGENTE]` Baús, itens no chão, portas trancadas com chave, alavancas, blocos empurráveis
+- [x] `[AGENTE]` Portas/transições entre mapas com spawn points nomeados
+- [x] `[AGENTE]` Baús, itens no chão, portas trancadas com chave, alavancas, blocos empurráveis
 - [ ] `[VOCÊ]` Encontros: inimigos visíveis no mapa que perseguem (recomendado) ou encontros aleatórios?
 - [ ] `[AGENTE]` Implementar o sistema de encontros escolhido acima
 - [ ] `[AGENTE]` Mapa-múndi / mapa de região com pontos de viagem rápida
@@ -228,8 +228,8 @@ Leitura feita em 18/09/2026 a partir do WSL.
 ## 9. Diálogo, quests e narrativa
 
 - [ ] `[JUNTOS]` Escolher: Dialogic 2 (visual, rápido) vs sistema próprio em JSON/YAML (mais controle, melhor para o agente gerar em massa); recomendado: **próprio em JSON**
-- [ ] `[AGENTE]` Caixa de diálogo com retrato, nome, texto letra a letra, avançar/pular, escolhas
-- [ ] `[AGENTE]` Variáveis/flags globais e condições em diálogos (`if flag_x`)
+- [x] `[AGENTE]` Caixa de diálogo com retrato, nome, texto letra a letra, avançar/pular, escolhas
+- [x] `[AGENTE]` Variáveis/flags globais e condições em diálogos (`if flag_x`)
 - [ ] `[AGENTE]` Sistema de quests: principal + secundárias, objetivos, estados, recompensas, journal
 - [ ] `[AGENTE]` Marcadores de quest no mapa e indicador em NPC (! e ?)
 - [ ] `[AGENTE]` Comentários contextuais de Calindra (gatilhos por evento)
@@ -261,11 +261,11 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 ## 12. Save / Load
 
-- [ ] `[AGENTE]` Serialização de `GameState` em JSON (posição, mapa, flags, party, inventário, quests, tempo jogado)
-- [ ] `[AGENTE]` 3+ slots + autosave, com thumbnail e resumo (capítulo, local, tempo)
-- [ ] `[AGENTE]` Versionamento do save + migração entre versões
-- [ ] `[AGENTE]` Save em `user://`, funcional em Web (IndexedDB)
-- [ ] `[AGENTE]` Testes GUT de round-trip save/load
+- [x] `[AGENTE]` Serialização de `GameState` em JSON (posição, mapa, flags, party, inventário, quests, tempo jogado)
+- [x] `[AGENTE]` 3+ slots + autosave, com thumbnail e resumo (capítulo, local, tempo)
+- [x] `[AGENTE]` Versionamento do save + migração entre versões
+- [x] `[AGENTE]` Save em `user://`, funcional em Web (IndexedDB)
+- [x] `[AGENTE]` Testes GUT de round-trip save/load
 
 ## 13. Áudio
 
@@ -340,7 +340,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 ## 20. Roadmap por milestones
 
 - [x] **M0 – Setup (1ª sessão):** seções 1 e 2 completas, jogo abre com tela preta e "Hello Ragg". Roteiro: `AGENTE-INICIO.md`
-- [ ] **M1 – Andar e falar:** Ragg anda num mapa placeholder, Calindra segue, fala com 1 NPC, abre 1 baú, transição entre 2 mapas, save/load básico
+- [x] **M1 – Andar e falar:** Ragg anda num mapa placeholder, Calindra segue, fala com 1 NPC, abre 1 baú, transição entre 2 mapas, save/load básico
 - [ ] **M2 – Combate:** batalha completa Ragg+Calindra vs 2 inimigos, XP, level up, itens em batalha, game over
 - [ ] **M3 – Vertical slice:** prólogo + capítulo 1 jogável do início ao boss, com arte placeholder mas todos os sistemas
 - [ ] **M4 – Conteúdo:** todos os capítulos, mapas, quests, bestiário

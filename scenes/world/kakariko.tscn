@@ -1,0 +1,131 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/kakariko.gd" id="1_kakariko"]
+[ext_resource type="PackedScene" path="res://scenes/world/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/world/follower.tscn" id="3_follower"]
+[ext_resource type="PackedScene" path="res://scenes/world/npc.tscn" id="4_npc"]
+[ext_resource type="PackedScene" path="res://scenes/world/chest.tscn" id="5_chest"]
+[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="6_door"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="7_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="8_dialogue"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_north"]
+size = Vector2(340, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_east"]
+size = Vector2(16, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_house"]
+size = Vector2(50, 36)
+
+[node name="Kakariko" type="Node2D"]
+script = ExtResource("1_kakariko")
+map_name = "Vila Kakariko"
+
+[node name="Background" type="Node2D" parent="."]
+
+[node name="Grass" type="ColorRect" parent="Background"]
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0.2, 0.38, 0.22, 1)
+
+[node name="Path" type="ColorRect" parent="Background"]
+offset_left = 30.0
+offset_top = 95.0
+offset_right = 290.0
+offset_bottom = 125.0
+color = Color(0.42, 0.38, 0.32, 1)
+
+[node name="HousePath" type="ColorRect" parent="Background"]
+offset_left = 85.0
+offset_top = 55.0
+offset_right = 115.0
+offset_bottom = 100.0
+color = Color(0.42, 0.38, 0.32, 1)
+
+[node name="Clearing" type="ColorRect" parent="Background"]
+offset_left = 205.0
+offset_top = 40.0
+offset_right = 265.0
+offset_bottom = 90.0
+color = Color(0.28, 0.34, 0.22, 1)
+
+[node name="HouseExterior" type="StaticBody2D" parent="."]
+position = Vector2(100, 42)
+collision_mask = 2
+
+[node name="HouseWalls" type="ColorRect" parent="HouseExterior"]
+offset_left = -25.0
+offset_top = -18.0
+offset_right = 25.0
+offset_bottom = 18.0
+color = Color(0.52, 0.35, 0.24, 1)
+
+[node name="HouseRoof" type="ColorRect" parent="HouseExterior"]
+offset_left = -28.0
+offset_top = -26.0
+offset_right = 28.0
+offset_bottom = -12.0
+color = Color(0.65, 0.22, 0.18, 1)
+
+[node name="DoorOpening" type="ColorRect" parent="HouseExterior"]
+offset_left = -6.0
+offset_top = 6.0
+offset_right = 6.0
+offset_bottom = 18.0
+color = Color(0.12, 0.08, 0.05, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HouseExterior"]
+shape = SubResource("RectangleShape2D_house")
+
+[node name="HouseDoor" parent="." instance=ExtResource("6_door")]
+position = Vector2(100, 56)
+target_scene_path = "res://scenes/world/kakariko_house.tscn"
+target_spawn_id = "SpawnFromVillage"
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+collision_mask = 2
+
+[node name="ColNorth" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(160, -8)
+shape = SubResource("RectangleShape2D_north")
+
+[node name="ColSouth" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(160, 188)
+shape = SubResource("RectangleShape2D_north")
+
+[node name="ColWest" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(-8, 90)
+shape = SubResource("RectangleShape2D_east")
+
+[node name="ColEast" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2(328, 90)
+shape = SubResource("RectangleShape2D_east")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(50, 110)
+
+[node name="SpawnFromHouse" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(100, 72)
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Tav" parent="Entities" instance=ExtResource("4_npc")]
+position = Vector2(130, 76)
+npc_name = "Tav"
+
+[node name="MimicChest" parent="Entities" instance=ExtResource("5_chest")]
+position = Vector2(235, 62)
+
+[node name="Follower" parent="Entities" instance=ExtResource("3_follower")]
+position = Vector2(34, 110)
+
+[node name="Player" parent="Entities" instance=ExtResource("2_player")]
+position = Vector2(50, 110)
+
+[node name="HUD" parent="." instance=ExtResource("7_hud")]
+
+[node name="DialogueBox" parent="." instance=ExtResource("8_dialogue")]

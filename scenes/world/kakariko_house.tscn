@@ -1,0 +1,103 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/world/kakariko_house.gd" id="1_house"]
+[ext_resource type="PackedScene" path="res://scenes/world/player.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/world/follower.tscn" id="3_follower"]
+[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="4_door"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="5_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="6_dialogue"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(180, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(16, 130)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_table"]
+size = Vector2(28, 18)
+
+[node name="KakarikoHouse" type="Node2D"]
+script = ExtResource("1_house")
+map_name = "Casa do Tav"
+
+[node name="BlackVoid" type="ColorRect" parent="."]
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0.04, 0.04, 0.06, 1)
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_left = 75.0
+offset_top = 25.0
+offset_right = 245.0
+offset_bottom = 145.0
+color = Color(0.4, 0.28, 0.18, 1)
+
+[node name="Rug" type="ColorRect" parent="."]
+offset_left = 130.0
+offset_top = 65.0
+offset_right = 190.0
+offset_bottom = 105.0
+color = Color(0.55, 0.15, 0.18, 1)
+
+[node name="FurnitureTable" type="StaticBody2D" parent="."]
+position = Vector2(160, 85)
+collision_mask = 2
+
+[node name="TableColor" type="ColorRect" parent="FurnitureTable"]
+offset_left = -14.0
+offset_top = -9.0
+offset_right = 14.0
+offset_bottom = 9.0
+color = Color(0.24, 0.15, 0.08, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FurnitureTable"]
+shape = SubResource("RectangleShape2D_table")
+
+[node name="RoomWalls" type="StaticBody2D" parent="."]
+collision_mask = 2
+
+[node name="WallNorth" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(160, 17)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="WallSouthLeft" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(110, 153)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="WallSouthRight" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(210, 153)
+shape = SubResource("RectangleShape2D_wall_h")
+
+[node name="WallWest" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(67, 85)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="WallEast" type="CollisionShape2D" parent="RoomWalls"]
+position = Vector2(253, 85)
+shape = SubResource("RectangleShape2D_wall_v")
+
+[node name="ExitDoor" parent="." instance=ExtResource("4_door")]
+position = Vector2(160, 142)
+target_scene_path = "res://scenes/world/kakariko.tscn"
+target_spawn_id = "SpawnFromHouse"
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(160, 120)
+
+[node name="SpawnFromVillage" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(160, 120)
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Follower" parent="Entities" instance=ExtResource("3_follower")]
+position = Vector2(144, 120)
+
+[node name="Player" parent="Entities" instance=ExtResource("2_player")]
+position = Vector2(160, 120)
+
+[node name="HUD" parent="." instance=ExtResource("5_hud")]
+
+[node name="DialogueBox" parent="." instance=ExtResource("6_dialogue")]
