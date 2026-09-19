@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/skills/bat_bite.tres" id="2_skill"]
+
+[resource]
+script = ExtResource("1_script")
+id = "cave_bat"
+enemy_name = "Morcego da Caverna"
+description = "Criatura alada veloz e esquiva que ataca em voos rasantes."
+element_affinity = 0
+element_weakness = 6
+max_hp = 35
+max_mp = 0
+attack = 14
+defense = 4
+magic = 8
+speed = 16
+xp_reward = 20
+gold_reward = 12
+tile_index = 108
+drop_item_id = "pocao_mana"
+drop_chance = 0.4
+skills = [ExtResource("2_skill")]
+drop_table = []

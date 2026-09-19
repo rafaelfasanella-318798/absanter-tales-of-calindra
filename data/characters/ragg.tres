@@ -1,11 +1,27 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/skills/slash.tres" id="2_skill1"]
+[ext_resource type="Resource" path="res://data/skills/focus_strike.tres" id="3_skill2"]
+[ext_resource type="Resource" path="res://data/skills/arcane_blade.tres" id="4_skill3"]
 
 [resource]
 script = ExtResource("1_script")
 id = "ragg"
 character_name = "Ragg"
-title = ""
-description = ""
-starting_skills = []
+title = "Guerreiro de Absanter"
+description = "Protagonista focado em combate corpo a corpo e golpes de espada incisivos."
+level = 1
+max_hp = 120
+max_mp = 30
+attack = 24
+defense = 14
+magic = 8
+speed = 12
+hp_growth = 18
+mp_growth = 4
+attack_growth = 4
+defense_growth = 3
+magic_growth = 1
+speed_growth = 2
+starting_skills = [ExtResource("2_skill1"), ExtResource("3_skill2"), ExtResource("4_skill3")]

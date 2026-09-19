@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "pocao_vida"
+item_name = "Poção de Vida"
+description = "Restaura 50 pontos de HP de um aliado."
+item_type = 0
+is_usable_in_battle = true
+is_usable_in_menu = true
+heal_hp = 50
+heal_mp = 0
+target_type = "single_ally"
+price = 25

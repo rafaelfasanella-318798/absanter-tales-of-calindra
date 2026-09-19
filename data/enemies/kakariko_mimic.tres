@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/skills/mimic_chomp.tres" id="2_skill1"]
+[ext_resource type="Resource" path="res://data/skills/dread_breath.tres" id="3_skill2"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kakariko_mimic"
+enemy_name = "Mímico de Kakariko"
+description = "Um monstro voraz disfarçado de baú de tesouro em Kakariko."
+element_affinity = 7
+element_weakness = 6
+max_hp = 150
+max_mp = 20
+attack = 20
+defense = 12
+magic = 15
+speed = 11
+xp_reward = 100
+gold_reward = 50
+tile_index = 89
+drop_item_id = "lamina_kakariko"
+drop_chance = 1.0
+skills = [ExtResource("2_skill1"), ExtResource("3_skill2")]
+drop_table = []

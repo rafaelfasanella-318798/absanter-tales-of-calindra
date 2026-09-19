@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "pocao_mana"
+item_name = "Poção de Mana"
+description = "Restaura 30 pontos de MP de um aliado."
+item_type = 0
+is_usable_in_battle = true
+is_usable_in_menu = true
+heal_hp = 0
+heal_mp = 30
+target_type = "single_ally"
+price = 35

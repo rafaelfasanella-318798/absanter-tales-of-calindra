@@ -9,3 +9,7 @@ extends Resource
 @export var item_type: Enums.ItemType = Enums.ItemType.CONSUMABLE
 @export var is_usable_in_battle: bool = true
 @export var is_usable_in_menu: bool = true
+@export var heal_hp: int = 0
+@export var heal_mp: int = 0
+@export var target_type: String = "single_ally"  # single_ally, all_allies, single_enemy
+@export var price: int = 20

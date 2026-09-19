@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/skills/slime_tackle.tres" id="2_skill"]
+
+[resource]
+script = ExtResource("1_script")
+id = "slime"
+enemy_name = "Slime de Kakariko"
+description = "Uma massa gelatinosa viva e translúcida que habita a relva da vila."
+element_affinity = 0
+element_weakness = 2
+max_hp = 45
+max_mp = 0
+attack = 12
+defense = 6
+magic = 5
+speed = 8
+xp_reward = 25
+gold_reward = 15
+tile_index = 109
+drop_item_id = "pocao_vida"
+drop_chance = 0.5
+skills = [ExtResource("2_skill")]
+drop_table = []

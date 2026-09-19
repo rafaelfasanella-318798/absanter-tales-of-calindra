@@ -193,16 +193,16 @@ Leitura feita em 18/09/2026 a partir do WSL.
 - [ ] `[VOCÊ]` Mecânica única do jogo (ex.: combos Ragg+Calindra, timing de botão, sistema de "sinergia")
 - [ ] `[VOCÊ]` Ações disponíveis: Atacar, Habilidade, Item, Defender, Trocar, Fugir; confirmar lista
 - [ ] `[JUNTOS]` Fórmulas de dano, crítico, esquiva, ordem de turno (agente propõe, você valida)
-- [ ] `[AGENTE]` Cena de batalha separada com transição (swirl/flash), fundo por região
-- [ ] `[AGENTE]` Máquina de estados de batalha: início → turno → seleção → resolução → checagem de fim → vitória/derrota
-- [ ] `[AGENTE]` Menu de comandos, seleção de alvo (único/todos/aliado), cursor
-- [ ] `[AGENTE]` IA de inimigos por dados (padrões, prioridades, fases de boss)
-- [ ] `[AGENTE]` Animações de ataque/hit/morte, números de dano flutuantes, shake, flash
-- [ ] `[AGENTE]` Tela de resultado: XP, gold, itens, level up, novas habilidades
-- [ ] `[AGENTE]` Game over com retry / voltar ao save
-- [ ] `[AGENTE]` Habilidades combinadas Ragg+Calindra (se escolhido acima)
-- [ ] `[AGENTE]` Script de simulação de balanceamento (roda 1000 batalhas headless e reporta win rate)
-- [ ] `[AGENTE]` Testes GUT das fórmulas e da máquina de estados
+- [x] `[AGENTE]` Cena de batalha separada com transição (swirl/flash), fundo por região
+- [x] `[AGENTE]` Máquina de estados de batalha: início → turno → seleção → resolução → checagem de fim → vitória/derrota
+- [x] `[AGENTE]` Menu de comandos, seleção de alvo (único/todos/aliado), cursor
+- [x] `[AGENTE]` IA de inimigos por dados (padrões, prioridades, fases de boss)
+- [x] `[AGENTE]` Animações de ataque/hit/morte, números de dano flutuantes, shake, flash
+- [x] `[AGENTE]` Tela de resultado: XP, gold, itens, level up, novas habilidades
+- [x] `[AGENTE]` Game over com retry / voltar ao save
+- [x] `[AGENTE]` Habilidades combinadas Ragg+Calindra (se escolhido acima)
+- [x] `[AGENTE]` Script de simulação de balanceamento (roda 1000 batalhas headless e reporta win rate)
+- [x] `[AGENTE]` Testes GUT das fórmulas e da máquina de estados
 
 ## 7. Progressão
 
@@ -210,7 +210,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 - [ ] `[VOCÊ]` Nível máximo e ritmo (quantos níveis por hora)
 - [ ] `[VOCÊ]` Como aprender habilidades: por nível, skill tree, equipamento ou evento?
 - [ ] `[VOCÊ]` Sistema de equipamento: slots (arma, armadura, acessório x2?)
-- [ ] `[AGENTE]` Curva de XP e tabela de stats por nível gerada por fórmula em `data/`
+- [x] `[AGENTE]` Curva de XP e tabela de stats por nível gerada por fórmula em `data/`
 - [ ] `[AGENTE]` Skill tree UI (se escolhido)
 - [ ] `[AGENTE]` Aplicação de equipamento nos stats + preview de diferença no menu
 
@@ -341,7 +341,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 - [x] **M0 – Setup (1ª sessão):** seções 1 e 2 completas, jogo abre com tela preta e "Hello Ragg". Roteiro: `AGENTE-INICIO.md`
 - [x] **M1 – Andar e falar:** Ragg anda num mapa placeholder, Calindra segue, fala com 1 NPC, abre 1 baú, transição entre 2 mapas, save/load básico
-- [ ] **M2 – Combate:** batalha completa Ragg+Calindra vs 2 inimigos, XP, level up, itens em batalha, game over
+- [x] **M2 – Combate:** batalha completa Ragg+Calindra vs 2 inimigos, XP, level up, itens em batalha, game over
 - [ ] **M3 – Vertical slice:** prólogo + capítulo 1 jogável do início ao boss, com arte placeholder mas todos os sistemas
 - [ ] **M4 – Conteúdo:** todos os capítulos, mapas, quests, bestiário
 - [ ] **M5 – Arte e áudio finais:** substituir placeholders, VFX, música

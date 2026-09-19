@@ -1,11 +1,28 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/skills/magic_spark.tres" id="2_skill1"]
+[ext_resource type="Resource" path="res://data/skills/heal.tres" id="3_skill2"]
+[ext_resource type="Resource" path="res://data/skills/aegis.tres" id="4_skill3"]
+[ext_resource type="Resource" path="res://data/skills/arcane_blade.tres" id="5_skill4"]
 
 [resource]
 script = ExtResource("1_script")
 id = "calindra"
 character_name = "Calindra"
-title = ""
-description = ""
-starting_skills = []
+title = "Maga e Guardiã do Conhecimento"
+description = "Companheira de party versada em magias arcanas, cura e suporte tático."
+level = 1
+max_hp = 90
+max_mp = 60
+attack = 10
+defense = 9
+magic = 26
+speed = 15
+hp_growth = 12
+mp_growth = 8
+attack_growth = 1
+defense_growth = 2
+magic_growth = 4
+speed_growth = 2
+starting_skills = [ExtResource("2_skill1"), ExtResource("3_skill2"), ExtResource("4_skill3"), ExtResource("5_skill4")]

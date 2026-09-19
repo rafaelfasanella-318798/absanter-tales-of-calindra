@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "arcane_blade"
+skill_name = "Sinergia: Lâmina Arcana"
+description = "Ataque combinado em que Calindra imbui a espada de Ragg com energia mágica."
+element = 6
+target_type = "single_enemy"
+cost_mp = 15
+power_multiplier = 2.4
+base_value = 15
+is_healing = false
+is_buff = false
+buff_type = 0
+buff_duration = 3
+animation_name = "combo"

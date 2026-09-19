@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "heal"
+skill_name = "Cura Suave"
+description = "Canaliza energia reconfortante para restaurar a vitalidade de um aliado."
+element = 6
+target_type = "single_ally"
+cost_mp = 10
+power_multiplier = 1.5
+base_value = 35
+is_healing = true
+is_buff = false
+buff_type = 0
+buff_duration = 3
+animation_name = "heal"

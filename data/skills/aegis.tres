@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "aegis"
+skill_name = "Proteção de Calindra"
+description = "Ergue uma barreira mística que aumenta a defesa de todos os aliados."
+element = 6
+target_type = "all_allies"
+cost_mp = 12
+power_multiplier = 0.0
+base_value = 0
+is_healing = false
+is_buff = true
+buff_type = 8
+buff_duration = 3
+animation_name = "buff"
