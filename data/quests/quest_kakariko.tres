@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/quest_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "quest_kakariko"
+quest_name = "O Mistério de Kakariko"
+description = "Investigue os arredores da vila Kakariko, recupere a Lâmina e enfrente o Guardião da Caverna."
+stages = ["Converse com Tav na vila Kakariko.", "Investigue o baú suspeito ao norte da vila.", "Derrote o Baú Mímico e recupere a Lâmina de Kakariko.", "Fale com Tav para saber o segredo da Caverna dos Murmúrios.", "Adentre a Caverna dos Murmúrios e destranque o portão arcaico.", "Derrote o Golem de Pedra nas profundezas da caverna.", "Mistério resolvido! Kakariko está segura."]
+is_main_quest = true
+reward_items = []

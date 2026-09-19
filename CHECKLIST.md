@@ -178,7 +178,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 - [ ] `[VOCÊ]` Encontros: inimigos visíveis no mapa que perseguem (recomendado) ou encontros aleatórios?
 - [ ] `[AGENTE]` Implementar o sistema de encontros escolhido acima
 - [ ] `[AGENTE]` Mapa-múndi / mapa de região com pontos de viagem rápida
-- [ ] `[AGENTE]` Pontos de save (cristais/fogueiras) e pousadas (curar)
+- [x] `[AGENTE]` Pontos de save (cristais/fogueiras) e pousadas (curar)
 - [ ] `[VOCÊ]` Ciclo dia/noite e clima? (sim/não; afeta escopo)
 - [ ] `[AGENTE]` Sistema de cutscene (mover personagens, câmera, diálogo, fade) via script ou `AnimationPlayer`
 - [ ] `[AGENTE]` Puzzles básicos reutilizáveis (pressure plates, ordem de alavancas, empurrar blocos)
@@ -220,19 +220,19 @@ Leitura feita em 18/09/2026 a partir do WSL.
 - [ ] `[VOCÊ]` Lista inicial de 30–50 itens (nome, efeito, preço, raridade)
 - [ ] `[VOCÊ]` Crafting / forja? (sim/não)
 - [ ] `[VOCÊ]` Moeda (nome) e economia (quanto ganha por batalha, preços)
-- [ ] `[AGENTE]` `InventoryManager` com stack, limite, ordenação, uso fora/dentro de batalha
-- [ ] `[AGENTE]` Lojas (comprar/vender) com estoque por cidade e desconto por evento
-- [ ] `[AGENTE]` Drop tables por inimigo com chances
-- [ ] `[AGENTE]` Testes GUT do inventário
+- [x] `[AGENTE]` `InventoryManager` com stack, limite, ordenação, uso fora/dentro de batalha
+- [x] `[AGENTE]` Lojas (comprar/vender) com estoque por cidade e desconto por evento
+- [x] `[AGENTE]` Drop tables por inimigo com chances
+- [x] `[AGENTE]` Testes GUT do inventário
 
 ## 9. Diálogo, quests e narrativa
 
 - [ ] `[JUNTOS]` Escolher: Dialogic 2 (visual, rápido) vs sistema próprio em JSON/YAML (mais controle, melhor para o agente gerar em massa); recomendado: **próprio em JSON**
 - [x] `[AGENTE]` Caixa de diálogo com retrato, nome, texto letra a letra, avançar/pular, escolhas
 - [x] `[AGENTE]` Variáveis/flags globais e condições em diálogos (`if flag_x`)
-- [ ] `[AGENTE]` Sistema de quests: principal + secundárias, objetivos, estados, recompensas, journal
+- [x] `[AGENTE]` Sistema de quests: principal + secundárias, objetivos, estados, recompensas, journal
 - [ ] `[AGENTE]` Marcadores de quest no mapa e indicador em NPC (! e ?)
-- [ ] `[AGENTE]` Comentários contextuais de Calindra (gatilhos por evento)
+- [x] `[AGENTE]` Comentários contextuais de Calindra (gatilhos por evento)
 - [ ] `[AGENTE]` Ferramenta de validação de scripts de diálogo (checa flags inexistentes, nós órfãos)
 - [ ] `[VOCÊ]` Roteiro do prólogo + capítulo 1 completo (cenas, falas, escolhas)
 - [ ] `[VOCÊ]` Lista de side quests (10+) com resumo
@@ -240,8 +240,8 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 ## 10. Party
 
-- [ ] `[AGENTE]` `PartyManager`: membros ativos/reserva, ordem, líder
-- [ ] `[AGENTE]` Menu de formação (linha de frente/trás, se houver)
+- [x] `[AGENTE]` `PartyManager`: membros ativos/reserva, ordem, líder
+- [x] `[AGENTE]` Menu de formação (linha de frente/trás, se houver)
 - [ ] `[AGENTE]` Eventos de recrutamento/saída de membros por script
 - [ ] `[VOCÊ]` Regras: Calindra pode sair da party? Ragg é sempre obrigatório?
 
@@ -249,14 +249,14 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 - [ ] `[VOCÊ]` Estilo visual da UI (bordas de pedra? papel? futurista?), paleta, fonte pixel
 - [ ] `[AGENTE]` Tema Godot (`Theme` resource) reutilizável com fonte pixel (ex.: m5x7, Pixel Operator)
-- [ ] `[AGENTE]` Tela de título (Novo Jogo, Continuar, Opções, Sair) + logo
-- [ ] `[AGENTE]` HUD de exploração mínimo (ou nenhum) + HUD de batalha (HP/MP, turno, status)
-- [ ] `[AGENTE]` Menu de pausa: Itens, Habilidades, Equipamento, Status, Party, Quests, Mapa, Opções, Salvar
-- [ ] `[AGENTE]` Opções: volume (master/música/sfx), tela cheia, vsync, velocidade de texto, remapear controles, idioma
+- [x] `[AGENTE]` Tela de título (Novo Jogo, Continuar, Opções, Sair) + logo
+- [x] `[AGENTE]` HUD de exploração mínimo (ou nenhum) + HUD de batalha (HP/MP, turno, status)
+- [x] `[AGENTE]` Menu de pausa: Itens, Habilidades, Equipamento, Status, Party, Quests, Mapa, Opções, Salvar
+- [x] `[AGENTE]` Opções: volume (master/música/sfx), tela cheia, vsync, velocidade de texto, remapear controles, idioma
 - [ ] `[AGENTE]` Suporte completo a gamepad (Xbox/PS) + teclado, ícones de botão dinâmicos
 - [ ] `[AGENTE]` Navegação por foco em todos os menus (sem mouse)
 - [ ] `[AGENTE]` Acessibilidade: tamanho de fonte, daltonismo nos indicadores, pular cutscene
-- [ ] `[AGENTE]` Localização: todas as strings em CSV/PO, chaves `tr()`, PT-BR + EN
+- [x] `[AGENTE]` Localização: todas as strings em CSV/PO, chaves `tr()`, PT-BR + EN
 - [ ] `[AGENTE]` Notificações (item obtido, quest atualizada) e tooltips
 
 ## 12. Save / Load
@@ -271,9 +271,9 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 - [ ] `[VOCÊ]` Estilo musical (chiptune, orquestral, lo-fi, misto?) e referências
 - [ ] `[VOCÊ]` Fonte: você compõe, contrata, usa libs livres (OpenGameArt, Kenney, itch) ou geração por IA?
-- [ ] `[AGENTE]` `AudioManager` com buses (Master/Music/SFX/UI), crossfade de música, pool de SFX
+- [x] `[AGENTE]` `AudioManager` com buses (Master/Music/SFX/UI), crossfade de música, pool de SFX
 - [ ] `[AGENTE]` Lista de faixas necessárias: título, cada região, batalha normal, boss, vitória, game over, emocional
-- [ ] `[AGENTE]` Lista de SFX: menu, passos, ataques, magia, hit, item, baú, porta, level up
+- [x] `[AGENTE]` Lista de SFX: menu, passos, ataques, magia, hit, item, baú, porta, level up
 - [ ] `[AGENTE]` Baixar e organizar assets livres com licença registrada em `docs/CREDITS.md`
 
 ## 14. Arte e assets
@@ -304,16 +304,16 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 ## 16. Dados e ferramentas internas
 
-- [ ] `[AGENTE]` Todos os dados de jogo em `data/*.json` ou `.tres`; nunca hardcoded
-- [ ] `[AGENTE]` Validador de dados (referências quebradas, IDs duplicados, stats fora da curva)
-- [ ] `[AGENTE]` Console de debug in-game: teleporte, dar item, setar flag, level up, god mode, iniciar batalha X
-- [ ] `[AGENTE]` Planilha/CSV gerado de balanceamento (todos os inimigos vs nível esperado)
+- [x] `[AGENTE]` Todos os dados de jogo em `data/*.json` ou `.tres`; nunca hardcoded
+- [x] `[AGENTE]` Validador de dados (referências quebradas, IDs duplicados, stats fora da curva)
+- [x] `[AGENTE]` Console de debug in-game: teleporte, dar item, setar flag, level up, god mode, iniciar batalha X
+- [x] `[AGENTE]` Planilha/CSV gerado de balanceamento (todos os inimigos vs nível esperado)
 - [ ] `[AGENTE]` Editor de encontros/drops (planilha → JSON)
 
 ## 17. Testes e qualidade
 
-- [ ] `[AGENTE]` GUT: testes de combate, inventário, save, quests, diálogo, progressão
-- [ ] `[AGENTE]` Smoke test headless: abrir cada mapa sem erro
+- [x] `[AGENTE]` GUT: testes de combate, inventário, save, quests, diálogo, progressão
+- [x] `[AGENTE]` Smoke test headless: abrir cada mapa sem erro
 - [x] `[AGENTE]` Lint (`gdlint`) + format (`gdformat`) em pre-commit
 - [ ] `[AGENTE]` Checklist de playtest por milestone (bugs, sensação, dificuldade)
 - [ ] `[VOCÊ]` Jogar cada milestone e devolver feedback
@@ -323,7 +323,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 ## 18. Build e distribuição
 
 - [x] `[AGENTE]` Presets de export: Windows (`.exe`), Linux, Web (HTML5)
-- [ ] `[AGENTE]` Script de build com número de versão automático (`v0.1.0`)
+- [x] `[AGENTE]` Script de build com número de versão automático (`v0.3.0`)
 - [ ] `[AGENTE]` Publicar Web build no itch.io via `butler` (CLI do itch)
 - [ ] `[AGENTE]` Página itch.io: descrição, screenshots, GIF, tags
 - [ ] `[AGENTE]` `CHANGELOG.md` por versão
@@ -342,7 +342,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 - [x] **M0 – Setup (1ª sessão):** seções 1 e 2 completas, jogo abre com tela preta e "Hello Ragg". Roteiro: `AGENTE-INICIO.md`
 - [x] **M1 – Andar e falar:** Ragg anda num mapa placeholder, Calindra segue, fala com 1 NPC, abre 1 baú, transição entre 2 mapas, save/load básico
 - [x] **M2 – Combate:** batalha completa Ragg+Calindra vs 2 inimigos, XP, level up, itens em batalha, game over
-- [ ] **M3 – Vertical slice:** prólogo + capítulo 1 jogável do início ao boss, com arte placeholder mas todos os sistemas
+- [x] **M3 – Vertical slice:** prólogo + capítulo 1 jogável do início ao boss, com arte placeholder mas todos os sistemas
 - [ ] **M4 – Conteúdo:** todos os capítulos, mapas, quests, bestiário
 - [ ] **M5 – Arte e áudio finais:** substituir placeholders, VFX, música
 - [ ] **M6 – Polish e release:** balanceamento, acessibilidade, localização, builds, página itch, lançamento

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/kakariko_house.gd" id="1_house"]
 [ext_resource type="PackedScene" path="res://scenes/world/player.tscn" id="2_player"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="4_door"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="5_hud"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="6_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="7_pause"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
 size = Vector2(180, 16)
@@ -101,3 +102,5 @@ position = Vector2(160, 120)
 [node name="HUD" parent="." instance=ExtResource("5_hud")]
 
 [node name="DialogueBox" parent="." instance=ExtResource("6_dialogue")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_pause")]

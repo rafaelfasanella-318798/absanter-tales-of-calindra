@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "rock_slam"
+skill_name = "Esmagamento Rochoso"
+description = "O golem desfere um soco telúrico devastador no oponente."
+element = 1
+target_type = "single_enemy"
+cost_mp = 0
+power_multiplier = 1.4
+base_value = 5
+is_healing = false
+is_buff = false
+buff_type = 0
+buff_duration = 3
+animation_name = "slam"

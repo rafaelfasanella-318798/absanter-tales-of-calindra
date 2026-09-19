@@ -25,6 +25,32 @@ func remove_item(item_id: String, amount: int = 1) -> bool:
 	return true
 
 
+func get_item_count(item_id: String) -> int:
+	return items.get(item_id, 0)
+
+
+func has_item(item_id: String, amount: int = 1) -> bool:
+	return items.get(item_id, 0) >= amount
+
+
 func add_gold(amount: int) -> void:
 	gold += amount
+	currency_updated.emit(gold)
+
+
+func remove_gold(amount: int) -> bool:
+	if gold < amount:
+		return false
+	gold -= amount
+	currency_updated.emit(gold)
+	return true
+
+
+func has_gold(amount: int) -> bool:
+	return gold >= amount
+
+
+func clear_inventory() -> void:
+	items.clear()
+	gold = 0
 	currency_updated.emit(gold)

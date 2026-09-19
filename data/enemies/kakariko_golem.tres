@@ -1,0 +1,27 @@
+[gd_resource type="Resource" script_class="EnemyData" load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/enemy_data.gd" id="1_script"]
+[ext_resource type="Resource" path="res://data/skills/rock_slam.tres" id="2_skill1"]
+[ext_resource type="Resource" path="res://data/skills/quake.tres" id="3_skill2"]
+[ext_resource type="Resource" path="res://data/skills/fortify.tres" id="4_skill3"]
+
+[resource]
+script = ExtResource("1_script")
+id = "kakariko_golem"
+enemy_name = "Golem de Pedra Antigo"
+description = "O antigo guardião das profundezas da Caverna dos Murmúrios, forjado em rocha viva."
+element_affinity = 5
+element_weakness = 6
+max_hp = 260
+max_mp = 30
+attack = 24
+defense = 16
+magic = 12
+speed = 7
+xp_reward = 250
+gold_reward = 150
+tile_index = 90
+drop_item_id = "pocao_vida"
+drop_chance = 1.0
+skills = [ExtResource("2_skill1"), ExtResource("3_skill2"), ExtResource("4_skill3")]
+drop_table = []

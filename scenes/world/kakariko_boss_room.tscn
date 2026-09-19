@@ -1,0 +1,101 @@
+[gd_scene load_steps=12 format=3 uid="uid://kboss001"]
+
+[ext_resource type="Script" path="res://scripts/world/kakariko_boss_room.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/world/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/world/follower.tscn" id="4_follower"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="5_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="6_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="7_pause"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
+size = Vector2(320, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
+size = Vector2(16, 180)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boss_col"]
+size = Vector2(24, 24)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_boss_trigger"]
+radius = 48.0
+
+[node name="KakarikoBossRoom" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0.0941176, 0.101961, 0.145098, 1)
+
+[node name="Dais" type="ColorRect" parent="."]
+offset_left = 60.0
+offset_top = 35.0
+offset_right = 260.0
+offset_bottom = 135.0
+color = Color(0.141176, 0.156863, 0.223529, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_mask = 2
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+position = Vector2(160, 8)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(160, 172)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2(8, 90)
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2(312, 90)
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(160, 145)
+
+[node name="Doors" type="Node2D" parent="."]
+
+[node name="DoorToCave" parent="Doors" instance=ExtResource("2_door")]
+position = Vector2(160, 168)
+target_scene_path = "res://scenes/world/kakariko_cave.tscn"
+target_spawn_id = "boss_exit"
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Entities" instance=ExtResource("3_player")]
+position = Vector2(160, 145)
+
+[node name="Follower" parent="Entities" instance=ExtResource("4_follower")]
+position = Vector2(144, 145)
+
+[node name="BossEntity" type="StaticBody2D" parent="Entities"]
+position = Vector2(160, 75)
+collision_layer = 1
+collision_mask = 2
+
+[node name="Sprite2D" type="Sprite2D" parent="Entities/BossEntity"]
+texture_filter = 1
+scale = Vector2(1.5, 1.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/BossEntity"]
+shape = SubResource("RectangleShape2D_boss_col")
+
+[node name="BossTriggerArea" type="Area2D" parent="Entities/BossEntity"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Entities/BossEntity/BossTriggerArea"]
+shape = SubResource("CircleShape2D_boss_trigger")
+
+[node name="HUD" parent="." instance=ExtResource("5_hud")]
+
+[node name="DialogueBox" parent="." instance=ExtResource("6_dialogue")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("7_pause")]

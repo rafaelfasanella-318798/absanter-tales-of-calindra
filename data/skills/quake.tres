@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "quake"
+skill_name = "Terremoto Menor"
+description = "Faz o solo tremer violentamente, atingindo todos os oponentes."
+element = 5
+target_type = "all_enemies"
+cost_mp = 10
+power_multiplier = 1.1
+base_value = 2
+is_healing = false
+is_buff = false
+buff_type = 0
+buff_duration = 3
+animation_name = "quake"

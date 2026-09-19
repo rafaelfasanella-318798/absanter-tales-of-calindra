@@ -1,0 +1,34 @@
+id,pt_BR,en
+KEY_NEW_GAME,Novo Jogo,New Game
+KEY_CONTINUE,Continuar,Continue
+KEY_OPTIONS,Opções,Options
+KEY_QUIT,Sair,Quit
+KEY_RESUME,Retomar,Resume
+KEY_STATUS,Status,Status
+KEY_ITEMS,Itens,Items
+KEY_QUESTS,Missões,Quests
+KEY_SAVE,Salvar,Save
+KEY_LOAD,Carregar,Load
+KEY_CLOSE,Fechar,Close
+KEY_ATTACK,Atacar,Attack
+KEY_SKILL,Habilidade,Skill
+KEY_ITEM,Item,Item
+KEY_DEFEND,Defender,Defend
+KEY_FLEE,Fugir,Flee
+KEY_VICTORY,Vitória!,Victory!
+KEY_DEFEAT,Derrota...,Defeat...
+KEY_LEVEL_UP,Subiu de Nível!,Level Up!
+KEY_GAME_SAVED,Jogo salvo com sucesso!,Game saved successfully!
+KEY_REST_RESTORED,A party descansou e recuperou forças!,The party rested and restored their strength!
+KEY_SHOP,Loja,Shop
+KEY_BUY,Comprar,Buy
+KEY_SELL,Vender,Sell
+KEY_GOLD,Ouro,Gold
+KEY_PRICE,Preço,Price
+KEY_NOT_ENOUGH_GOLD,Ouro insuficiente!,Not enough gold!
+KEY_ITEM_BOUGHT,Item comprado!,Item purchased!
+KEY_ITEM_SOLD,Item vendido!,Item sold!
+KEY_VOLUME_MASTER,Volume Principal,Master Volume
+KEY_VOLUME_BGM,Volume Música,Music Volume
+KEY_VOLUME_SFX,Volume Efeitos,SFX Volume
+KEY_LANGUAGE,Idioma,Language

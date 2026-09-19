@@ -1,0 +1,7 @@
+category,id,name,level,hp,mp,atk,def,mag,spd,xp_reward,gold_reward
+character,calindra,"Calindra",1,90,60,10,9,26,15,0,0
+character,ragg,"Ragg",1,120,30,24,14,8,12,0,0
+enemy,cave_bat,"Morcego da Caverna",1,35,0,14,4,8,16,20,12
+enemy,kakariko_golem,"Golem de Pedra Antigo",1,260,30,24,16,12,7,250,150
+enemy,kakariko_mimic,"Mímico de Kakariko",1,150,20,20,12,15,11,100,50
+enemy,slime,"Slime de Kakariko",1,45,0,12,6,5,8,25,15

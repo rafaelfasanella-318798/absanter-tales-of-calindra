@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=17 format=3 uid="uid://kakariko001"]
 
 [ext_resource type="Script" path="res://scripts/world/kakariko.gd" id="1_kakariko"]
 [ext_resource type="PackedScene" path="res://scenes/world/player.tscn" id="2_player"]
@@ -6,8 +6,12 @@
 [ext_resource type="PackedScene" path="res://scenes/world/npc.tscn" id="4_npc"]
 [ext_resource type="PackedScene" path="res://scenes/world/chest.tscn" id="5_chest"]
 [ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="6_door"]
-[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="7_hud"]
-[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="8_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/world/save_point.tscn" id="7_save"]
+[ext_resource type="PackedScene" path="res://scenes/world/enemy_wanderer.tscn" id="8_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="9_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="10_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="11_pause"]
+[ext_resource type="PackedScene" path="res://scenes/ui/shop_menu.tscn" id="12_shop"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_north"]
 size = Vector2(340, 16)
@@ -32,7 +36,7 @@ color = Color(0.2, 0.38, 0.22, 1)
 [node name="Path" type="ColorRect" parent="Background"]
 offset_left = 30.0
 offset_top = 95.0
-offset_right = 290.0
+offset_right = 310.0
 offset_bottom = 125.0
 color = Color(0.42, 0.38, 0.32, 1)
 
@@ -83,6 +87,11 @@ position = Vector2(100, 56)
 target_scene_path = "res://scenes/world/kakariko_house.tscn"
 target_spawn_id = "SpawnFromVillage"
 
+[node name="CaveDoor" parent="." instance=ExtResource("6_door")]
+position = Vector2(310, 110)
+target_scene_path = "res://scenes/world/kakariko_cave.tscn"
+target_spawn_id = "default"
+
 [node name="Boundaries" type="StaticBody2D" parent="."]
 collision_mask = 2
 
@@ -98,10 +107,6 @@ shape = SubResource("RectangleShape2D_north")
 position = Vector2(-8, 90)
 shape = SubResource("RectangleShape2D_east")
 
-[node name="ColEast" type="CollisionShape2D" parent="Boundaries"]
-position = Vector2(328, 90)
-shape = SubResource("RectangleShape2D_east")
-
 [node name="SpawnPoints" type="Node2D" parent="."]
 
 [node name="default" type="Marker2D" parent="SpawnPoints"]
@@ -110,6 +115,9 @@ position = Vector2(50, 110)
 [node name="SpawnFromHouse" type="Marker2D" parent="SpawnPoints"]
 position = Vector2(100, 72)
 
+[node name="cave_entrance" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(285, 110)
+
 [node name="Entities" type="Node2D" parent="."]
 y_sort_enabled = true
 
@@ -117,8 +125,23 @@ y_sort_enabled = true
 position = Vector2(130, 76)
 npc_name = "Tav"
 
+[node name="Barnaby" parent="Entities" instance=ExtResource("4_npc")]
+position = Vector2(210, 115)
+npc_name = "Barnaby"
+portrait_tile = 96
+is_merchant = true
+
 [node name="MimicChest" parent="Entities" instance=ExtResource("5_chest")]
 position = Vector2(235, 62)
+
+[node name="SavePoint" parent="Entities" instance=ExtResource("7_save")]
+position = Vector2(65, 72)
+
+[node name="WandererMeadow" parent="Entities" instance=ExtResource("8_enemy")]
+position = Vector2(180, 145)
+encounter_enemy_ids = ["slime"]
+tile_index = 109
+persistence_id = "kakariko_slime_meadow"
 
 [node name="Follower" parent="Entities" instance=ExtResource("3_follower")]
 position = Vector2(34, 110)
@@ -126,6 +149,10 @@ position = Vector2(34, 110)
 [node name="Player" parent="Entities" instance=ExtResource("2_player")]
 position = Vector2(50, 110)
 
-[node name="HUD" parent="." instance=ExtResource("7_hud")]
+[node name="HUD" parent="." instance=ExtResource("9_hud")]
 
-[node name="DialogueBox" parent="." instance=ExtResource("8_dialogue")]
+[node name="DialogueBox" parent="." instance=ExtResource("10_dialogue")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("11_pause")]
+
+[node name="ShopMenu" parent="." instance=ExtResource("12_shop")]

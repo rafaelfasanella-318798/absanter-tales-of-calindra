@@ -26,21 +26,37 @@ func _setup_fade_overlay() -> void:
 	_fade_layer.add_child(_fade_rect)
 
 
-func change_scene(scene_path: String, fade_duration: float = 0.5) -> void:
+func change_scene(scene_path: String, fade_duration: float = 0.4) -> void:
 	if _is_transitioning:
 		return
 	_is_transitioning = true
 	scene_transition_started.emit(scene_path)
 
-	var tween: Tween = create_tween()
-	tween.tween_property(_fade_rect, "color:a", 1.0, fade_duration)
-	await tween.finished
+	if _fade_rect != null:
+		var tween: Tween = create_tween()
+		tween.tween_property(_fade_rect, "color:a", 1.0, fade_duration)
+		await tween.finished
 
 	get_tree().change_scene_to_file(scene_path)
+	await get_tree().process_frame
 
-	tween = create_tween()
-	tween.tween_property(_fade_rect, "color:a", 0.0, fade_duration)
-	await tween.finished
+	if _fade_rect != null:
+		var tween: Tween = create_tween()
+		tween.tween_property(_fade_rect, "color:a", 0.0, fade_duration)
+		await tween.finished
 
 	_is_transitioning = false
 	scene_transition_finished.emit(scene_path)
+
+
+func change_scene_with_transition(
+	scene_path: String,
+	spawn_id: String = "",
+	player_pos: Vector2 = Vector2.ZERO,
+	fade_duration: float = 0.4
+) -> void:
+	if not spawn_id.is_empty():
+		GameState.set_flag("last_spawn_id", spawn_id)
+	if player_pos != Vector2.ZERO:
+		GameState.set_flag("pending_player_pos", player_pos)
+	await change_scene(scene_path, fade_duration)

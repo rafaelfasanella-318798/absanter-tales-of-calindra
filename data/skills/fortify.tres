@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="SkillData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/skill_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "fortify"
+skill_name = "Fortalecer Armadura"
+description = "O golem condensa seus minerais para reforçar drasticamente sua defesa."
+element = 5
+target_type = "self"
+cost_mp = 8
+power_multiplier = 0.0
+base_value = 0
+is_healing = false
+is_buff = true
+buff_type = 8
+buff_duration = 3
+animation_name = "buff"

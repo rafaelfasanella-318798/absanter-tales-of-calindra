@@ -1,0 +1,101 @@
+[gd_scene load_steps=12 format=3 uid="uid://kcave001"]
+
+[ext_resource type="Script" path="res://scripts/world/kakariko_cave.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/world/door.tscn" id="2_door"]
+[ext_resource type="PackedScene" path="res://scenes/world/player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/world/follower.tscn" id="4_follower"]
+[ext_resource type="PackedScene" path="res://scenes/world/save_point.tscn" id="5_save"]
+[ext_resource type="PackedScene" path="res://scenes/world/enemy_wanderer.tscn" id="6_enemy"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="7_hud"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="8_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="9_pause"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_top"]
+size = Vector2(320, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_side"]
+size = Vector2(16, 180)
+
+[node name="KakarikoCave" type="Node2D"]
+script = ExtResource("1_script")
+
+[node name="Floor" type="ColorRect" parent="."]
+offset_right = 320.0
+offset_bottom = 180.0
+color = Color(0.121569, 0.141176, 0.180392, 1)
+
+[node name="Pathways" type="ColorRect" parent="."]
+offset_left = 25.0
+offset_top = 30.0
+offset_right = 295.0
+offset_bottom = 150.0
+color = Color(0.160784, 0.184314, 0.227451, 1)
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_mask = 2
+
+[node name="Top" type="CollisionShape2D" parent="Walls"]
+position = Vector2(160, 8)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="Bottom" type="CollisionShape2D" parent="Walls"]
+position = Vector2(160, 172)
+shape = SubResource("RectangleShape2D_wall_top")
+
+[node name="Left" type="CollisionShape2D" parent="Walls"]
+position = Vector2(8, 90)
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="Right" type="CollisionShape2D" parent="Walls"]
+position = Vector2(312, 90)
+shape = SubResource("RectangleShape2D_wall_side")
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="default" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(40, 140)
+
+[node name="boss_exit" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(250, 45)
+
+[node name="Doors" type="Node2D" parent="."]
+
+[node name="DoorToKakariko" parent="Doors" instance=ExtResource("2_door")]
+position = Vector2(20, 140)
+target_scene_path = "res://scenes/world/kakariko.tscn"
+target_spawn_id = "cave_entrance"
+
+[node name="DoorToBoss" parent="Doors" instance=ExtResource("2_door")]
+position = Vector2(285, 45)
+target_scene_path = "res://scenes/world/kakariko_boss_room.tscn"
+target_spawn_id = "default"
+
+[node name="Entities" type="Node2D" parent="."]
+y_sort_enabled = true
+
+[node name="Player" parent="Entities" instance=ExtResource("3_player")]
+position = Vector2(40, 140)
+
+[node name="Follower" parent="Entities" instance=ExtResource("4_follower")]
+position = Vector2(24, 140)
+
+[node name="SavePoint" parent="Entities" instance=ExtResource("5_save")]
+position = Vector2(210, 45)
+
+[node name="WandererSlime" parent="Entities" instance=ExtResource("6_enemy")]
+position = Vector2(110, 120)
+encounter_enemy_ids = ["slime"]
+tile_index = 109
+persistence_id = "cave_slime_1"
+
+[node name="WandererBat" parent="Entities" instance=ExtResource("6_enemy")]
+position = Vector2(170, 75)
+encounter_enemy_ids = ["cave_bat", "slime"]
+tile_index = 108
+persistence_id = "cave_bat_1"
+
+[node name="HUD" parent="." instance=ExtResource("7_hud")]
+
+[node name="DialogueBox" parent="." instance=ExtResource("8_dialogue")]
+
+[node name="PauseMenu" parent="." instance=ExtResource("9_pause")]
