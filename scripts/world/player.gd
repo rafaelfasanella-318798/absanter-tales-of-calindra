@@ -7,6 +7,7 @@ signal interacted
 const MAX_HISTORY_POINTS: int = 100
 const RECORD_STEP_DISTANCE: float = 4.0
 
+@export var character_name: String = "Ragg"
 @export var move_speed: float = 90.0
 
 var facing_direction: Vector2 = Vector2.DOWN
@@ -15,11 +16,14 @@ var position_history: Array[Vector2] = []
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var interact_ray: RayCast2D = $InteractRay
+@onready var name_label: Label = $NameLabel
 
 
 func _ready() -> void:
 	if sprite != null and sprite.texture == null:
 		sprite.texture = TextureLoader.get_kenney_tile(85)
+	if name_label != null:
+		name_label.text = character_name
 	position_history.append(global_position)
 
 

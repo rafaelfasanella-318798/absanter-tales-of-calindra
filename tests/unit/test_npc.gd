@@ -18,6 +18,11 @@ func before_each() -> void:
 	add_child_autofree(_player)
 
 
+func test_npc_name_label() -> void:
+	assert_not_null(_npc.name_label, "NPC should have name_label")
+	assert_eq(_npc.name_label.text, "Tav", "NPC name_label should be Tav")
+
+
 func test_tav_interaction_triggers_dialogue() -> void:
 	assert_false(GameState.get_flag("talked_to_tav", false), "Flag should initially be false")
 

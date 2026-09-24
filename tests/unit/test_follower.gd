@@ -19,6 +19,8 @@ func before_each() -> void:
 func test_follower_initializes() -> void:
 	assert_not_null(_follower, "Follower instance should exist")
 	assert_eq(_follower.target_player, _player, "Follower target should be set to player")
+	assert_not_null(_follower.name_label, "Follower should have name_label")
+	assert_eq(_follower.name_label.text, "Calindra", "Follower name_label should be Calindra")
 
 
 func test_follower_tracks_history() -> void:

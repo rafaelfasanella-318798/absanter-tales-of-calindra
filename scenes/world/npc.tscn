@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/world/npc.gd" id="1_npc"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1"]
 size = Vector2(14, 14)
@@ -17,4 +18,18 @@ position = Vector2(0, 1)
 shape = SubResource("RectangleShape2D_1")
 
 [node name="PromptIcon" type="Sprite2D" parent="."]
-position = Vector2(0, -14)
+position = Vector2(0, -22)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -30.0
+offset_top = -18.0
+offset_right = 30.0
+offset_bottom = -8.0
+theme_override_colors/font_color = Color(1, 0.96, 0.82, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Tav"
+horizontal_alignment = 1
+vertical_alignment = 1

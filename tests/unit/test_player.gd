@@ -12,6 +12,8 @@ func before_each() -> void:
 func test_player_initial_state() -> void:
 	assert_not_null(_player, "Player instance should not be null")
 	assert_eq(_player.move_speed, 90.0, "Default speed should be 90")
+	assert_not_null(_player.name_label, "Player should have name_label")
+	assert_eq(_player.name_label.text, "Ragg", "Player name_label should be Ragg")
 	assert_eq(
 		_player.position_history.size(), 1, "Initial position history should contain 1 element"
 	)

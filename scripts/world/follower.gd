@@ -2,6 +2,7 @@ class_name Follower
 extends CharacterBody2D
 ## Companion follower controller (Calindra) following the player in conga-line style.
 
+@export var follower_name: String = "Calindra"
 @export var target_player: Player
 @export var follow_distance_steps: int = 5
 @export var follow_speed: float = 90.0
@@ -9,11 +10,14 @@ extends CharacterBody2D
 var facing_direction: Vector2 = Vector2.DOWN
 
 @onready var sprite: Sprite2D = $Sprite2D
+@onready var name_label: Label = $NameLabel
 
 
 func _ready() -> void:
 	if sprite != null and sprite.texture == null:
 		sprite.texture = TextureLoader.get_kenney_tile(86)  # Calindra mage sprite
+	if name_label != null:
+		name_label.text = follower_name
 
 	if target_player == null:
 		var players: Array[Node] = get_tree().get_nodes_in_group("player")

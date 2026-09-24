@@ -8,6 +8,7 @@ extends StaticBody2D
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var prompt_icon: Sprite2D = $PromptIcon
+@onready var name_label: Label = $NameLabel
 
 
 func _ready() -> void:
@@ -15,6 +16,8 @@ func _ready() -> void:
 		sprite.texture = TextureLoader.get_kenney_tile(portrait_tile)
 	if prompt_icon != null:
 		prompt_icon.visible = false
+	if name_label != null:
+		name_label.text = npc_name
 
 
 func interact(_player: Node2D) -> void:
