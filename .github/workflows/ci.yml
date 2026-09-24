@@ -27,6 +27,7 @@ jobs:
 
       - name: Run linter and formatting checks
         run: |
+          chmod +x ./*.sh
           ./lint.sh
 
       - name: Set up Godot 4
