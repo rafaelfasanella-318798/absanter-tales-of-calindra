@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/data/item_data.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "amuleto_vitalidade"
+item_name = "Amuleto da Vitalidade"
+description = "Amuleto antigo abençoado pelas fadas que aumenta a vitalidade do portador."
+item_type = 2
+is_usable_in_battle = false
+is_usable_in_menu = false
+heal_hp = 0
+heal_mp = 0
+target_type = "single_ally"
+price = 110
+equip_slot = "accessory"
+bonus_hp = 25
+bonus_mp = 0
+bonus_attack = 0
+bonus_defense = 2
+bonus_magic = 0
+bonus_speed = 0
+allowed_characters = []

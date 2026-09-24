@@ -30,7 +30,8 @@ func save_game(
 		"items": InventoryManager.items.duplicate(),
 		"active_quests": QuestManager.active_quests.duplicate(),
 		"completed_quests": QuestManager.completed_quests.duplicate(),
-		"active_party": PartyManager.active_members.duplicate()
+		"active_party": PartyManager.active_members.duplicate(),
+		"party_equipment": PartyManager.character_equipment.duplicate(true)
 	}
 
 	var file_path: String = SAVE_FILE_TEMPLATE % slot_id
@@ -109,6 +110,9 @@ func _apply_save_data(data: Dictionary) -> void:
 		PartyManager.active_members.clear()
 		for member in data["active_party"]:
 			PartyManager.active_members.append(str(member))
+
+	if data.has("party_equipment") and data["party_equipment"] is Dictionary:
+		PartyManager.character_equipment = data["party_equipment"].duplicate(true)
 
 
 func has_save(slot_id: int) -> bool:

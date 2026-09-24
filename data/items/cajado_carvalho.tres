@@ -4,16 +4,21 @@
 
 [resource]
 script = ExtResource("1_script")
-id = "lamina_kakariko"
-item_name = "Lâmina de Kakariko"
-description = "Espada reluzente forjada pelos antigos guardiões da vila Kakariko."
+id = "cajado_carvalho"
+item_name = "Cajado de Carvalho"
+description = "Cajado esculpido em carvalho ancestral, canaliza o poder arcano."
 item_type = 1
 is_usable_in_battle = false
 is_usable_in_menu = false
 heal_hp = 0
 heal_mp = 0
 target_type = "single_ally"
-price = 150
+price = 120
 equip_slot = "weapon"
-bonus_attack = 8
-allowed_characters = ["ragg"]
+bonus_hp = 0
+bonus_mp = 10
+bonus_attack = 2
+bonus_defense = 0
+bonus_magic = 6
+bonus_speed = 1
+allowed_characters = ["calindra"]

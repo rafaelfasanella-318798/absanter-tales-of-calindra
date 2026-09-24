@@ -4,16 +4,21 @@
 
 [resource]
 script = ExtResource("1_script")
-id = "lamina_kakariko"
-item_name = "Lâmina de Kakariko"
-description = "Espada reluzente forjada pelos antigos guardiões da vila Kakariko."
-item_type = 1
+id = "anel_sabedoria"
+item_name = "Anel da Sabedoria"
+description = "Anel de prata incrustado com safira, ampliando o fluxo de mana."
+item_type = 2
 is_usable_in_battle = false
 is_usable_in_menu = false
 heal_hp = 0
 heal_mp = 0
 target_type = "single_ally"
-price = 150
-equip_slot = "weapon"
-bonus_attack = 8
-allowed_characters = ["ragg"]
+price = 130
+equip_slot = "accessory"
+bonus_hp = 0
+bonus_mp = 15
+bonus_attack = 0
+bonus_defense = 0
+bonus_magic = 4
+bonus_speed = 1
+allowed_characters = []

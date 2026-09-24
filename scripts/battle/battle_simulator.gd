@@ -44,19 +44,28 @@ static func _simulate_single_battle(
 	var party: Array[Dictionary] = []
 	for p_id in party_ids:
 		var char_data: CharacterData = load("res://data/characters/%s.tres" % p_id) as CharacterData
+		var bonuses: Dictionary = (
+			PartyManager.get_equipment_bonuses(p_id) if PartyManager != null else {}
+		)
+		var b_hp: int = bonuses.get("hp", 0)
+		var b_mp: int = bonuses.get("mp", 0)
+		var b_atk: int = bonuses.get("attack", 0)
+		var b_def: int = bonuses.get("defense", 0)
+		var b_mag: int = bonuses.get("magic", 0)
+		var b_spd: int = bonuses.get("speed", 0)
 		party.append(
 			{
 				"id": char_data.id,
 				"name": char_data.character_name,
 				"is_player": true,
-				"max_hp": char_data.max_hp,
-				"hp": char_data.max_hp,
-				"max_mp": char_data.max_mp,
-				"mp": char_data.max_mp,
-				"attack": char_data.attack,
-				"defense": char_data.defense,
-				"magic": char_data.magic,
-				"speed": char_data.speed,
+				"max_hp": char_data.max_hp + b_hp,
+				"hp": char_data.max_hp + b_hp,
+				"max_mp": char_data.max_mp + b_mp,
+				"mp": char_data.max_mp + b_mp,
+				"attack": char_data.attack + b_atk,
+				"defense": char_data.defense + b_def,
+				"magic": char_data.magic + b_mag,
+				"speed": char_data.speed + b_spd,
 				"element_affinity": Enums.Element.NONE,
 				"element_weakness": Enums.Element.NONE,
 				"is_defending": false,

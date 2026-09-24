@@ -114,6 +114,11 @@ static func _validate_single_resource(
 				errors.append("%s has empty 'item_name'" % file_path)
 			if item.price < 0:
 				errors.append("%s has negative price" % file_path)
+			if (
+				not item.equip_slot.is_empty()
+				and item.equip_slot not in ["weapon", "armor", "accessory"]
+			):
+				errors.append("%s has invalid equip_slot '%s'" % [file_path, item.equip_slot])
 
 		"CharacterData":
 			if not res is CharacterData:

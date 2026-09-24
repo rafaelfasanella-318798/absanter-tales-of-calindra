@@ -4,16 +4,21 @@
 
 [resource]
 script = ExtResource("1_script")
-id = "lamina_kakariko"
-item_name = "Lâmina de Kakariko"
-description = "Espada reluzente forjada pelos antigos guardiões da vila Kakariko."
-item_type = 1
+id = "manto_linho"
+item_name = "Manto de Linho Encantado"
+description = "Manto leve bordado com fios arcanos, favorece magos e conjuradores."
+item_type = 2
 is_usable_in_battle = false
 is_usable_in_menu = false
 heal_hp = 0
 heal_mp = 0
 target_type = "single_ally"
-price = 150
-equip_slot = "weapon"
-bonus_attack = 8
-allowed_characters = ["ragg"]
+price = 100
+equip_slot = "armor"
+bonus_hp = 5
+bonus_mp = 15
+bonus_attack = 0
+bonus_defense = 4
+bonus_magic = 4
+bonus_speed = 0
+allowed_characters = []

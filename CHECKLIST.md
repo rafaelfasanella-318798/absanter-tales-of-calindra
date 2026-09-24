@@ -212,7 +212,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 - [ ] `[VOCÊ]` Sistema de equipamento: slots (arma, armadura, acessório x2?)
 - [x] `[AGENTE]` Curva de XP e tabela de stats por nível gerada por fórmula em `data/`
 - [ ] `[AGENTE]` Skill tree UI (se escolhido)
-- [ ] `[AGENTE]` Aplicação de equipamento nos stats + preview de diferença no menu
+- [x] `[AGENTE]` Aplicação de equipamento nos stats + preview de diferença no menu
 
 ## 8. Inventário, itens e economia
 
@@ -242,7 +242,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 
 - [x] `[AGENTE]` `PartyManager`: membros ativos/reserva, ordem, líder
 - [x] `[AGENTE]` Menu de formação (linha de frente/trás, se houver)
-- [ ] `[AGENTE]` Eventos de recrutamento/saída de membros por script
+- [x] `[AGENTE]` Eventos de recrutamento/saída de membros por script
 - [ ] `[VOCÊ]` Regras: Calindra pode sair da party? Ragg é sempre obrigatório?
 
 ## 11. UI / UX

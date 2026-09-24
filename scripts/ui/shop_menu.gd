@@ -7,7 +7,17 @@ signal closed
 signal item_bought(item_id: String, cost: int)
 signal item_sold(item_id: String, gain: int)
 
-@export var shop_items: Array[String] = ["pocao_vida", "pocao_mana", "antidoto", "pena_fenix"]
+@export var shop_items: Array[String] = [
+	"pocao_vida",
+	"pocao_mana",
+	"antidoto",
+	"pena_fenix",
+	"espada_ferro",
+	"cajado_carvalho",
+	"armadura_couro",
+	"manto_linho",
+	"anel_forca"
+]
 
 var is_active: bool = false
 var is_sell_mode: bool = false

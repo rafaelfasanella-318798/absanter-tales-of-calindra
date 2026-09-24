@@ -52,15 +52,18 @@ func setup_from_character_data(data: CharacterData) -> void:
 	battler_id = data.id
 	battler_name = data.character_name
 	is_player = true
-	level = data.level
-	max_hp = data.max_hp
-	current_hp = data.max_hp
-	max_mp = data.max_mp
-	current_mp = data.max_mp
-	attack = data.attack
-	defense = data.defense
-	magic = data.magic
-	speed = data.speed
+	var bonuses: Dictionary = {"hp": 0, "mp": 0, "attack": 0, "defense": 0, "magic": 0, "speed": 0}
+	if PartyManager != null:
+		bonuses = PartyManager.get_equipment_bonuses(data.id)
+
+	max_hp = data.max_hp + bonuses["hp"]
+	current_hp = max_hp
+	max_mp = data.max_mp + bonuses["mp"]
+	current_mp = max_mp
+	attack = data.attack + bonuses["attack"]
+	defense = data.defense + bonuses["defense"]
+	magic = data.magic + bonuses["magic"]
+	speed = data.speed + bonuses["speed"]
 
 	skills.clear()
 	for s in data.starting_skills:

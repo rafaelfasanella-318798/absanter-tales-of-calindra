@@ -63,3 +63,24 @@ func test_quest_tab_renders_active_quest() -> void:
 	assert_not_null(q_lbl, "Quest label should exist")
 	assert_true(q_lbl.text.contains("O Mistério de Kakariko"), "Should display active quest name")
 	_menu.close_menu()
+
+
+func test_equipment_tab_renders_and_equips() -> void:
+	PartyManager.reset_party()
+	InventoryManager.add_item("espada_ferro", 1)
+	_menu.open_menu()
+
+	var weapon_slot: Button = _menu.get_node_or_null(
+		"RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol/WeaponRow/SlotBtn"
+	)
+	assert_not_null(weapon_slot, "Weapon slot button should exist")
+	assert_true(weapon_slot.text.contains("Vazio"))
+
+	_menu._on_equip_item_clicked("espada_ferro")
+	assert_eq(PartyManager.get_equipped_item("ragg", "weapon"), "espada_ferro")
+	assert_true(weapon_slot.text.contains("Espada de Ferro"))
+
+	_menu._on_unequip_pressed("weapon")
+	assert_eq(PartyManager.get_equipped_item("ragg", "weapon"), "")
+	assert_true(weapon_slot.text.contains("Vazio"))
+	_menu.close_menu()

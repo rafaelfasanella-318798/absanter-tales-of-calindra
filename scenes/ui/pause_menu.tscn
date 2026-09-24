@@ -105,6 +105,118 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="Equipamento" type="Control" parent="RootPanel/TabContainer"]
+visible = false
+layout_mode = 2
+
+[node name="VBox" type="VBoxContainer" parent="RootPanel/TabContainer/Equipamento"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 4
+
+[node name="CharRow" type="HBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtnRagg" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/CharRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Ragg"
+
+[node name="BtnCalindra" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/CharRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Calindra"
+
+[node name="HBox" type="HBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 8
+
+[node name="SlotsCol" type="VBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 4
+
+[node name="WeaponRow" type="HBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol"]
+layout_mode = 2
+
+[node name="SlotBtn" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol/WeaponRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Arma: (Vazio)"
+
+[node name="UnequipBtn" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol/WeaponRow"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "X"
+
+[node name="ArmorRow" type="HBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol"]
+layout_mode = 2
+
+[node name="SlotBtn" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol/ArmorRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Armadura: (Vazio)"
+
+[node name="UnequipBtn" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol/ArmorRow"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "X"
+
+[node name="AccessoryRow" type="HBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol"]
+layout_mode = 2
+
+[node name="SlotBtn" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol/AccessoryRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Acessório: (Vazio)"
+
+[node name="UnequipBtn" type="Button" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/SlotsCol/AccessoryRow"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "X"
+
+[node name="ListCol" type="VBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Scroll" type="ScrollContainer" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/ListCol"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ItemsVBox" type="VBoxContainer" parent="RootPanel/TabContainer/Equipamento/VBox/HBox/ListCol/Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PreviewLabel" type="Label" parent="RootPanel/TabContainer/Equipamento/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Selecione um slot e item para equipar."
+autowrap_mode = 2
+
 [node name="Missoes" type="Control" parent="RootPanel/TabContainer"]
 visible = false
 layout_mode = 2

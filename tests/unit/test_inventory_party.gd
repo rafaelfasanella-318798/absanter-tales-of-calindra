@@ -54,3 +54,12 @@ func test_party_reserve_management() -> void:
 	PartyManager.move_to_active("calindra")
 	assert_true(PartyManager.is_active("calindra"))
 	assert_eq(PartyManager.reserve_members.size(), 0)
+
+
+func test_party_recruitment_and_dismissal() -> void:
+	PartyManager.recruit_member("companion_x", false)
+	assert_true(PartyManager.is_in_party("companion_x"))
+	assert_true("companion_x" in PartyManager.reserve_members)
+
+	PartyManager.dismiss_member("companion_x")
+	assert_false(PartyManager.is_in_party("companion_x"))
