@@ -91,7 +91,7 @@ Leitura feita em 18/09/2026 a partir do WSL.
 - [x] `[AGENTE]` Criar `CLAUDE.md` com convenções do projeto (nomes, pastas, como rodar testes/build); mesmo conteúdo serve de base para o `AGENTS.md` da IA local (seção 1b)
 - [x] `[AGENTE]` Scripts `run.sh` / `run.ps1` para rodar o jogo, `test.sh` para rodar GUT headless, `build.sh` para exportar, `lint.sh` para lint/format
 - [x] `[AGENTE]` CI no GitHub Actions: lint + testes + export a cada push (opcional, se houver repo remoto)
-- [ ] `[VOCÊ]` Criar conta itch.io e repositório GitHub (se quiser publicação/CI)
+- [x] `[VOCÊ]` Criar conta itch.io e repositório GitHub (repositório criado: https://github.com/rafaelfasanella-318798/absanter-tales-of-calindra)
 
 ## 1b. IA local para desenvolvimento
 
