@@ -1,0 +1,467 @@
+[gd_scene load_steps=24 format=3 uid="uid://bat3d001"]
+
+[ext_resource type="Script" path="res://scripts/battle_3d/battle_3d.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arena"]
+albedo_color = Color(0.35, 0.35, 0.4, 1)
+roughness = 0.7
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_arena"]
+material = SubResource("StandardMaterial3D_arena")
+top_radius = 8.0
+bottom_radius = 8.2
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pillar"]
+albedo_color = Color(0.5, 0.5, 0.52, 1)
+roughness = 0.8
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_pillar"]
+material = SubResource("StandardMaterial3D_pillar")
+top_radius = 0.5
+bottom_radius = 0.55
+height = 3.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_torch"]
+albedo_color = Color(1, 0.6, 0.1, 1)
+emission_enabled = true
+emission = Color(1, 0.5, 0.1, 1)
+emission_energy_multiplier = 3.0
+
+[sub_resource type="SphereMesh" id="SphereMesh_torch"]
+material = SubResource("StandardMaterial3D_torch")
+radius = 0.2
+height = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ragg"]
+albedo_color = Color(0.2, 0.5, 0.9, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ragg"]
+material = SubResource("StandardMaterial3D_ragg")
+radius = 0.3
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_calindra"]
+albedo_color = Color(0.65, 0.35, 0.85, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_calindra"]
+material = SubResource("StandardMaterial3D_calindra")
+radius = 0.26
+height = 0.9
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slime"]
+albedo_color = Color(0.2, 0.85, 0.3, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_slime"]
+material = SubResource("StandardMaterial3D_slime")
+radius = 0.4
+height = 0.6
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_golem"]
+albedo_color = Color(0.55, 0.45, 0.35, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_golem"]
+material = SubResource("StandardMaterial3D_golem")
+size = Vector3(1.2, 1.6, 1.0)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ip_bg"]
+bg_color = Color(0.08, 0.10, 0.16, 0.92)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.3, 0.5, 0.7, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cmd"]
+bg_color = Color(0.08, 0.1, 0.15, 0.95)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.8, 0.7, 0.2, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_banner"]
+bg_color = Color(0.8, 0.15, 0.1, 0.9)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 0.9, 0.3, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cancel"]
+bg_color = Color(0.9, 0.05, 0.05, 0.95)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(1, 0.95, 0.1, 1)
+
+[node name="Battle3D" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.866, 0.5, 0, -0.5, 0.866, 0, 4.5, 7.5)
+current = true
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 5, 12, 5)
+light_color = Color(1, 0.96, 0.88, 1)
+shadow_enabled = true
+
+[node name="ArenaFloor" type="MeshInstance3D" parent="."]
+position = Vector3(0, -0.2, 0)
+mesh = SubResource("CylinderMesh_arena")
+
+[node name="Pillars" type="Node3D" parent="."]
+
+[node name="Pillar1" type="MeshInstance3D" parent="Pillars"]
+position = Vector3(-6, 1.5, -4)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="Torch1" type="MeshInstance3D" parent="Pillars/Pillar1"]
+position = Vector3(0, 1.6, 0)
+mesh = SubResource("SphereMesh_torch")
+
+[node name="Pillar2" type="MeshInstance3D" parent="Pillars"]
+position = Vector3(6, 1.5, -4)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="Torch2" type="MeshInstance3D" parent="Pillars/Pillar2"]
+position = Vector3(0, 1.6, 0)
+mesh = SubResource("SphereMesh_torch")
+
+[node name="Pillar3" type="MeshInstance3D" parent="Pillars"]
+position = Vector3(-6, 1.5, 4)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="Torch3" type="MeshInstance3D" parent="Pillars/Pillar3"]
+position = Vector3(0, 1.6, 0)
+mesh = SubResource("SphereMesh_torch")
+
+[node name="Pillar4" type="MeshInstance3D" parent="Pillars"]
+position = Vector3(6, 1.5, 4)
+mesh = SubResource("CylinderMesh_pillar")
+
+[node name="Torch4" type="MeshInstance3D" parent="Pillars/Pillar4"]
+position = Vector3(0, 1.6, 0)
+mesh = SubResource("SphereMesh_torch")
+
+[node name="Combatants" type="Node3D" parent="."]
+
+[node name="Ragg3D" type="Node3D" parent="Combatants"]
+position = Vector3(-2.2, 0.5, 1.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Ragg3D"]
+mesh = SubResource("CapsuleMesh_ragg")
+
+[node name="NameLabel" type="Label3D" parent="Combatants/Ragg3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+billboard = 1
+no_depth_test = true
+text = "Ragg"
+font = ExtResource("2_font")
+font_size = 14
+outline_size = 4
+pixel_size = 0.005
+
+[node name="Calindra3D" type="Node3D" parent="Combatants"]
+position = Vector3(-3.2, 0.45, -0.5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Calindra3D"]
+mesh = SubResource("CapsuleMesh_calindra")
+
+[node name="NameLabel" type="Label3D" parent="Combatants/Calindra3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(0.88, 0.94, 1, 1)
+text = "Calindra"
+font = ExtResource("2_font")
+font_size = 14
+outline_size = 4
+pixel_size = 0.005
+
+[node name="Slime3D" type="Node3D" parent="Combatants"]
+position = Vector3(2.5, 0.3, 1.2)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Slime3D"]
+mesh = SubResource("SphereMesh_slime")
+
+[node name="NameLabel" type="Label3D" parent="Combatants/Slime3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.65, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(0.4, 1, 0.4, 1)
+text = "Slime"
+font = ExtResource("2_font")
+font_size = 12
+outline_size = 4
+pixel_size = 0.005
+
+[node name="Golem3D" type="Node3D" parent="Combatants"]
+position = Vector3(3.2, 0.8, -1.0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Golem3D"]
+mesh = SubResource("BoxMesh_golem")
+
+[node name="NameLabel" type="Label3D" parent="Combatants/Golem3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(1, 0.7, 0.3, 1)
+text = "Golem Antigo"
+font = ExtResource("2_font")
+font_size = 12
+outline_size = 4
+pixel_size = 0.005
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="ActionBanner" type="Label" parent="UI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 4.0
+offset_bottom = 18.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Combate 3D Estilo Grandia III: Barra de IP Ativa"
+horizontal_alignment = 1
+
+[node name="CancelBanner" type="Label" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -30.0
+offset_right = 120.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_cancel")
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 10
+text = "💥 CANCEL! Ataque Interrompido! 💥"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IPGaugeContainer" type="Panel" parent="UI"]
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -36.0
+offset_right = -16.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_ip_bg")
+
+[node name="IPHeaderLabel" type="Label" parent="UI/IPGaugeContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 2.0
+offset_bottom = 12.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "WAIT ←────────────────── COM (75%) ──── ACT (Ação) → 1.0"
+horizontal_alignment = 1
+
+[node name="IPProgressBar" type="ProgressBar" parent="UI/IPGaugeContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -12.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 0
+max_value = 1.0
+show_percentage = false
+
+[node name="Markers" type="Control" parent="UI/IPGaugeContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = -22.0
+offset_right = -6.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="CommandPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 10.0
+offset_top = -60.0
+offset_right = 105.0
+offset_bottom = 32.0
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cmd")
+
+[node name="VBox" type="VBoxContainer" parent="UI/CommandPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = -4.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 3
+
+[node name="ActorNameLabel" type="Label" parent="UI/CommandPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "— Ragg —"
+horizontal_alignment = 1
+
+[node name="BtnCombo" type="Button" parent="UI/CommandPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "⚔ COMBO (2 hits)"
+
+[node name="BtnCritical" type="Button" parent="UI/CommandPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "💥 CRITICAL (Cancel)"
+
+[node name="BtnSkill" type="Button" parent="UI/CommandPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "✨ Habilidade"
+
+[node name="BtnDefend" type="Button" parent="UI/CommandPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "🛡 Defender"
+
+[node name="TargetPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -45.0
+offset_right = 80.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cmd")
+
+[node name="Title" type="Label" parent="UI/TargetPanel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 3.0
+offset_bottom = 13.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Escolha o Alvo:"
+horizontal_alignment = 1
+
+[node name="VBox" type="VBoxContainer" parent="UI/TargetPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 16.0
+offset_right = -6.0
+offset_bottom = -4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="StatusPanel" type="Panel" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -120.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = 70.0
+grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cmd")
+
+[node name="StatusLabel" type="Label" parent="UI/StatusPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -4.0
+offset_bottom = -3.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "PARTY:
+Ragg: 120/120 HP | 30/30 MP
+Calindra: 90/90 HP | 60/60 MP"
+
+[node name="VictoryPanel" type="Panel" parent="UI"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -90.0
+offset_top = -30.0
+offset_right = 90.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cmd")
+
+[node name="VBox" type="VBoxContainer" parent="UI/VictoryPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VictoryLabel" type="Label" parent="UI/VictoryPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "★ VITÓRIA 3D! ★
++120 XP | +80 Ouro"
+horizontal_alignment = 1
+
+[node name="BtnReturn" type="Button" parent="UI/VictoryPanel/VBox"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Voltar a Kakariko 3D"
