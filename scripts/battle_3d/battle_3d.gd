@@ -89,8 +89,35 @@ func _ready() -> void:
 	AudioManager.play_music("res://assets/audio/music/battle_theme.ogg", 0.3)
 
 	_init_combatants()
+	_apply_encounter_type(GameState.encounter_type)
 	_setup_ui()
 	_update_status_display()
+
+
+func _apply_encounter_type(enc_type: String) -> void:
+	## Ajusta a IP inicial dos combatentes de acordo com o tipo de encontro.
+	## Surprise Attack (player atacou pelas costas): party começa com IP alta.
+	## Ambush (inimigo veio pelas costas): inimigos começam com IP alta.
+	match enc_type:
+		"surprise":
+			# Party começa perto do ponto COM — pode agir quase imediatamente
+			for c in combatants:
+				if c["is_player"]:
+					c["ip"] = 0.70
+			if action_banner != null:
+				action_banner.text = "★ SURPRISE ATTACK! Party age primeiro! ★"
+		"ambush":
+			# Inimigos começam quase no ponto ACT — agem antes
+			for c in combatants:
+				if not c["is_player"]:
+					c["ip"] = 0.72
+			if action_banner != null:
+				action_banner.text = "⚠ AMBUSH! Inimigos agem primeiro! ⚠"
+		_:
+			pass  # Normal: IPs definidas em _init_combatants
+
+	# Reseta o encounter_type para normal após usar
+	GameState.encounter_type = "normal"
 
 
 func _init_combatants() -> void:

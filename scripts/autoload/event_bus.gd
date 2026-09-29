@@ -8,6 +8,10 @@ signal player_moved(new_position: Vector2)
 signal map_transition_requested(target_map: String, spawn_point_id: String)
 signal map_loaded(map_name: String)
 
+# 3D Field Encounter signals (Grandia III style)
+## encounter_type: "normal" | "surprise" | "ambush"
+signal field_encounter_started(enemy_id: String, encounter_type: String)
+
 # Battle signals
 signal battle_start_requested(battle_data: Dictionary)
 signal battle_ended(victory: bool)

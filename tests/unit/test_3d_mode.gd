@@ -5,6 +5,7 @@ const FOLLOWER_3D_SCENE: PackedScene = preload("res://scenes/world_3d/follower_3
 const NPC_3D_SCENE: PackedScene = preload("res://scenes/world_3d/npc_3d.tscn")
 const KAKARIKO_3D_SCENE: PackedScene = preload("res://scenes/world_3d/kakariko_3d.tscn")
 const BATTLE_3D_SCENE: PackedScene = preload("res://scenes/battle_3d/battle_3d.tscn")
+const WANDERER_SCENE: PackedScene = preload("res://scenes/world_3d/enemy_wanderer_3d.tscn")
 
 
 func test_player_3d_instantiation() -> void:
@@ -323,3 +324,74 @@ func test_enemy_data_to_dict_fallback_when_null() -> void:
 	assert_eq(result["name"], "Test Enemy", "Fallback: name deve ser o fornecido")
 	assert_eq(result["hp"], 45, "Fallback: hp deve ser 45")
 	assert_null(result["enemy_data"], "Fallback: enemy_data deve ser null")
+
+
+# ──────────────────────────────────────────────
+# Testes do EnemyWanderer3D e Sistema de Encontro (Item 7)
+# ──────────────────────────────────────────────
+func test_enemy_wanderer_3d_instantiation() -> void:
+	var wanderer: Node3D = WANDERER_SCENE.instantiate() as Node3D
+	add_child_autofree(wanderer)
+	assert_not_null(wanderer, "EnemyWanderer3D deve instanciar")
+	assert_true(wanderer.wander_radius > 0.0, "wander_radius deve ser positivo")
+	assert_true(wanderer.wander_speed > 0.0, "wander_speed deve ser positivo")
+	assert_true(wanderer.backstab_angle_deg > 0.0, "backstab_angle_deg deve ser positivo")
+
+
+func test_encounter_classify_normal_when_facing_each_other() -> void:
+	## Inimigo olha para o player que está na frente = encontro NORMAL
+	var wanderer: EnemyWanderer3D = WANDERER_SCENE.instantiate() as EnemyWanderer3D
+	add_child_autofree(wanderer)
+
+	var player: Player3D = PLAYER_3D_SCENE.instantiate() as Player3D
+	add_child_autofree(player)
+
+	# Posiciona player à frente do inimigo (ambos olham um para o outro)
+	wanderer.global_position = Vector3(0, 0, 0)
+	# Inimigo aponta para +Z (forward = -Z no Godot basis = -Z negativo de basis.z)
+	# Para simular frente em +Z, rotacionamos 180°
+	wanderer.rotation.y = PI
+	player.global_position = Vector3(0, 0, 2.0)
+
+	var result: String = wanderer._classify_encounter(player)
+	assert_eq(result, "normal", "Encontro frontal deve ser 'normal'")
+
+
+func test_battle_3d_surprise_boosts_player_ip() -> void:
+	GameState.encounter_type = "surprise"
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	# Verifica que a party tem IP elevada após surprise
+	for c in battle.combatants:
+		if c["is_player"]:
+			assert_true(
+				c["ip"] >= 0.65,
+				"Surprise Attack: party deve ter IP >= 0.65 (era: %s)" % c["ip"]
+			)
+	# Reseta o GameState
+	assert_eq(GameState.encounter_type, "normal", "encounter_type deve ser resetado após uso")
+
+
+func test_battle_3d_ambush_boosts_enemy_ip() -> void:
+	GameState.encounter_type = "ambush"
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	# Verifica que os inimigos têm IP elevada após ambush
+	for c in battle.combatants:
+		if not c["is_player"]:
+			assert_true(
+				c["ip"] >= 0.65,
+				"Ambush: inimigos devem ter IP >= 0.65 (era: %s)" % c["ip"]
+			)
+
+
+func test_battle_3d_normal_encounter_preserves_initial_ip() -> void:
+	GameState.encounter_type = "normal"
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	# Ragg começa com IP = 0.1 (definido em _init_combatants)
+	var ragg: Dictionary = battle.combatants[0]
+	assert_eq(ragg["ip"], 0.1, "Encontro normal: Ragg deve ter IP inicial 0.1")

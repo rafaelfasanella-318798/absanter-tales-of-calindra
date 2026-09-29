@@ -9,6 +9,10 @@ var current_mode: String = "exploration"  # exploration, battle, dialogue, menu,
 var playtime_seconds: float = 0.0
 var flags: Dictionary = {}
 
+## Tipo de encontro de campo: "normal" | "surprise" | "ambush"
+## Definido pelo EnemyWanderer3D antes de carregar a cena de batalha.
+var encounter_type: String = "normal"
+
 
 func _process(delta: float) -> void:
 	playtime_seconds += delta

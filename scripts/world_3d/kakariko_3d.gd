@@ -31,7 +31,6 @@ var _is_mouse_orbiting: bool = false
 @onready var camera_rig: Node3D = $CameraRig
 @onready var spring_arm: SpringArm3D = $CameraRig/SpringArm3D
 @onready var battle_portal: Area3D = $BattlePortal
-@onready var slime_wanderer: Area3D = $SlimeWanderer
 
 
 # ──────────────────────────────────────────────
@@ -43,9 +42,6 @@ func _ready() -> void:
 
 	if battle_portal != null:
 		battle_portal.body_entered.connect(_on_battle_trigger_entered)
-
-	if slime_wanderer != null:
-		slime_wanderer.body_entered.connect(_on_battle_trigger_entered)
 
 	# Captura o mouse para câmera de órbita quando a janela tiver foco
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)

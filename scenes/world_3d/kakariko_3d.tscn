@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://kak3d001"]
+[gd_scene load_steps=23 format=3 uid="uid://kak3d001"]
 
 [ext_resource type="Script" path="res://scripts/world_3d/kakariko_3d.gd" id="1_script"]
 [ext_resource type="PackedScene" path="res://scenes/world_3d/player_3d.tscn" id="2_player"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/world_3d/npc_3d.tscn" id="4_npc"]
 [ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="5_font"]
 [ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="6_dialogue"]
+[ext_resource type="PackedScene" path="res://scenes/world_3d/enemy_wanderer_3d.tscn" id="7_wanderer"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grass"]
 albedo_color = Color(0.24, 0.44, 0.22, 1)
@@ -156,28 +157,8 @@ font_size = 14
 outline_size = 4
 pixel_size = 0.005
 
-[node name="SlimeWanderer" type="Area3D" parent="."]
+[node name="SlimeWanderer" parent="." instance=ExtResource("7_wanderer")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.3, -4)
-collision_layer = 4
-collision_mask = 2
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="SlimeWanderer"]
-mesh = SubResource("SphereMesh_slime")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="SlimeWanderer"]
-shape = SubResource("SphereShape3D_slime")
-
-[node name="SlimeLabel" type="Label3D" parent="SlimeWanderer"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
-billboard = 1
-no_depth_test = true
-modulate = Color(0.4, 1, 0.4, 1)
-outline_modulate = Color(0, 0, 0, 1)
-text = "Slime (Toque para Lutar)"
-font = ExtResource("5_font")
-font_size = 12
-outline_size = 4
-pixel_size = 0.005
 
 [node name="UI" type="CanvasLayer" parent="."]
 
