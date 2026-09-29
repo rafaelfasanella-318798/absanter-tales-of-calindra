@@ -57,8 +57,9 @@ func test_battle_3d_scene_loads_with_four_combatants() -> void:
 	assert_eq(battle.combatants.size(), 4, "Deve ter 4 combatentes")
 	assert_eq(battle.combatants[0]["name"], "Ragg")
 	assert_eq(battle.combatants[1]["name"], "Calindra")
-	assert_eq(battle.combatants[2]["name"], "Slime")
-	assert_eq(battle.combatants[3]["name"], "Golem Antigo")
+	# Nomes vêm dos EnemyData resources
+	assert_eq(battle.combatants[2]["id"], "slime", "3º combatente deve ter id 'slime'")
+	assert_eq(battle.combatants[3]["id"], "kakariko_golem", "4º combatente deve ter id 'kakariko_golem'")
 
 
 func test_battle_3d_combatants_have_sp_field() -> void:
@@ -271,3 +272,51 @@ func test_evade_updates_home_pos() -> void:
 	# home_pos deve ter mudado
 	# (pode ser igual por acaso, mas estatisticamente é improvável com posição aleatória)
 	assert_not_null(ragg["home_pos"], "home_pos deve continuar válido após evasão")
+
+
+# ──────────────────────────────────────────────
+# Testes de carregamento de EnemyData (Item 5)
+# ──────────────────────────────────────────────
+func test_slime_stats_loaded_from_enemy_data_resource() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var slime: Dictionary = battle.combatants[2]
+	# slime.tres: max_hp=45, attack=12, defense=6, magic=5, speed=8
+	assert_eq(slime["max_hp"], 45, "Slime: max_hp deve vir do resource (45)")
+	assert_eq(slime["attack"], 12, "Slime: attack deve vir do resource (12)")
+	assert_eq(slime["defense"], 6, "Slime: defense deve vir do resource (6)")
+	assert_not_null(slime.get("enemy_data"), "Slime: campo enemy_data deve estar preenchido")
+
+
+func test_golem_stats_loaded_from_enemy_data_resource() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var golem: Dictionary = battle.combatants[3]
+	# kakariko_golem.tres: max_hp=260, attack=24, defense=16
+	assert_eq(golem["max_hp"], 260, "Golem: max_hp deve vir do resource (260)")
+	assert_eq(golem["attack"], 24, "Golem: attack deve vir do resource (24)")
+	assert_eq(golem["defense"], 16, "Golem: defense deve vir do resource (16)")
+	assert_not_null(golem.get("enemy_data"), "Golem: campo enemy_data deve estar preenchido")
+
+
+func test_enemy_data_to_dict_fallback_when_null() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	# Chama com null para testar o caminho de fallback
+	var result: Dictionary = battle._enemy_data_to_dict(
+		null,
+		"test_enemy",
+		"Test Enemy",
+		null,
+		Vector3.ZERO,
+		Color.WHITE,
+		"?",
+		0.1
+	)
+	assert_eq(result["id"], "test_enemy", "Fallback: id deve ser o fornecido")
+	assert_eq(result["name"], "Test Enemy", "Fallback: name deve ser o fornecido")
+	assert_eq(result["hp"], 45, "Fallback: hp deve ser 45")
+	assert_null(result["enemy_data"], "Fallback: enemy_data deve ser null")

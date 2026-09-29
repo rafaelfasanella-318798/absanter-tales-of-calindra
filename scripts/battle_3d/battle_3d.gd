@@ -152,53 +152,110 @@ func _init_combatants() -> void:
 		"marker_symbol": "✨",
 	})
 
-	# 3. Slime
-	combatants.append({
-		"id": "slime",
-		"name": "Slime",
-		"is_player": false,
-		"hp": 45,
-		"max_hp": 45,
-		"mp": 10,
-		"max_mp": 10,
-		"sp": 0,
-		"max_sp": 100,
-		"attack": 12,
-		"defense": 6,
-		"magic": 4,
-		"speed": 9.0,
-		"ip": 0.05,
-		"state": "wait",
-		"node": slime_node,
-		"home_pos": slime_node.global_position if slime_node else Vector3(2, 0, 1),
-		"marker_color": Color(0.3, 0.9, 0.4),
-		"marker_symbol": "👾",
-		"is_airborne": false,
-	})
+	# 3. Slime — carregado a partir do EnemyData resource
+	var slime_data: EnemyData = _load_enemy_data("res://data/enemies/slime.tres")
+	combatants.append(
+		_enemy_data_to_dict(
+			slime_data if slime_data else null,
+			"slime",
+			"Slime",
+			slime_node,
+			slime_node.global_position if slime_node else Vector3(2, 0, 1),
+			Color(0.3, 0.9, 0.4),
+			"👾",
+			0.05
+		)
+	)
 
-	# 4. Golem Antigo
-	combatants.append({
-		"id": "golem",
-		"name": "Golem Antigo",
+	# 4. Golem Antigo — carregado a partir do EnemyData resource
+	var golem_data: EnemyData = _load_enemy_data("res://data/enemies/kakariko_golem.tres")
+	combatants.append(
+		_enemy_data_to_dict(
+			golem_data if golem_data else null,
+			"golem",
+			"Golem Antigo",
+			golem_node,
+			golem_node.global_position if golem_node else Vector3(3, 0, -1),
+			Color(0.9, 0.5, 0.2),
+			"🗿",
+			0.0
+		)
+	)
+
+
+func _load_enemy_data(path: String) -> EnemyData:
+	## Tenta carregar um EnemyData resource de forma segura; retorna null em falha.
+	if not ResourceLoader.exists(path):
+		push_warning("Battle3D: EnemyData não encontrado em %s" % path)
+		return null
+	var res: Resource = load(path)
+	if not (res is EnemyData):
+		push_warning("Battle3D: Recurso em %s não é EnemyData" % path)
+		return null
+	return res as EnemyData
+
+
+func _enemy_data_to_dict(
+	data: EnemyData,
+	fallback_id: String,
+	fallback_name: String,
+	node: Node3D,
+	home_pos: Vector3,
+	marker_color: Color,
+	marker_symbol: String,
+	initial_ip: float
+) -> Dictionary:
+	## Converte um EnemyData resource para o dicionário de combatente usado pelo Battle3D.
+	## Se data for null, usa os valores de fallback hardcoded.
+	if data == null:
+		return {
+			"id": fallback_id,
+			"name": fallback_name,
+			"is_player": false,
+			"hp": 45,
+			"max_hp": 45,
+			"mp": 10,
+			"max_mp": 10,
+			"sp": 0,
+			"max_sp": 100,
+			"attack": 12,
+			"defense": 6,
+			"magic": 5,
+			"speed": 8.0,
+			"ip": initial_ip,
+			"state": "wait",
+			"node": node,
+			"home_pos": home_pos,
+			"marker_color": marker_color,
+			"marker_symbol": marker_symbol,
+			"is_airborne": false,
+			"enemy_data": null,
+		}
+
+	return {
+		"id": data.id if data.id != "" else fallback_id,
+		"name": data.enemy_name if data.enemy_name != "" else fallback_name,
 		"is_player": false,
-		"hp": 90,
-		"max_hp": 90,
-		"mp": 20,
-		"max_mp": 20,
+		"hp": data.max_hp,
+		"max_hp": data.max_hp,
+		"mp": data.max_mp,
+		"max_mp": data.max_mp,
 		"sp": 0,
 		"max_sp": 100,
-		"attack": 18,
-		"defense": 12,
-		"magic": 6,
-		"speed": 7.5,
-		"ip": 0.0,
+		"attack": data.attack,
+		"defense": data.defense,
+		"magic": data.magic,
+		"speed": float(data.speed),
+		"ip": initial_ip,
 		"state": "wait",
-		"node": golem_node,
-		"home_pos": golem_node.global_position if golem_node else Vector3(3, 0, -1),
-		"marker_color": Color(0.9, 0.5, 0.2),
-		"marker_symbol": "🗿",
+		"node": node,
+		"home_pos": home_pos,
+		"marker_color": marker_color,
+		"marker_symbol": marker_symbol,
 		"is_airborne": false,
-	})
+		"enemy_data": data,          # Referência ao resource original para acesso a skills/drops
+	}
+
 
 
 func _setup_ui() -> void:
