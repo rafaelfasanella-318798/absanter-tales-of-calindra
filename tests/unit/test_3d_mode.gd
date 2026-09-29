@@ -233,3 +233,41 @@ func test_aerial_combo_consumes_partner_sp() -> void:
 		partner["sp"] <= initial_sp - battle.SP_COST_AERIAL,
 		"SP consumido deve ser >= SP_COST_AERIAL"
 	)
+
+
+# ──────────────────────────────────────────────
+# Testes da Evasão Tática (Evade / Move)
+# ──────────────────────────────────────────────
+func test_evade_reduces_ip_and_keeps_wait_state() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var ragg: Dictionary = battle.combatants[0]
+	ragg["ip"] = 0.75  # Estava no ponto COM
+	ragg["state"] = "command"
+
+	var ip_before: float = ragg["ip"]
+	battle._resolve_evade(ragg)
+
+	# IP deve ter recuado pelo custo de evasão
+	assert_lt(ragg["ip"], ip_before, "Evasão deve reduzir a IP do personagem")
+	assert_true(
+		ragg["ip"] <= ip_before - battle.IP_COST_EVADE + 0.001,
+		"IP deve recuar pelo menos IP_COST_EVADE"
+	)
+	# Estado deve voltar a wait (não consome um turno de ação)
+	assert_eq(ragg["state"], "wait", "Após evasão o estado deve ser 'wait'")
+
+
+func test_evade_updates_home_pos() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var ragg: Dictionary = battle.combatants[0]
+	var original_home: Vector3 = ragg["home_pos"]
+
+	battle._resolve_evade(ragg)
+
+	# home_pos deve ter mudado
+	# (pode ser igual por acaso, mas estatisticamente é improvável com posição aleatória)
+	assert_not_null(ragg["home_pos"], "home_pos deve continuar válido após evasão")

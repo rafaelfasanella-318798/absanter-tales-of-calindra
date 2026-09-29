@@ -36,6 +36,11 @@ const AERIAL_HIT_MULT: float = 0.90     ## Multiplicador de dano por golpe aére
 const AERIAL_SMASH_MULT: float = 2.20   ## Multiplicador do golpe de finalização no solo
 const IP_PUSH_AERIAL_SMASH: float = 0.70 ## Recuo extra na IP após queda no solo
 
+# Evasão tática (Evade / Move)
+const IP_COST_EVADE: float = 0.15       ## Custo de IP que a evasão retira do personagem (recua na timeline)
+const EVADE_RADIUS: float = 2.5         ## Raio máximo de reposicionamento na arena
+
+
 
 var combatants: Array[Dictionary] = []
 var active_player_index: int = -1
@@ -64,6 +69,7 @@ var camera_shake_amount: float = 0.0
 @onready var btn_critical: Button = $UI/CommandPanel/VBox/BtnCritical
 @onready var btn_skill: Button = $UI/CommandPanel/VBox/BtnSkill
 @onready var btn_defend: Button = $UI/CommandPanel/VBox/BtnDefend
+@onready var btn_evade: Button = $UI/CommandPanel/VBox/BtnEvade
 
 @onready var target_panel: Panel = $UI/TargetPanel
 @onready var target_vbox: VBoxContainer = $UI/TargetPanel/VBox
@@ -215,6 +221,8 @@ func _setup_ui() -> void:
 		btn_skill.pressed.connect(_on_skill_chosen)
 	if btn_defend != null:
 		btn_defend.pressed.connect(_on_defend_chosen)
+	if btn_evade != null:
+		btn_evade.pressed.connect(_on_evade_chosen)
 
 
 # ──────────────────────────────────────────────
@@ -326,6 +334,60 @@ func _on_defend_chosen() -> void:
 	if target_panel != null:
 		target_panel.visible = false
 	is_time_stopped = false
+
+
+func _on_evade_chosen() -> void:
+	## Evasão não precisa de alvo — o personagem se move imediatamente.
+	var c: Dictionary = combatants[active_player_index]
+	if command_panel != null:
+		command_panel.visible = false
+	if target_panel != null:
+		target_panel.visible = false
+	is_time_stopped = false
+	_resolve_evade(c)
+
+
+func _resolve_evade(c: Dictionary) -> void:
+	## Reposiciona o personagem num ponto aleatório da arena e recua sua IP.
+	## Custo: IP -IP_COST_EVADE (ainda fica na fase de wait/act sem agir).
+	var node: Node3D = c["node"]
+	if node == null:
+		c["state"] = "wait"
+		c["ip"] = maxf(0.0, c["ip"] - IP_COST_EVADE)
+		return
+
+	# Calcula um ponto de destino aleatório dentro do raio definido
+	var angle: float = randf_range(0.0, TAU)
+	var radius: float = randf_range(1.0, EVADE_RADIUS)
+	var new_pos: Vector3 = Vector3(cos(angle) * radius, 0.0, sin(angle) * radius)
+	new_pos.y = c.get("home_pos", Vector3.ZERO).y  # Mantém a altura original
+
+	# Atualiza home_pos para que o personagem fique no novo local
+	c["home_pos"] = new_pos
+	c["state"] = "wait"
+	c["ip"] = maxf(0.0, c["ip"] - IP_COST_EVADE)
+
+	if action_banner != null:
+		action_banner.text = (
+			"💨 %s se esquiva! Novo ponto na arena. IP recuou %.0f%%."
+			% [c["name"], IP_COST_EVADE * 100]
+		)
+
+	# Animação 3D de movimentação rápida
+	var tween: Tween = create_tween()
+	tween.tween_property(node, "global_position", new_pos, 0.28).set_trans(Tween.TRANS_QUAD)
+
+	# Câmera acompanha rapidamente o personagem
+	default_camera_pos = new_pos + Vector3(0, 3.5, 5.5)
+	default_camera_look = new_pos + Vector3(0, 0.5, 0)
+	var t: Tween = create_tween()
+	t.tween_interval(0.5)
+	t.tween_callback(func():
+		default_camera_pos = Vector3(0, 4.5, 7.5)
+		default_camera_look = Vector3(0, 0.5, 0)
+	)
+
+	_update_status_display()
 
 
 func _open_target_selection(action_type: String) -> void:
