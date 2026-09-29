@@ -28,6 +28,15 @@ const SKILL_MULT: float = 1.80          ## Multiplicador de habilidade
 
 const SP_GAIN_PER_COMBO: int = 8        ## SP ganho por COMBO completado
 
+# Aerial Launch & Aerial Combo (mecânica icônica do Grandia III)
+const SP_COST_AERIAL: int = 30          ## Custo de SP para o parceiro realizar o Aerial Combo
+const AERIAL_LAUNCH_HEIGHT: float = 2.5 ## Altura do arremesso aéreo em unidades 3D
+const AERIAL_COMBO_HITS: int = 3        ## Número de golpes do Aerial Combo
+const AERIAL_HIT_MULT: float = 0.90     ## Multiplicador de dano por golpe aéreo (acumula)
+const AERIAL_SMASH_MULT: float = 2.20   ## Multiplicador do golpe de finalização no solo
+const IP_PUSH_AERIAL_SMASH: float = 0.70 ## Recuo extra na IP após queda no solo
+
+
 var combatants: Array[Dictionary] = []
 var active_player_index: int = -1
 var is_time_stopped: bool = false
@@ -465,8 +474,12 @@ func _resolve_critical(attacker: Dictionary, target: Dictionary) -> void:
 
 	_animate_attack_3d(attacker["node"], target["node"], is_cancel)
 
-	if target["hp"] <= 0 and target["node"] != null:
+	# Se foi um CANCEL e o alvo ainda está vivo → Aerial Launch
+	if is_cancel and target["hp"] > 0:
+		_trigger_aerial_launch(target, attacker)
+	elif target["hp"] <= 0 and target["node"] != null:
 		target["node"].visible = false
+
 
 
 # ──────────────────────────────────────────────
@@ -497,6 +510,144 @@ func _resolve_skill(attacker: Dictionary, target: Dictionary) -> void:
 
 	if target["hp"] <= 0 and target["node"] != null:
 		target["node"].visible = false
+
+
+# ──────────────────────────────────────────────
+# AERIAL LAUNCH & AERIAL COMBO (Grandia III)
+# ──────────────────────────────────────────────
+func _trigger_aerial_launch(target: Dictionary, launcher: Dictionary) -> void:
+	## Lança o inimigo no ar após um CANCEL. Se houver um parceiro com SP suficiente e
+	## IP >= 0.5, ele executa o Aerial Combo automaticamente; caso contrário, o alvo
+	## cai sozinho e toma dano de impacto.
+	if target["node"] == null:
+		return
+
+	target["is_airborne"] = true
+
+	# Câmera dinâmica para cima durante o voo
+	var target_pos: Vector3 = target["node"].global_position
+	default_camera_pos = target_pos + Vector3(0, 5.0, 6.0)
+	default_camera_look = target_pos + Vector3(0, 2.0, 0)
+	camera_shake_amount = 0.2
+
+	if action_banner != null:
+		action_banner.text = "🚀 %s foi arremessado ao ar!" % target["name"]
+
+	# Animação de voo: sobe, fica no ar e desce
+	var orig_pos: Vector3 = target["node"].global_position
+	var peak_pos: Vector3 = orig_pos + Vector3(0, AERIAL_LAUNCH_HEIGHT, 0)
+	var tween: Tween = create_tween().set_parallel(false)
+	tween.tween_property(target["node"], "global_position", peak_pos, 0.35).set_trans(Tween.TRANS_SINE)
+	tween.tween_interval(0.2)  # Pausa dramática no ar
+
+	# Verifica se algum parceiro pode realizar o Aerial Combo
+	var aerial_partner: Dictionary = _find_aerial_partner(launcher)
+	var has_aerial: bool = not aerial_partner.is_empty()
+
+	if has_aerial:
+		tween.tween_callback(func():
+			_execute_aerial_combo(aerial_partner, target, orig_pos)
+		)
+	else:
+		# Sem parceiro disponível: cai sozinho e toma dano de queda
+		tween.tween_property(target["node"], "global_position", orig_pos, 0.4).set_trans(Tween.TRANS_BOUNCE)
+		tween.tween_callback(func():
+			target["is_airborne"] = false
+			var fall_dmg: int = maxi(5, int(target["max_hp"] * 0.12))
+			target["hp"] = maxi(0, target["hp"] - fall_dmg)
+			target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_AERIAL_SMASH)
+			camera_shake_amount = 0.3
+			_show_damage_popup(target["node"], fall_dmg, false, "FALL")
+			if action_banner != null:
+				action_banner.text = "%s caiu no solo! -%d de dano de impacto!" % [target["name"], fall_dmg]
+			if target["hp"] <= 0 and target["node"] != null:
+				target["node"].visible = false
+			default_camera_pos = Vector3(0, 4.5, 7.5)
+			default_camera_look = Vector3(0, 0.5, 0)
+			_update_status_display()
+			_check_battle_end()
+		)
+
+
+func _find_aerial_partner(launcher: Dictionary) -> Dictionary:
+	## Retorna o dicionário de um parceiro player (diferente do launcher)
+	## que tenha SP suficiente e IP >= 0.5 para executar o Aerial Combo.
+	for c in combatants:
+		if (c["is_player"]
+				and c["id"] != launcher["id"]
+				and c["hp"] > 0
+				and c["sp"] >= SP_COST_AERIAL
+				and c["ip"] >= 0.5):
+			return c
+	return {}
+
+
+func _execute_aerial_combo(partner: Dictionary, target: Dictionary, land_pos: Vector3) -> void:
+	## Parceiro salta, desfere AERIAL_COMBO_HITS golpes no ar e finaliza com smash no solo.
+	if partner["node"] == null or target["node"] == null:
+		target["is_airborne"] = false
+		return
+
+	# Consome SP do parceiro
+	partner["sp"] = maxi(0, partner["sp"] - SP_COST_AERIAL)
+
+	if action_banner != null:
+		action_banner.text = "✨ %s executa AERIAL COMBO em %s!" % [partner["name"], target["name"]]
+
+	var partner_orig: Vector3 = partner["node"].global_position
+	var target_air_pos: Vector3 = target["node"].global_position
+
+	# Câmera se aproxima da ação aérea
+	default_camera_pos = target_air_pos + Vector3(0, 1.0, 4.5)
+	default_camera_look = target_air_pos
+
+	var tween: Tween = create_tween().set_parallel(false)
+	# Parceiro salta até o alvo no ar
+	tween.tween_property(partner["node"], "global_position", target_air_pos + Vector3(0.6, 0, 0), 0.25)
+
+	# Golpes aéreos
+	var total_air_dmg: int = 0
+	for i in range(AERIAL_COMBO_HITS):
+		var hit_delay: float = float(i) * 0.18
+		tween.tween_callback(func():
+			var base_dmg: int = int(partner["attack"] * 1.0 - target["defense"] * 0.2)
+			var hit_dmg: int = maxi(3, int(base_dmg * AERIAL_HIT_MULT))
+			target["hp"] = maxi(0, target["hp"] - hit_dmg)
+			total_air_dmg += hit_dmg
+			camera_shake_amount = 0.1
+			_show_damage_popup(target["node"], hit_dmg, false, "AIR%d" % (i + 1))
+		).set_delay(hit_delay)
+	tween.tween_interval(AERIAL_COMBO_HITS * 0.18)
+
+	# Smash final: parceiro empurra o alvo para baixo
+	tween.tween_callback(func():
+		var base_smash: int = int(partner["attack"] * 1.5 - target["defense"] * 0.4)
+		var smash_dmg: int = maxi(10, int(base_smash * AERIAL_SMASH_MULT))
+		target["hp"] = maxi(0, target["hp"] - smash_dmg)
+		target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_AERIAL_SMASH)
+		camera_shake_amount = 0.5
+		_show_damage_popup(target["node"], smash_dmg, true, "SMASH")
+		if action_banner != null:
+			action_banner.text = (
+				"💥 AERIAL SMASH! %s finalizou %s: %d de dano! ★"
+				% [partner["name"], target["name"], smash_dmg]
+			)
+	)
+
+	# Animação de queda do alvo e parceiro retornando ao chão (sequenciais)
+	tween.tween_property(target["node"], "global_position", land_pos, 0.3).set_trans(Tween.TRANS_BOUNCE)
+	tween.tween_property(partner["node"], "global_position", partner_orig, 0.20).set_trans(Tween.TRANS_QUAD)
+
+
+	tween.tween_callback(func():
+		target["is_airborne"] = false
+		if target["hp"] <= 0 and target["node"] != null:
+			target["node"].visible = false
+		default_camera_pos = Vector3(0, 4.5, 7.5)
+		default_camera_look = Vector3(0, 0.5, 0)
+		_update_status_display()
+		_check_battle_end()
+	)
 
 
 # ──────────────────────────────────────────────

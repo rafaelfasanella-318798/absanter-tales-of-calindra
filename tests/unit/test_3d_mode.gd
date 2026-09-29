@@ -151,6 +151,7 @@ func test_combo_does_not_cancel_banner() -> void:
 	assert_false(battle.cancel_banner.visible, "COMBO não deve exibir o CancelBanner explícito")
 
 
+
 func test_debug_console_3d_commands() -> void:
 	var console: DebugConsole = DebugConsole
 	assert_not_null(console)
@@ -158,3 +159,77 @@ func test_debug_console_3d_commands() -> void:
 	assert_true(res_3d.contains("Kakariko 3D"))
 	var res_bat: String = console.execute_command("battle3d")
 	assert_true(res_bat.contains("Batalha 3D Grandia"))
+
+
+# ──────────────────────────────────────────────
+# Testes do Aerial Launch & Aerial Combo
+# ──────────────────────────────────────────────
+func test_aerial_launch_sets_is_airborne() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var launcher: Dictionary = battle.combatants[0]  # Ragg
+	var target: Dictionary = battle.combatants[2]    # Slime
+
+	target["is_airborne"] = false
+	target["state"] = "act"
+	target["ip"] = 0.85
+	target["hp"] = 35  # Vivo
+
+	battle._trigger_aerial_launch(target, launcher)
+
+	assert_true(target["is_airborne"], "Alvo deve estar is_airborne após aerial launch")
+
+
+func test_find_aerial_partner_returns_empty_without_sp() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var launcher: Dictionary = battle.combatants[0]  # Ragg
+
+	# Calindra sem SP suficiente
+	var calindra: Dictionary = battle.combatants[1]
+	calindra["sp"] = 0
+	calindra["ip"] = 0.6
+
+	var result: Dictionary = battle._find_aerial_partner(launcher)
+	assert_true(result.is_empty(), "_find_aerial_partner deve retornar {} quando SP insuficiente")
+
+
+func test_find_aerial_partner_returns_calindra_with_enough_sp_and_ip() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var launcher: Dictionary = battle.combatants[0]  # Ragg
+	var calindra: Dictionary = battle.combatants[1]
+
+	# Dá SP e IP suficientes para Calindra
+	calindra["sp"] = battle.SP_COST_AERIAL + 5
+	calindra["ip"] = 0.55
+
+	var result: Dictionary = battle._find_aerial_partner(launcher)
+	assert_false(result.is_empty(), "_find_aerial_partner deve encontrar Calindra")
+	assert_eq(result["id"], "calindra", "O parceiro aéreo deve ser Calindra")
+
+
+func test_aerial_combo_consumes_partner_sp() -> void:
+	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
+	add_child_autofree(battle)
+
+	var partner: Dictionary = battle.combatants[1]   # Calindra
+	var target: Dictionary = battle.combatants[2]    # Slime
+
+	var initial_sp: int = 80
+	partner["sp"] = initial_sp
+	target["hp"] = 45
+	target["is_airborne"] = true
+
+	var land_pos: Vector3 = target["node"].global_position if target["node"] else Vector3.ZERO
+	battle._execute_aerial_combo(partner, target, land_pos)
+
+	# SP deve ter diminuído
+	assert_lt(partner["sp"], initial_sp, "Aerial Combo deve consumir SP do parceiro")
+	assert_true(
+		partner["sp"] <= initial_sp - battle.SP_COST_AERIAL,
+		"SP consumido deve ser >= SP_COST_AERIAL"
+	)
