@@ -4,6 +4,7 @@ const ALL_SCENES: Array[String] = [
 	"res://scenes/battle/battler.tscn",
 	"res://scenes/battle/battle_scene.tscn",
 	"res://scenes/battle/floating_text.tscn",
+	"res://scenes/battle_3d/battle_3d.tscn",
 	"res://scenes/main/main.tscn",
 	"res://scenes/ui/debug_console.tscn",
 	"res://scenes/ui/dialogue_box.tscn",
@@ -20,7 +21,13 @@ const ALL_SCENES: Array[String] = [
 	"res://scenes/world/kakariko_house.tscn",
 	"res://scenes/world/npc.tscn",
 	"res://scenes/world/player.tscn",
-	"res://scenes/world/save_point.tscn"
+	"res://scenes/world/save_point.tscn",
+	"res://scenes/world_3d/camp_3d.tscn",
+	"res://scenes/world_3d/enemy_wanderer_3d.tscn",
+	"res://scenes/world_3d/follower_3d.tscn",
+	"res://scenes/world_3d/kakariko_3d.tscn",
+	"res://scenes/world_3d/npc_3d.tscn",
+	"res://scenes/world_3d/player_3d.tscn"
 ]
 
 

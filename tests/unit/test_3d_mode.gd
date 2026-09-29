@@ -6,6 +6,8 @@ const NPC_3D_SCENE: PackedScene = preload("res://scenes/world_3d/npc_3d.tscn")
 const KAKARIKO_3D_SCENE: PackedScene = preload("res://scenes/world_3d/kakariko_3d.tscn")
 const BATTLE_3D_SCENE: PackedScene = preload("res://scenes/battle_3d/battle_3d.tscn")
 const WANDERER_SCENE: PackedScene = preload("res://scenes/world_3d/enemy_wanderer_3d.tscn")
+const CAMP_SCENE: PackedScene = preload("res://scenes/world_3d/camp_3d.tscn")
+
 
 
 func test_player_3d_instantiation() -> void:
@@ -395,3 +397,68 @@ func test_battle_3d_normal_encounter_preserves_initial_ip() -> void:
 	# Ragg começa com IP = 0.1 (definido em _init_combatants)
 	var ragg: Dictionary = battle.combatants[0]
 	assert_eq(ragg["ip"], 0.1, "Encontro normal: Ragg deve ter IP inicial 0.1")
+
+
+# ──────────────────────────────────────────────
+# Testes do Camp3D — Sistema de Acampamento (Item 8)
+# ──────────────────────────────────────────────
+func test_camp_3d_instantiation() -> void:
+	var camp: Node3D = CAMP_SCENE.instantiate() as Node3D
+	add_child_autofree(camp)
+	assert_not_null(camp, "Camp3D deve instanciar")
+	assert_not_null(camp.speaker_label, "Camp3D deve ter SpeakerLabel")
+	assert_not_null(camp.dialogue_label, "Camp3D deve ter DialogueLabel")
+	assert_not_null(camp.btn_next, "Camp3D deve ter BtnNext")
+	assert_not_null(camp.btn_skip, "Camp3D deve ter BtnSkip")
+	assert_not_null(camp.btn_leave, "Camp3D deve ter BtnLeave (inicialmente oculto)")
+	assert_false(camp.btn_leave.visible, "BtnLeave deve começar invisível")
+
+
+func test_camp_increments_flag_on_ready() -> void:
+	var before: int = GameState.get_flag("camp_count", 0)
+	var camp: Node3D = CAMP_SCENE.instantiate() as Node3D
+	add_child_autofree(camp)
+	var after: int = GameState.get_flag("camp_count", 0)
+	assert_eq(after, before + 1, "camp_count deve incrementar em 1 a cada acampamento")
+
+
+func test_camp_first_dialogue_line_shown_on_ready() -> void:
+	var camp: Camp3D = CAMP_SCENE.instantiate() as Camp3D
+	add_child_autofree(camp)
+	# Após _ready, algum texto de diálogo deve estar visível
+	assert_true(
+		camp.dialogue_label.text.length() > 0,
+		"Deve haver texto de diálogo após inicializar o Camp3D"
+	)
+	assert_true(
+		camp.speaker_label.text.length() > 0,
+		"SpeakerLabel deve ter nome de personagem após inicializar"
+	)
+
+
+func test_camp_next_advances_dialogue() -> void:
+	var camp: Camp3D = CAMP_SCENE.instantiate() as Camp3D
+	add_child_autofree(camp)
+
+	var first_text: String = camp.dialogue_label.text
+	camp._on_next_pressed()
+	var second_text: String = camp.dialogue_label.text
+
+	# Linha 2 deve ser diferente da linha 1 (há pelo menos 2 linhas em todo acampamento)
+	# (a menos que o camp tenha apenas 1 linha — improvável pela definição)
+	if camp._dialogue_lines.size() > 1:
+		assert_ne(
+			second_text, first_text,
+			"Avançar deve mudar o texto de diálogo"
+		)
+
+
+func test_camp_skip_ends_dialogue_and_shows_leave_btn() -> void:
+	var camp: Camp3D = CAMP_SCENE.instantiate() as Camp3D
+	add_child_autofree(camp)
+
+	camp._on_skip_pressed()
+
+	assert_true(camp._is_finished, "Pular deve marcar o diálogo como terminado")
+	assert_true(camp.btn_leave.visible, "BtnLeave deve ficar visível após pular o diálogo")
+	assert_false(camp.btn_next.visible, "BtnNext deve sumir após o diálogo terminar")

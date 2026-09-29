@@ -112,6 +112,18 @@ func execute_command(raw_text: String) -> String:
 			result = _cmd_battle(args)
 		"flag":
 			result = _cmd_flag(args)
+		"3d", "kakariko3d":
+			SceneManager.change_scene("res://scenes/world_3d/kakariko_3d.tscn")
+			close_console()
+			result = "Carregando Kakariko 3D..."
+		"battle3d":
+			SceneManager.change_scene("res://scenes/battle_3d/battle_3d.tscn")
+			close_console()
+			result = "Iniciando Batalha 3D Grandia..."
+		"camp", "camp3d":
+			SceneManager.change_scene("res://scenes/world_3d/camp_3d.tscn")
+			close_console()
+			result = "Abrindo Camp 3D (fogueira com Ragg e Calindra)..."
 		"clear":
 			if output_label != null:
 				output_label.clear()
