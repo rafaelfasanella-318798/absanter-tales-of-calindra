@@ -30,6 +30,27 @@ Este arquivo é a fonte de verdade do progresso. Marque `[x]` conforme os itens 
 | Calindra | Companheira jogável em party, com habilidades próprias |
 | Idioma do jogo | PT-BR primeiro, EN como segundo (assumido; confirmar na seção 0) |
 | Plataformas | Windows + Linux + Web (assumido; mobile opcional; confirmar na seção 0) |
+| **Direcionamento visual** | **3D · estilo Grandia III (PS2)** — câmera de órbita, combate 3D com IP Timeline, exploração 3D com SpringArm |
+| **Resolução base** | **1280×720** (3D nativo, MSAA 2×, FXAA) |
+
+---
+
+## Direcionamento 3D — Grandia III Style (implementado em 29/09/2026)
+
+| # | Item | Status |
+|---|---|---|
+| 1 | Separação COMBO vs. CRITICAL no combate 3D | ✅ DONE |
+| 2 | Aerial Launch e Aerial Combo após CANCEL | ✅ DONE |
+| 3 | Comando Evade/Mover (reposicionamento tático na arena) | ✅ DONE |
+| 4 | IP Timeline visual enriquecida (nome, estado, linha COM, mini-SP) | ✅ DONE |
+| 5 | Atributos/habilidades via `EnemyData.tres` no battle_3d (sem hardcode) | ✅ DONE |
+| 6 | `SpringArm3D` + câmera de órbita na exploração 3D | ✅ DONE |
+| 7 | Surprise Attack / Ambush por ângulo de aproximação (`EnemyWanderer3D`) | ✅ DONE |
+| 8 | Sistema de Acampamento Camp3D (fogueira + diálogos + restauração HP/MP) | ✅ DONE |
+| 9 | `project.godot` atualizado para render 3D (1280×720, MSAA 2×, FXAA) | ✅ DONE |
+| 10 | Documentação atualizada (`CHECKLIST.md`, `GDD.md`, `ARCHITECTURE.md`) | ✅ DONE |
+
+**Testes:** 105/105 passando · Commits: 8 commits dedicados ao direcionamento 3D
 
 ---
 
