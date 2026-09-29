@@ -1,0 +1,197 @@
+[gd_scene load_steps=22 format=3 uid="uid://kak3d001"]
+
+[ext_resource type="Script" path="res://scripts/world_3d/kakariko_3d.gd" id="1_script"]
+[ext_resource type="PackedScene" path="res://scenes/world_3d/player_3d.tscn" id="2_player"]
+[ext_resource type="PackedScene" path="res://scenes/world_3d/follower_3d.tscn" id="3_follower"]
+[ext_resource type="PackedScene" path="res://scenes/world_3d/npc_3d.tscn" id="4_npc"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="5_font"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dialogue_box.tscn" id="6_dialogue"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_grass"]
+albedo_color = Color(0.24, 0.44, 0.22, 1)
+roughness = 0.8
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ground"]
+material = SubResource("StandardMaterial3D_grass")
+size = Vector2(36, 36)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ground"]
+size = Vector3(36, 0.2, 36)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_path"]
+albedo_color = Color(0.48, 0.41, 0.32, 1)
+roughness = 0.9
+
+[sub_resource type="BoxMesh" id="BoxMesh_path"]
+material = SubResource("StandardMaterial3D_path")
+size = Vector3(4, 0.05, 24)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_house"]
+albedo_color = Color(0.76, 0.68, 0.54, 1)
+roughness = 0.7
+
+[sub_resource type="BoxMesh" id="BoxMesh_house"]
+material = SubResource("StandardMaterial3D_house")
+size = Vector3(4, 2.5, 4)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_roof"]
+albedo_color = Color(0.68, 0.25, 0.16, 1)
+roughness = 0.6
+
+[sub_resource type="PrismMesh" id="PrismMesh_roof"]
+material = SubResource("StandardMaterial3D_roof")
+size = Vector3(4.6, 1.6, 4.6)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_portal"]
+albedo_color = Color(0.3, 0.7, 0.95, 0.8)
+emission_enabled = true
+emission = Color(0.2, 0.6, 0.9, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="BoxMesh" id="BoxMesh_portal"]
+material = SubResource("StandardMaterial3D_portal")
+size = Vector3(2.5, 3.5, 0.4)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_portal"]
+size = Vector3(3, 3.5, 1.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slime"]
+albedo_color = Color(0.25, 0.85, 0.35, 1)
+roughness = 0.3
+
+[sub_resource type="SphereMesh" id="SphereMesh_slime"]
+material = SubResource("StandardMaterial3D_slime")
+radius = 0.4
+height = 0.6
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_slime"]
+radius = 0.8
+
+[node name="Kakariko3D" type="Node3D"]
+script = ExtResource("1_script")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.866, -0.354, 0.354, 0, 0.707, 0.707, -0.5, -0.612, 0.612, 10, 15, 10)
+light_color = Color(1, 0.95, 0.85, 1)
+shadow_enabled = true
+
+[node name="Ground" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
+mesh = SubResource("PlaneMesh_ground")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
+position = Vector3(0, -0.1, 0)
+shape = SubResource("BoxShape3D_ground")
+
+[node name="PathMesh" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.02, 0)
+mesh = SubResource("BoxMesh_path")
+
+[node name="House1" type="Node3D" parent="."]
+position = Vector3(-6, 0, 0)
+
+[node name="Walls" type="MeshInstance3D" parent="House1"]
+position = Vector3(0, 1.25, 0)
+mesh = SubResource("BoxMesh_house")
+
+[node name="Roof" type="MeshInstance3D" parent="House1"]
+position = Vector3(0, 3.25, 0)
+mesh = SubResource("PrismMesh_roof")
+
+[node name="House2" type="Node3D" parent="."]
+position = Vector3(6, 0, -2)
+
+[node name="Walls" type="MeshInstance3D" parent="House2"]
+position = Vector3(0, 1.25, 0)
+mesh = SubResource("BoxMesh_house")
+
+[node name="Roof" type="MeshInstance3D" parent="House2"]
+position = Vector3(0, 3.25, 0)
+mesh = SubResource("PrismMesh_roof")
+
+[node name="TavNPC" parent="." instance=ExtResource("4_npc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 1)
+
+[node name="Player3D" parent="." instance=ExtResource("2_player")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4)
+
+[node name="Follower3D" parent="." instance=ExtResource("3_follower")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5.5)
+
+[node name="CameraRig" type="Node3D" parent="."]
+position = Vector3(0, 1.2, 4)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="CameraRig"]
+spring_length = 7.0
+margin = 0.3
+collision_mask = 1
+
+[node name="Camera3D" type="Camera3D" parent="CameraRig/SpringArm3D"]
+transform = Transform3D(1, 0, 0, 0, 0.94, 0.34, 0, -0.34, 0.94, 0, 0, 0)
+current = true
+
+[node name="BattlePortal" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10)
+collision_layer = 1
+collision_mask = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BattlePortal"]
+position = Vector3(0, 1.75, 0)
+mesh = SubResource("BoxMesh_portal")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BattlePortal"]
+position = Vector3(0, 1.75, 0)
+shape = SubResource("BoxShape3D_portal")
+
+[node name="PortalLabel" type="Label3D" parent="BattlePortal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.8, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(0.4, 0.9, 1, 1)
+outline_modulate = Color(0, 0, 0, 1)
+text = "[Portal: Arena de Batalha 3D]"
+font = ExtResource("5_font")
+font_size = 14
+outline_size = 4
+pixel_size = 0.005
+
+[node name="SlimeWanderer" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0.3, -4)
+collision_layer = 4
+collision_mask = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="SlimeWanderer"]
+mesh = SubResource("SphereMesh_slime")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="SlimeWanderer"]
+shape = SubResource("SphereShape3D_slime")
+
+[node name="SlimeLabel" type="Label3D" parent="SlimeWanderer"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(0.4, 1, 0.4, 1)
+outline_modulate = Color(0, 0, 0, 1)
+text = "Slime (Toque para Lutar)"
+font = ExtResource("5_font")
+font_size = 12
+outline_size = 4
+pixel_size = 0.005
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="HUDLabel" type="Label" parent="UI"]
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 6.0
+offset_top = 4.0
+offset_right = -6.0
+offset_bottom = 22.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("5_font")
+theme_override_font_sizes/font_size = 8
+text = "Vila Kakariko 3D (Estilo Grandia / PS2)
+Mover: WASD | Falar: Espaço | Norte: Arena 3D | ESC: Menu"
+
+[node name="DialogueBox" parent="UI" instance=ExtResource("6_dialogue")]

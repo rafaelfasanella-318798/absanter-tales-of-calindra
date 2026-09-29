@@ -43,8 +43,11 @@ func test_kakariko_3d_scene_loads() -> void:
 	assert_not_null(village, "Cena Kakariko3D deve instanciar")
 	assert_not_null(village.player, "Player3D presente em Kakariko3D")
 	assert_not_null(village.follower, "Follower3D presente em Kakariko3D")
-	assert_not_null(village.camera, "Camera3D presente em Kakariko3D")
+	assert_not_null(village.camera, "Camera3D (via SpringArm) deve estar presente")
+	assert_not_null(village.spring_arm, "SpringArm3D deve estar presente")
+	assert_not_null(village.camera_rig, "CameraRig deve estar presente")
 	assert_not_null(village.battle_portal, "BattlePortal presente em Kakariko3D")
+	assert_true(village.spring_arm.spring_length > 0.0, "SpringArm3D deve ter spring_length > 0")
 
 
 # ──────────────────────────────────────────────
