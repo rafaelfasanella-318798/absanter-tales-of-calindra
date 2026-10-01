@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://npc3d001"]
+
+[ext_resource type="Script" path="res://scripts/world_3d/npc_3d.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.35
+height = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tav_body"]
+albedo_color = Color(0.35, 0.65, 0.4, 1)
+roughness = 0.6
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tav_body"]
+material = SubResource("StandardMaterial3D_tav_body")
+radius = 0.25
+height = 0.8
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tav_head"]
+albedo_color = Color(0.92, 0.78, 0.64, 1)
+roughness = 0.6
+
+[sub_resource type="SphereMesh" id="SphereMesh_tav_head"]
+material = SubResource("StandardMaterial3D_tav_head")
+radius = 0.2
+height = 0.4
+
+[node name="NPC3D" type="StaticBody3D" groups=["interactable_3d", "npcs_3d"]]
+collision_layer = 1
+collision_mask = 2
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.6, 0)
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="BodyMesh" type="MeshInstance3D" parent="Visuals"]
+position = Vector3(0, 0.45, 0)
+mesh = SubResource("CapsuleMesh_tav_body")
+
+[node name="HeadMesh" type="MeshInstance3D" parent="Visuals"]
+position = Vector3(0, 0.9, 0)
+mesh = SubResource("SphereMesh_tav_head")
+
+[node name="NameLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(1, 0.95, 0.75, 1)
+outline_modulate = Color(0, 0, 0, 1)
+text = "Tav"
+font = ExtResource("2_font")
+font_size = 14
+outline_size = 4
+pixel_size = 0.005

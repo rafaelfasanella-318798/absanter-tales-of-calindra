@@ -73,6 +73,12 @@ theme_override_fonts/font = ExtResource("2_font")
 theme_override_font_sizes/font_size = 8
 text = "Continuar"
 
+[node name="BtnMode3D" type="Button" parent="VBoxMenu"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_font")
+theme_override_font_sizes/font_size = 8
+text = "Modo 3D Grandia"
+
 [node name="BtnQuit" type="Button" parent="VBoxMenu"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_font")

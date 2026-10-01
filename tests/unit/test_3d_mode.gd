@@ -1,3 +1,4 @@
+# gdlint:disable = max-public-methods
 extends GutTest
 
 const PLAYER_3D_SCENE: PackedScene = preload("res://scenes/world_3d/player_3d.tscn")
@@ -7,7 +8,6 @@ const KAKARIKO_3D_SCENE: PackedScene = preload("res://scenes/world_3d/kakariko_3
 const BATTLE_3D_SCENE: PackedScene = preload("res://scenes/battle_3d/battle_3d.tscn")
 const WANDERER_SCENE: PackedScene = preload("res://scenes/world_3d/enemy_wanderer_3d.tscn")
 const CAMP_SCENE: PackedScene = preload("res://scenes/world_3d/camp_3d.tscn")
-
 
 
 func test_player_3d_instantiation() -> void:
@@ -65,7 +65,9 @@ func test_battle_3d_scene_loads_with_four_combatants() -> void:
 	assert_eq(battle.combatants[1]["name"], "Calindra")
 	# Nomes vêm dos EnemyData resources
 	assert_eq(battle.combatants[2]["id"], "slime", "3º combatente deve ter id 'slime'")
-	assert_eq(battle.combatants[3]["id"], "kakariko_golem", "4º combatente deve ter id 'kakariko_golem'")
+	assert_eq(
+		battle.combatants[3]["id"], "kakariko_golem", "4º combatente deve ter id 'kakariko_golem'"
+	)
 
 
 func test_battle_3d_combatants_have_sp_field() -> void:
@@ -82,7 +84,7 @@ func test_combo_deals_two_hits_and_pushes_ip() -> void:
 	add_child_autofree(battle)
 
 	var attacker: Dictionary = battle.combatants[0]  # Ragg
-	var target: Dictionary = battle.combatants[2]    # Slime
+	var target: Dictionary = battle.combatants[2]  # Slime
 	var hp_before: int = target["hp"]
 	var ip_before: float = target["ip"]
 
@@ -103,7 +105,7 @@ func test_critical_cancels_enemy_in_act_phase() -> void:
 	add_child_autofree(battle)
 
 	var attacker: Dictionary = battle.combatants[0]  # Ragg
-	var target: Dictionary = battle.combatants[2]    # Slime
+	var target: Dictionary = battle.combatants[2]  # Slime
 
 	var hp_before: int = target["hp"]
 	# Simula Slime em fase ACT (janela de cancel)
@@ -126,7 +128,7 @@ func test_critical_no_cancel_outside_act_phase() -> void:
 	add_child_autofree(battle)
 
 	var attacker: Dictionary = battle.combatants[0]  # Ragg
-	var target: Dictionary = battle.combatants[3]    # Golem
+	var target: Dictionary = battle.combatants[3]  # Golem
 
 	target["state"] = "wait"
 	target["ip"] = 0.3
@@ -158,7 +160,6 @@ func test_combo_does_not_cancel_banner() -> void:
 	assert_false(battle.cancel_banner.visible, "COMBO não deve exibir o CancelBanner explícito")
 
 
-
 func test_debug_console_3d_commands() -> void:
 	var console: DebugConsole = DebugConsole
 	assert_not_null(console)
@@ -176,7 +177,7 @@ func test_aerial_launch_sets_is_airborne() -> void:
 	add_child_autofree(battle)
 
 	var launcher: Dictionary = battle.combatants[0]  # Ragg
-	var target: Dictionary = battle.combatants[2]    # Slime
+	var target: Dictionary = battle.combatants[2]  # Slime
 
 	target["is_airborne"] = false
 	target["state"] = "act"
@@ -223,8 +224,8 @@ func test_aerial_combo_consumes_partner_sp() -> void:
 	var battle: Node3D = BATTLE_3D_SCENE.instantiate() as Node3D
 	add_child_autofree(battle)
 
-	var partner: Dictionary = battle.combatants[1]   # Calindra
-	var target: Dictionary = battle.combatants[2]    # Slime
+	var partner: Dictionary = battle.combatants[1]  # Calindra
+	var target: Dictionary = battle.combatants[2]  # Slime
 
 	var initial_sp: int = 80
 	partner["sp"] = initial_sp
@@ -313,14 +314,7 @@ func test_enemy_data_to_dict_fallback_when_null() -> void:
 
 	# Chama com null para testar o caminho de fallback
 	var result: Dictionary = battle._enemy_data_to_dict(
-		null,
-		"test_enemy",
-		"Test Enemy",
-		null,
-		Vector3.ZERO,
-		Color.WHITE,
-		"?",
-		0.1
+		null, "test_enemy", "Test Enemy", null, Vector3.ZERO, Color.WHITE, "?", 0.1
 	)
 	assert_eq(result["id"], "test_enemy", "Fallback: id deve ser o fornecido")
 	assert_eq(result["name"], "Test Enemy", "Fallback: name deve ser o fornecido")
@@ -368,8 +362,7 @@ func test_battle_3d_surprise_boosts_player_ip() -> void:
 	for c in battle.combatants:
 		if c["is_player"]:
 			assert_true(
-				c["ip"] >= 0.65,
-				"Surprise Attack: party deve ter IP >= 0.65 (era: %s)" % c["ip"]
+				c["ip"] >= 0.65, "Surprise Attack: party deve ter IP >= 0.65 (era: %s)" % c["ip"]
 			)
 	# Reseta o GameState
 	assert_eq(GameState.encounter_type, "normal", "encounter_type deve ser resetado após uso")
@@ -384,8 +377,7 @@ func test_battle_3d_ambush_boosts_enemy_ip() -> void:
 	for c in battle.combatants:
 		if not c["is_player"]:
 			assert_true(
-				c["ip"] >= 0.65,
-				"Ambush: inimigos devem ter IP >= 0.65 (era: %s)" % c["ip"]
+				c["ip"] >= 0.65, "Ambush: inimigos devem ter IP >= 0.65 (era: %s)" % c["ip"]
 			)
 
 
@@ -447,10 +439,7 @@ func test_camp_next_advances_dialogue() -> void:
 	# Linha 2 deve ser diferente da linha 1 (há pelo menos 2 linhas em todo acampamento)
 	# (a menos que o camp tenha apenas 1 linha — improvável pela definição)
 	if camp._dialogue_lines.size() > 1:
-		assert_ne(
-			second_text, first_text,
-			"Avançar deve mudar o texto de diálogo"
-		)
+		assert_ne(second_text, first_text, "Avançar deve mudar o texto de diálogo")
 
 
 func test_camp_skip_ends_dialogue_and_shows_leave_btn() -> void:

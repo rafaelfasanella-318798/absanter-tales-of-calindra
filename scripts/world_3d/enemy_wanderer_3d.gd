@@ -14,9 +14,9 @@ signal encounter_triggered(encounter_type: String)
 # Exportações configuráveis
 # ──────────────────────────────────────────────
 @export var enemy_data_path: String = "res://data/enemies/slime.tres"
-@export var wander_radius: float = 4.0       ## Raio máximo de deambulação
-@export var wander_speed: float = 1.8        ## Velocidade de patrulha
-@export var wander_pause_time: float = 1.5   ## Pausa entre movimentos
+@export var wander_radius: float = 4.0  ## Raio máximo de deambulação
+@export var wander_speed: float = 1.8  ## Velocidade de patrulha
+@export var wander_pause_time: float = 1.5  ## Pausa entre movimentos
 @export var battle_scene_path: String = "res://scenes/battle_3d/battle_3d.tscn"
 
 ## Ângulo (graus) da "janela de costas" do alvo para acionar Surprise/Ambush.
@@ -33,7 +33,7 @@ var _is_triggered: bool = false
 var _player_ref: Player3D = null
 
 @onready var visual: Node3D = $Visual if has_node("Visual") else null
-@onready var exclamation_label: Label3D = $ExclamationLabel if has_node("ExclamationLabel") else null
+@onready var exclamation_label: Label3D = get_node_or_null("ExclamationLabel")
 
 
 # ──────────────────────────────────────────────
@@ -96,10 +96,7 @@ func _on_body_entered(body: Node3D) -> void:
 	# Grava no GameState para que Battle3D leia na inicialização
 	GameState.encounter_type = encounter_type
 
-	EventBus.field_encounter_started.emit(
-		_get_enemy_id(),
-		encounter_type
-	)
+	EventBus.field_encounter_started.emit(_get_enemy_id(), encounter_type)
 	encounter_triggered.emit(encounter_type)
 
 	# Pequeno delay dramático antes de carregar a batalha

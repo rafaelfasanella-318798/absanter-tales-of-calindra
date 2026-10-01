@@ -10,37 +10,35 @@ signal battle_ended(victory: bool)
 # ──────────────────────────────────────────────
 # Constantes de balanceamento (estilo Grandia III)
 # ──────────────────────────────────────────────
-const IP_COM_THRESHOLD: float = 0.75      ## Ponto de Comando
-const IP_ACT_THRESHOLD: float = 0.75      ## ACT começa no mesmo ponto (alias semântico)
-const IP_SPEED_BASE: float = 0.035        ## Multiplicador de avanço de IP por speed
-const IP_ACT_SPEEDUP: float = 1.5        ## Multiplicador na fase ACT (preparação)
+const IP_COM_THRESHOLD: float = 0.75  ## Ponto de Comando
+const IP_ACT_THRESHOLD: float = 0.75  ## ACT começa no mesmo ponto (alias semântico)
+const IP_SPEED_BASE: float = 0.035  ## Multiplicador de avanço de IP por speed
+const IP_ACT_SPEEDUP: float = 1.5  ## Multiplicador na fase ACT (preparação)
 
 # Reações da IP ao receber golpes
-const IP_PUSH_COMBO: float = 0.20        ## Quanto COMBO empurra o alvo para trás na IP
-const IP_PUSH_CRITICAL_HIT: float = 0.55 ## Quanto CRITICAL empurra o alvo no momento de CANCEL
+const IP_PUSH_COMBO: float = 0.20  ## Quanto COMBO empurra o alvo para trás na IP
+const IP_PUSH_CRITICAL_HIT: float = 0.55  ## Quanto CRITICAL empurra o alvo no momento de CANCEL
 
 # Multiplicadores de dano
-const COMBO_HIT_1_MULT: float = 0.80    ## 1º golpe do COMBO
-const COMBO_HIT_2_MULT: float = 0.65    ## 2º golpe do COMBO
-const CRITICAL_MULT: float = 2.20       ## Golpe único de CRITICAL
-const CRITICAL_CANCEL_BONUS: float = 1.45 ## Bônus de dano ao aplicar CANCEL
-const SKILL_MULT: float = 1.80          ## Multiplicador de habilidade
+const COMBO_HIT_1_MULT: float = 0.80  ## 1º golpe do COMBO
+const COMBO_HIT_2_MULT: float = 0.65  ## 2º golpe do COMBO
+const CRITICAL_MULT: float = 2.20  ## Golpe único de CRITICAL
+const CRITICAL_CANCEL_BONUS: float = 1.45  ## Bônus de dano ao aplicar CANCEL
+const SKILL_MULT: float = 1.80  ## Multiplicador de habilidade
 
-const SP_GAIN_PER_COMBO: int = 8        ## SP ganho por COMBO completado
+const SP_GAIN_PER_COMBO: int = 8  ## SP ganho por COMBO completado
 
 # Aerial Launch & Aerial Combo (mecânica icônica do Grandia III)
-const SP_COST_AERIAL: int = 30          ## Custo de SP para o parceiro realizar o Aerial Combo
-const AERIAL_LAUNCH_HEIGHT: float = 2.5 ## Altura do arremesso aéreo em unidades 3D
-const AERIAL_COMBO_HITS: int = 3        ## Número de golpes do Aerial Combo
-const AERIAL_HIT_MULT: float = 0.90     ## Multiplicador de dano por golpe aéreo (acumula)
-const AERIAL_SMASH_MULT: float = 2.20   ## Multiplicador do golpe de finalização no solo
-const IP_PUSH_AERIAL_SMASH: float = 0.70 ## Recuo extra na IP após queda no solo
+const SP_COST_AERIAL: int = 30  ## Custo de SP para o parceiro realizar o Aerial Combo
+const AERIAL_LAUNCH_HEIGHT: float = 2.5  ## Altura do arremesso aéreo em unidades 3D
+const AERIAL_COMBO_HITS: int = 3  ## Número de golpes do Aerial Combo
+const AERIAL_HIT_MULT: float = 0.90  ## Multiplicador de dano por golpe aéreo (acumula)
+const AERIAL_SMASH_MULT: float = 2.20  ## Multiplicador do golpe de finalização no solo
+const IP_PUSH_AERIAL_SMASH: float = 0.70  ## Recuo extra na IP após queda no solo
 
 # Evasão tática (Evade / Move)
-const IP_COST_EVADE: float = 0.15       ## Custo de IP que a evasão retira do personagem (recua na timeline)
-const EVADE_RADIUS: float = 2.5         ## Raio máximo de reposicionamento na arena
-
-
+const IP_COST_EVADE: float = 0.15  ## Custo de IP que a evasão retira do personagem
+const EVADE_RADIUS: float = 2.5  ## Raio máximo de reposicionamento na arena
 
 var combatants: Array[Dictionary] = []
 var active_player_index: int = -1
@@ -129,27 +127,32 @@ func _init_combatants() -> void:
 		if PartyManager != null
 		else {"max_hp": 120, "max_mp": 30, "attack": 24, "defense": 14, "speed": 12}
 	)
-	combatants.append({
-		"id": "ragg",
-		"name": "Ragg",
-		"is_player": true,
-		"hp": ragg_stats["max_hp"],
-		"max_hp": ragg_stats["max_hp"],
-		"mp": ragg_stats["max_mp"],
-		"max_mp": ragg_stats["max_mp"],
-		"sp": 0,
-		"max_sp": 100,
-		"attack": ragg_stats["attack"],
-		"defense": ragg_stats["defense"],
-		"magic": 5,
-		"speed": 11.0,
-		"ip": 0.1,
-		"state": "wait",   # wait | command | act | executing
-		"node": ragg_node,
-		"home_pos": ragg_node.global_position if ragg_node else Vector3(-2, 0, 1.5),
-		"marker_color": Color(0.2, 0.6, 1.0),
-		"marker_symbol": "⚔",
-	})
+	(
+		combatants
+		. append(
+			{
+				"id": "ragg",
+				"name": "Ragg",
+				"is_player": true,
+				"hp": ragg_stats["max_hp"],
+				"max_hp": ragg_stats["max_hp"],
+				"mp": ragg_stats["max_mp"],
+				"max_mp": ragg_stats["max_mp"],
+				"sp": 0,
+				"max_sp": 100,
+				"attack": ragg_stats["attack"],
+				"defense": ragg_stats["defense"],
+				"magic": 5,
+				"speed": 11.0,
+				"ip": 0.1,
+				"state": "wait",  # wait | command | act | executing
+				"node": ragg_node,
+				"home_pos": ragg_node.global_position if ragg_node else Vector3(-2, 0, 1.5),
+				"marker_color": Color(0.2, 0.6, 1.0),
+				"marker_symbol": "⚔",
+			}
+		)
+	)
 
 	# 2. Calindra
 	var cal_stats: Dictionary = (
@@ -157,27 +160,32 @@ func _init_combatants() -> void:
 		if PartyManager != null
 		else {"max_hp": 90, "max_mp": 60, "attack": 10, "defense": 9, "speed": 14}
 	)
-	combatants.append({
-		"id": "calindra",
-		"name": "Calindra",
-		"is_player": true,
-		"hp": cal_stats["max_hp"],
-		"max_hp": cal_stats["max_hp"],
-		"mp": cal_stats["max_mp"],
-		"max_mp": cal_stats["max_mp"],
-		"sp": 0,
-		"max_sp": 100,
-		"attack": cal_stats["attack"],
-		"defense": cal_stats["defense"],
-		"magic": 18,
-		"speed": 13.0,
-		"ip": 0.25,
-		"state": "wait",
-		"node": calindra_node,
-		"home_pos": calindra_node.global_position if calindra_node else Vector3(-3, 0, 0),
-		"marker_color": Color(0.8, 0.4, 1.0),
-		"marker_symbol": "✨",
-	})
+	(
+		combatants
+		. append(
+			{
+				"id": "calindra",
+				"name": "Calindra",
+				"is_player": true,
+				"hp": cal_stats["max_hp"],
+				"max_hp": cal_stats["max_hp"],
+				"mp": cal_stats["max_mp"],
+				"max_mp": cal_stats["max_mp"],
+				"sp": 0,
+				"max_sp": 100,
+				"attack": cal_stats["attack"],
+				"defense": cal_stats["defense"],
+				"magic": 18,
+				"speed": 13.0,
+				"ip": 0.25,
+				"state": "wait",
+				"node": calindra_node,
+				"home_pos": calindra_node.global_position if calindra_node else Vector3(-3, 0, 0),
+				"marker_color": Color(0.8, 0.4, 1.0),
+				"marker_symbol": "✨",
+			}
+		)
+	)
 
 	# 3. Slime — carregado a partir do EnemyData resource
 	var slime_data: EnemyData = _load_enemy_data("res://data/enemies/slime.tres")
@@ -280,9 +288,8 @@ func _enemy_data_to_dict(
 		"marker_color": marker_color,
 		"marker_symbol": marker_symbol,
 		"is_airborne": false,
-		"enemy_data": data,          # Referência ao resource original para acesso a skills/drops
+		"enemy_data": data,  # Referência ao resource original para acesso a skills/drops
 	}
-
 
 
 func _setup_ui() -> void:
@@ -466,9 +473,10 @@ func _resolve_evade(c: Dictionary) -> void:
 	default_camera_look = new_pos + Vector3(0, 0.5, 0)
 	var t: Tween = create_tween()
 	t.tween_interval(0.5)
-	t.tween_callback(func():
-		default_camera_pos = Vector3(0, 4.5, 7.5)
-		default_camera_look = Vector3(0, 0.5, 0)
+	t.tween_callback(
+		func():
+			default_camera_pos = Vector3(0, 4.5, 7.5)
+			default_camera_look = Vector3(0, 0.5, 0)
 	)
 
 	_update_status_display()
@@ -490,9 +498,10 @@ func _open_target_selection(action_type: String) -> void:
 			var btn: Button = Button.new()
 			var airborne_tag: String = " [AR]" if target.get("is_airborne", false) else ""
 			var act_tag: String = " ← ACT!" if target["state"] == "act" else ""
-			btn.text = "%s (HP:%d/%d)%s%s" % [
-				target["name"], target["hp"], target["max_hp"], airborne_tag, act_tag
-			]
+			btn.text = (
+				"%s (HP:%d/%d)%s%s"
+				% [target["name"], target["hp"], target["max_hp"], airborne_tag, act_tag]
+			)
 			btn.add_theme_font_size_override("font_size", 8)
 			btn.pressed.connect(_on_target_selected.bind(action_type, i))
 			target_vbox.add_child(btn)
@@ -598,7 +607,7 @@ func _resolve_combo(attacker: Dictionary, target: Dictionary) -> void:
 # CRITICAL: 1 golpe forte · CANCEL se alvo em ACT
 # ──────────────────────────────────────────────
 func _resolve_critical(attacker: Dictionary, target: Dictionary) -> void:
-	var is_cancel: bool = (target["state"] == "act")
+	var is_cancel: bool = target["state"] == "act"
 	var mult: float = CRITICAL_MULT
 	if is_cancel:
 		mult *= CRITICAL_CANCEL_BONUS
@@ -615,7 +624,8 @@ func _resolve_critical(attacker: Dictionary, target: Dictionary) -> void:
 	if action_banner != null:
 		var cancel_tag: String = " 💥 CANCEL BONUS!" if is_cancel else ""
 		action_banner.text = (
-			"%s usou CRITICAL em %s: %d de dano!%s" % [attacker["name"], target["name"], damage, cancel_tag]
+			"%s usou CRITICAL em %s: %d de dano!%s"
+			% [attacker["name"], target["name"], damage, cancel_tag]
 		)
 
 	_animate_attack_3d(attacker["node"], target["node"], is_cancel)
@@ -627,12 +637,11 @@ func _resolve_critical(attacker: Dictionary, target: Dictionary) -> void:
 		target["node"].visible = false
 
 
-
 # ──────────────────────────────────────────────
 # SKILL: habilidade mágica de área/única
 # ──────────────────────────────────────────────
 func _resolve_skill(attacker: Dictionary, target: Dictionary) -> void:
-	var is_cancel: bool = (target["state"] == "act")
+	var is_cancel: bool = target["state"] == "act"
 	if is_cancel:
 		target["state"] = "wait"
 		target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_COMBO)
@@ -642,9 +651,7 @@ func _resolve_skill(attacker: Dictionary, target: Dictionary) -> void:
 	var damage: int = maxi(5, int(base * SKILL_MULT))
 	target["hp"] = maxi(0, target["hp"] - damage)
 
-	var skill_name: String = (
-		"Impacto Sísmico" if attacker["id"] == "ragg" else "Chama Arcana"
-	)
+	var skill_name: String = "Impacto Sísmico" if attacker["id"] == "ragg" else "Chama Arcana"
 	_show_damage_popup(target["node"], damage, is_cancel, "SKILL")
 
 	if action_banner != null:
@@ -683,7 +690,9 @@ func _trigger_aerial_launch(target: Dictionary, launcher: Dictionary) -> void:
 	var orig_pos: Vector3 = target["node"].global_position
 	var peak_pos: Vector3 = orig_pos + Vector3(0, AERIAL_LAUNCH_HEIGHT, 0)
 	var tween: Tween = create_tween().set_parallel(false)
-	tween.tween_property(target["node"], "global_position", peak_pos, 0.35).set_trans(Tween.TRANS_SINE)
+	tween.tween_property(target["node"], "global_position", peak_pos, 0.35).set_trans(
+		Tween.TRANS_SINE
+	)
 	tween.tween_interval(0.2)  # Pausa dramática no ar
 
 	# Verifica se algum parceiro pode realizar o Aerial Combo
@@ -691,27 +700,30 @@ func _trigger_aerial_launch(target: Dictionary, launcher: Dictionary) -> void:
 	var has_aerial: bool = not aerial_partner.is_empty()
 
 	if has_aerial:
-		tween.tween_callback(func():
-			_execute_aerial_combo(aerial_partner, target, orig_pos)
-		)
+		tween.tween_callback(func(): _execute_aerial_combo(aerial_partner, target, orig_pos))
 	else:
 		# Sem parceiro disponível: cai sozinho e toma dano de queda
-		tween.tween_property(target["node"], "global_position", orig_pos, 0.4).set_trans(Tween.TRANS_BOUNCE)
-		tween.tween_callback(func():
-			target["is_airborne"] = false
-			var fall_dmg: int = maxi(5, int(target["max_hp"] * 0.12))
-			target["hp"] = maxi(0, target["hp"] - fall_dmg)
-			target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_AERIAL_SMASH)
-			camera_shake_amount = 0.3
-			_show_damage_popup(target["node"], fall_dmg, false, "FALL")
-			if action_banner != null:
-				action_banner.text = "%s caiu no solo! -%d de dano de impacto!" % [target["name"], fall_dmg]
-			if target["hp"] <= 0 and target["node"] != null:
-				target["node"].visible = false
-			default_camera_pos = Vector3(0, 4.5, 7.5)
-			default_camera_look = Vector3(0, 0.5, 0)
-			_update_status_display()
-			_check_battle_end()
+		tween.tween_property(target["node"], "global_position", orig_pos, 0.4).set_trans(
+			Tween.TRANS_BOUNCE
+		)
+		tween.tween_callback(
+			func():
+				target["is_airborne"] = false
+				var fall_dmg: int = maxi(5, int(target["max_hp"] * 0.12))
+				target["hp"] = maxi(0, target["hp"] - fall_dmg)
+				target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_AERIAL_SMASH)
+				camera_shake_amount = 0.3
+				_show_damage_popup(target["node"], fall_dmg, false, "FALL")
+				if action_banner != null:
+					action_banner.text = (
+						"%s caiu no solo! -%d de dano de impacto!" % [target["name"], fall_dmg]
+					)
+				if target["hp"] <= 0 and target["node"] != null:
+					target["node"].visible = false
+				default_camera_pos = Vector3(0, 4.5, 7.5)
+				default_camera_look = Vector3(0, 0.5, 0)
+				_update_status_display()
+				_check_battle_end()
 		)
 
 
@@ -719,11 +731,13 @@ func _find_aerial_partner(launcher: Dictionary) -> Dictionary:
 	## Retorna o dicionário de um parceiro player (diferente do launcher)
 	## que tenha SP suficiente e IP >= 0.5 para executar o Aerial Combo.
 	for c in combatants:
-		if (c["is_player"]
-				and c["id"] != launcher["id"]
-				and c["hp"] > 0
-				and c["sp"] >= SP_COST_AERIAL
-				and c["ip"] >= 0.5):
+		if (
+			c["is_player"]
+			and c["id"] != launcher["id"]
+			and c["hp"] > 0
+			and c["sp"] >= SP_COST_AERIAL
+			and c["ip"] >= 0.5
+		):
 			return c
 	return {}
 
@@ -749,50 +763,59 @@ func _execute_aerial_combo(partner: Dictionary, target: Dictionary, land_pos: Ve
 
 	var tween: Tween = create_tween().set_parallel(false)
 	# Parceiro salta até o alvo no ar
-	tween.tween_property(partner["node"], "global_position", target_air_pos + Vector3(0.6, 0, 0), 0.25)
+	tween.tween_property(
+		partner["node"], "global_position", target_air_pos + Vector3(0.6, 0, 0), 0.25
+	)
 
 	# Golpes aéreos
 	var total_air_dmg: int = 0
 	for i in range(AERIAL_COMBO_HITS):
 		var hit_delay: float = float(i) * 0.18
-		tween.tween_callback(func():
-			var base_dmg: int = int(partner["attack"] * 1.0 - target["defense"] * 0.2)
-			var hit_dmg: int = maxi(3, int(base_dmg * AERIAL_HIT_MULT))
-			target["hp"] = maxi(0, target["hp"] - hit_dmg)
-			total_air_dmg += hit_dmg
-			camera_shake_amount = 0.1
-			_show_damage_popup(target["node"], hit_dmg, false, "AIR%d" % (i + 1))
-		).set_delay(hit_delay)
+		var cb: CallbackTweener = tween.tween_callback(
+			func():
+				var base_dmg: int = int(partner["attack"] * 1.0 - target["defense"] * 0.2)
+				var hit_dmg: int = maxi(3, int(base_dmg * AERIAL_HIT_MULT))
+				target["hp"] = maxi(0, target["hp"] - hit_dmg)
+				total_air_dmg += hit_dmg
+				camera_shake_amount = 0.1
+				_show_damage_popup(target["node"], hit_dmg, false, "AIR%d" % (i + 1))
+		)
+		cb.set_delay(hit_delay)
 	tween.tween_interval(AERIAL_COMBO_HITS * 0.18)
 
 	# Smash final: parceiro empurra o alvo para baixo
-	tween.tween_callback(func():
-		var base_smash: int = int(partner["attack"] * 1.5 - target["defense"] * 0.4)
-		var smash_dmg: int = maxi(10, int(base_smash * AERIAL_SMASH_MULT))
-		target["hp"] = maxi(0, target["hp"] - smash_dmg)
-		target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_AERIAL_SMASH)
-		camera_shake_amount = 0.5
-		_show_damage_popup(target["node"], smash_dmg, true, "SMASH")
-		if action_banner != null:
-			action_banner.text = (
-				"💥 AERIAL SMASH! %s finalizou %s: %d de dano! ★"
-				% [partner["name"], target["name"], smash_dmg]
-			)
+	tween.tween_callback(
+		func():
+			var base_smash: int = int(partner["attack"] * 1.5 - target["defense"] * 0.4)
+			var smash_dmg: int = maxi(10, int(base_smash * AERIAL_SMASH_MULT))
+			target["hp"] = maxi(0, target["hp"] - smash_dmg)
+			target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_AERIAL_SMASH)
+			camera_shake_amount = 0.5
+			_show_damage_popup(target["node"], smash_dmg, true, "SMASH")
+			if action_banner != null:
+				action_banner.text = (
+					"💥 AERIAL SMASH! %s finalizou %s: %d de dano! ★"
+					% [partner["name"], target["name"], smash_dmg]
+				)
 	)
 
 	# Animação de queda do alvo e parceiro retornando ao chão (sequenciais)
-	tween.tween_property(target["node"], "global_position", land_pos, 0.3).set_trans(Tween.TRANS_BOUNCE)
-	tween.tween_property(partner["node"], "global_position", partner_orig, 0.20).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(target["node"], "global_position", land_pos, 0.3).set_trans(
+		Tween.TRANS_BOUNCE
+	)
+	tween.tween_property(partner["node"], "global_position", partner_orig, 0.20).set_trans(
+		Tween.TRANS_QUAD
+	)
 
-
-	tween.tween_callback(func():
-		target["is_airborne"] = false
-		if target["hp"] <= 0 and target["node"] != null:
-			target["node"].visible = false
-		default_camera_pos = Vector3(0, 4.5, 7.5)
-		default_camera_look = Vector3(0, 0.5, 0)
-		_update_status_display()
-		_check_battle_end()
+	tween.tween_callback(
+		func():
+			target["is_airborne"] = false
+			if target["hp"] <= 0 and target["node"] != null:
+				target["node"].visible = false
+			default_camera_pos = Vector3(0, 4.5, 7.5)
+			default_camera_look = Vector3(0, 0.5, 0)
+			_update_status_display()
+			_check_battle_end()
 	)
 
 
@@ -812,12 +835,17 @@ func _animate_attack_3d(attacker_node: Node3D, target_node: Node3D, is_cancel: b
 
 	var tween: Tween = create_tween()
 	var charge_pos: Vector3 = target_pos + (orig_pos - target_pos).normalized() * 0.8
-	tween.tween_property(attacker_node, "global_position", charge_pos, 0.18).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(attacker_node, "global_position", charge_pos, 0.18).set_trans(
+		Tween.TRANS_QUAD
+	)
 	tween.tween_interval(0.20)
-	tween.tween_property(attacker_node, "global_position", orig_pos, 0.22).set_trans(Tween.TRANS_QUAD)
-	tween.finished.connect(func():
-		default_camera_pos = Vector3(0, 4.5, 7.5)
-		default_camera_look = Vector3(0, 0.5, 0)
+	tween.tween_property(attacker_node, "global_position", orig_pos, 0.22).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.finished.connect(
+		func():
+			default_camera_pos = Vector3(0, 4.5, 7.5)
+			default_camera_look = Vector3(0, 0.5, 0)
 	)
 
 
@@ -836,15 +864,24 @@ func _animate_combo_3d(attacker_node: Node3D, target_node: Node3D) -> void:
 
 	var tween: Tween = create_tween()
 	# Hit 1
-	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(Tween.TRANS_QUAD)
-	tween.tween_property(attacker_node, "global_position", orig_pos, 0.12).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.tween_property(attacker_node, "global_position", orig_pos, 0.12).set_trans(
+		Tween.TRANS_QUAD
+	)
 	# Hit 2
-	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(Tween.TRANS_QUAD)
-	tween.tween_property(attacker_node, "global_position", orig_pos, 0.14).set_trans(Tween.TRANS_QUAD)
+	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.tween_property(attacker_node, "global_position", orig_pos, 0.14).set_trans(
+		Tween.TRANS_QUAD
+	)
 
-	tween.finished.connect(func():
-		default_camera_pos = Vector3(0, 4.5, 7.5)
-		default_camera_look = Vector3(0, 0.5, 0)
+	tween.finished.connect(
+		func():
+			default_camera_pos = Vector3(0, 4.5, 7.5)
+			default_camera_look = Vector3(0, 0.5, 0)
 	)
 
 
@@ -861,142 +898,31 @@ func _trigger_cancel_effect(target_name: String) -> void:
 # ──────────────────────────────────────────────
 # Popups de dano flutuante 3D
 # ──────────────────────────────────────────────
-func _show_damage_popup(target_node: Node3D, amount: int, is_cancel: bool, tag: String = "") -> void:
-	if target_node == null:
-		return
-	var label: Label3D = Label3D.new()
-	var tag_str: String = " [%s]" % tag if tag != "" else ""
-	var cancel_str: String = " CANCEL!" if is_cancel else ""
-	label.text = "-%d%s%s" % [amount, tag_str, cancel_str]
-	label.font_size = 20
-	label.pixel_size = 0.007
-	label.billboard = BaseMaterial3D.BILLBOARD_ENABLED
-	label.no_depth_test = true
-	label.modulate = Color(1.0, 0.15, 0.1) if is_cancel else (
-		Color(1.0, 0.85, 0.1) if tag == "CRIT" else Color(0.9, 0.95, 1.0)
-	)
-	label.outline_size = 4
-	label.outline_modulate = Color(0, 0, 0, 1)
-	target_node.add_child(label)
-	label.global_position = target_node.global_position + Vector3(
-		randf_range(-0.3, 0.3), 1.4, 0
-	)
-
-	var tween: Tween = create_tween()
-	tween.tween_property(label, "global_position", label.global_position + Vector3(0, 0.9, 0), 0.85)
-	tween.finished.connect(label.queue_free)
+func _show_damage_popup(
+	target_node: Node3D, amount: int, is_cancel: bool, tag: String = ""
+) -> void:
+	Battle3DUI.show_damage_popup(target_node, amount, is_cancel, tag)
 
 
 func _show_damage_popup_delayed(
-	target_node: Node3D,
-	amount: int,
-	is_cancel: bool,
-	tag: String,
-	delay: float
+	target_node: Node3D, amount: int, is_cancel: bool, tag: String, delay: float
 ) -> void:
 	var timer: SceneTreeTimer = get_tree().create_timer(delay)
-	timer.timeout.connect(func():
-		_show_damage_popup(target_node, amount, is_cancel, tag)
-	)
+	timer.timeout.connect(func(): _show_damage_popup(target_node, amount, is_cancel, tag))
 
 
 # ──────────────────────────────────────────────
 # Barra de IP — marcadores com retrato/símbolo
 # ──────────────────────────────────────────────
 func _update_ip_markers() -> void:
-	## Atualiza os marcadores na timeline de IP com:
-	## • Símbolo + nome abreviado + estado (WAIT / COM! / ACT▶)
-	## • Linha divisória vertical no ponto COM (75%)
-	## • Para a party: mini-barra de SP em cores
-
-	if ip_markers_container == null:
-		return
-
-	for child in ip_markers_container.get_children():
-		child.queue_free()
-
-	var bar_width: float = ip_markers_container.size.x
-	if bar_width < 1.0:
-		bar_width = 240.0  # fallback antes do primeiro frame de layout
-
-	# Linha divisória no ponto COM (75%)
-	var com_marker: ColorRect = ColorRect.new()
-	com_marker.color = Color(0.9, 0.8, 0.1, 0.7)
-	com_marker.size = Vector2(1.5, ip_markers_container.size.y if ip_markers_container.size.y > 0.0 else 10.0)
-	com_marker.position = Vector2(IP_COM_THRESHOLD * bar_width - 0.75, 0)
-	ip_markers_container.add_child(com_marker)
-
-	# Marcador por combatente vivo
-	for c in combatants:
-		if c["hp"] <= 0:
-			continue
-
-		# Estado legível
-		var state_tag: String
-		var state_color: Color
-		match c["state"]:
-			"command":
-				state_tag = " COM!"
-				state_color = Color(1.0, 0.95, 0.1)  # amarelo
-			"act":
-				state_tag = " ACT▶"
-				state_color = Color(1.0, 0.35, 0.1)  # laranja-vermelho
-			"executing":
-				state_tag = " ★EXE"
-				state_color = Color(1.0, 0.2, 0.8)   # magenta
-			_:
-				state_tag = ""
-				state_color = c["marker_color"]
-
-		# Nome abreviado (máx 4 chars) + símbolo
-		var short_name: String = c["name"].substr(0, 4)
-		var marker: Label = Label.new()
-		marker.text = "%s%s%s" % [c.get("marker_symbol", "◆"), short_name, state_tag]
-		marker.add_theme_font_size_override("font_size", 8)
-		marker.modulate = state_color if state_tag != "" else c["marker_color"]
-		marker.tooltip_text = "%s · IP: %.0f%%  HP: %d/%d" % [
-			c["name"], c["ip"] * 100, c["hp"], c["max_hp"]
-		]
-
-		var x_pos: float = clampf(c["ip"] * bar_width - 12.0, 0.0, bar_width - 40.0)
-		marker.position = Vector2(x_pos, 0)
-		ip_markers_container.add_child(marker)
-
-		# Mini barra de SP para combatentes da party (aparece acima do marcador)
-		if c["is_player"] and c.get("max_sp", 0) > 0:
-			var sp_bar: ColorRect = ColorRect.new()
-			var sp_ratio: float = float(c.get("sp", 0)) / float(c["max_sp"])
-			var sp_bar_max_w: float = 28.0
-			sp_bar.color = Color(0.2, 0.6, 1.0, 0.9) if c["id"] == "ragg" else Color(0.7, 0.3, 1.0, 0.9)
-			sp_bar.size = Vector2(sp_ratio * sp_bar_max_w, 2.0)
-			sp_bar.position = Vector2(x_pos, -4.0)
-			ip_markers_container.add_child(sp_bar)
-
+	Battle3DUI.update_ip_markers(ip_markers_container, combatants)
 
 
 # ──────────────────────────────────────────────
 # Status panel (HP/MP/SP)
 # ──────────────────────────────────────────────
 func _update_status_display() -> void:
-	if status_label == null:
-		return
-	var text: String = "PARTY:\n"
-	for c in combatants:
-		if c["is_player"]:
-			text += "%s: %d/%d HP | %d/%d MP | SP:%d\n" % [
-				c["name"], c["hp"], c["max_hp"], c["mp"], c["max_mp"], c.get("sp", 0)
-			]
-	text += "\nINIMIGOS:\n"
-	for c in combatants:
-		if not c["is_player"]:
-			var status: String
-			if c["hp"] <= 0:
-				status = "DERROTADO"
-			else:
-				var state_tag: String = " [ACT!]" if c["state"] == "act" else ""
-				status = "%d/%d HP%s" % [c["hp"], c["max_hp"], state_tag]
-			text += "%s: %s\n" % [c["name"], status]
-	status_label.text = text
+	Battle3DUI.update_status_display(status_label, combatants)
 
 
 # ──────────────────────────────────────────────

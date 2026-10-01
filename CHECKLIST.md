@@ -57,8 +57,7 @@ Revisado pelo Copilot em 29/09/2026 (dívidas D1–D33 no §4.2.1 do ARCHITECTUR
 | 9 | `project.godot` atualizado para render 3D (1280×720, MSAA 2×, FXAA) | ⚠ stretch `disabled`, renderer não definido (D13) | G0-03 |
 | 10 | Documentação atualizada (`CHECKLIST.md`, `GDD.md`, `ARCHITECTURE.md`) | ✅ substituída pela rev. 2 do ARCHITECTURE | — |
 
-**Testes:** 105/105 só nesta máquina: 3 scripts, 3 cenas e 11 `.uid` ficaram fora do Git. Num clone limpo rodam 75 testes, com 1 falha (D1).
-O `./lint.sh` também falha (D20). Correção: G0-01. Commits: 9, ainda sem push.
+**Testes:** 105/105 no clone limpo via verify (G0-01). Lint 100% verde (D20 corrigido). Todos os arquivos 3D e UIDs rastreados no Git (D1, D2). Commits: 11.
 
 ---
 

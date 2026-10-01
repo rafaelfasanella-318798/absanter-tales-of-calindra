@@ -633,7 +633,7 @@ anterior com status `OK` (validado por você). Tarefas `RASCUNHO` não são exec
 | ID | Tarefa | Depende de | Status | Notas |
 |---|---|---|---|---|
 | **G0** | **Estabilizar e fundar** | | | |
-| G0-01 | HEAD íntegra, lint verde e `verify` em clone limpo (**P0**) | — | TODO | Fazer primeiro |
+| G0-01 | HEAD íntegra, lint verde e `verify` em clone limpo (**P0**) | — | DONE | 105/105 testes, lint verde, verify criado |
 | G0-02 | Higiene do repositório: tag do 2D, sem LFS, CI | G0-01 | TODO | |
 | G0-03 | `project.godot`: renderer, tela, Input Map e camadas | G0-01 | TODO | |
 | G0-04 | `test.ps1`, `play`, VS Code, hook `pre-push`, smoke automático, zero órfãos | G0-01 | TODO | |

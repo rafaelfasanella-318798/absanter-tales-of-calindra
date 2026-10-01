@@ -1,0 +1,57 @@
+[gd_scene load_steps=8 format=3 uid="uid://flw3d001"]
+
+[ext_resource type="Script" path="res://scripts/world_3d/follower_3d.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
+radius = 0.35
+height = 1.2
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_calindra_body"]
+albedo_color = Color(0.6, 0.35, 0.85, 1)
+roughness = 0.5
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_calindra_body"]
+material = SubResource("StandardMaterial3D_calindra_body")
+radius = 0.23
+height = 0.75
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_calindra_head"]
+albedo_color = Color(0.96, 0.82, 0.7, 1)
+roughness = 0.5
+
+[sub_resource type="SphereMesh" id="SphereMesh_calindra_head"]
+material = SubResource("StandardMaterial3D_calindra_head")
+radius = 0.19
+height = 0.38
+
+[node name="Follower3D" type="CharacterBody3D" groups=["followers_3d"]]
+collision_layer = 4
+collision_mask = 1
+script = ExtResource("1_script")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+position = Vector3(0, 0.6, 0)
+shape = SubResource("CapsuleShape3D_1")
+
+[node name="Visuals" type="Node3D" parent="."]
+
+[node name="BodyMesh" type="MeshInstance3D" parent="Visuals"]
+position = Vector3(0, 0.42, 0)
+mesh = SubResource("CapsuleMesh_calindra_body")
+
+[node name="HeadMesh" type="MeshInstance3D" parent="Visuals"]
+position = Vector3(0, 0.86, 0)
+mesh = SubResource("SphereMesh_calindra_head")
+
+[node name="NameLabel" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.22, 0)
+billboard = 1
+no_depth_test = true
+modulate = Color(0.88, 0.94, 1, 1)
+outline_modulate = Color(0, 0, 0, 1)
+text = "Calindra"
+font = ExtResource("2_font")
+font_size = 14
+outline_size = 4
+pixel_size = 0.005

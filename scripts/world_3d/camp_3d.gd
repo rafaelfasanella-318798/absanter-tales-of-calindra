@@ -6,8 +6,6 @@ extends Node3D
 
 signal camp_finished
 
-@export var camp_index: int = 0  ## Índice de diálogo de acampamento a usar
-
 # ──────────────────────────────────────────────
 # Dados dos diálogos de acampamento
 ## Cada entrada: {"speaker": "Ragg"|"Calindra", "text": "..."}
@@ -17,25 +15,51 @@ const CAMP_DIALOGUES: Array[Array] = [
 	[
 		{"speaker": "Ragg", "text": "...Que canseira. Mas conseguimos."},
 		{"speaker": "Calindra", "text": "Você foi bem lá atrás. Não esperava que cortasse assim."},
-		{"speaker": "Ragg", "text": "Aprendi com quem eu cresci. (pausa) E você? Parece que está bem tranquila pra uma maga."},
-		{"speaker": "Calindra", "text": "Cresci vendo batalhas. A tranquilidade é só treino. (sorri levemente) Come logo — o feijão vai esfriar."},
+		{
+			"speaker": "Ragg",
+			"text":
+			(
+				"Aprendi com quem eu cresci. (pausa) "
+				+ "E você? Parece que está bem tranquila pra uma maga."
+			),
+		},
+		{
+			"speaker": "Calindra",
+			"text":
+			(
+				"Cresci vendo batalhas. A tranquilidade é só treino. "
+				+ "(sorri levemente) Come logo — o feijão vai esfriar."
+			),
+		},
 	],
 	# Acampamento 1 — caminhada pelo mundo
 	[
 		{"speaker": "Calindra", "text": "Você conhece a história do Golem Antigo que derrubamos?"},
 		{"speaker": "Ragg", "text": "Não. Por quê estava ali?"},
-		{"speaker": "Calindra", "text": "Guardava algo. Não sei o quê ainda, mas há magia muito antiga naquele lugar."},
+		{
+			"speaker": "Calindra",
+			"text":
+			"Guardava algo. Não sei o quê ainda, " + "mas há magia muito antiga naquele lugar.",
+		},
 		{"speaker": "Ragg", "text": "Então temos que voltar um dia desses."},
 		{"speaker": "Calindra", "text": "Já contava com isso."},
 	],
 	# Acampamento 2 — momento de vulnerabilidade
 	[
 		{"speaker": "Ragg", "text": "Às vezes me pergunto se estamos no caminho certo."},
-		{"speaker": "Calindra", "text": "...Eu também. Mas o caminho existe. Isso já é mais do que a maioria tem."},
+		{
+			"speaker": "Calindra",
+			"text": "...Eu também. Mas o caminho existe. " + "Isso já é mais do que a maioria tem.",
+		},
 		{"speaker": "Ragg", "text": "Filosofando enquanto come?"},
-		{"speaker": "Calindra", "text": "A comida inspira. (ri) Agora descansa — amanhã pode ser pior."},
+		{
+			"speaker": "Calindra",
+			"text": "A comida inspira. (ri) Agora descansa — amanhã pode ser pior."
+		},
 	],
 ]
+
+@export var camp_index: int = 0  ## Índice de diálogo de acampamento a usar
 
 # ──────────────────────────────────────────────
 # Estado do acampamento
@@ -124,8 +148,7 @@ func _show_line(index: int) -> void:
 	if speaker_label != null:
 		speaker_label.text = line.get("speaker", "")
 		speaker_label.modulate = (
-			Color(0.4, 0.7, 1.0) if line.get("speaker") == "Ragg"
-			else Color(0.85, 0.5, 1.0)
+			Color(0.4, 0.7, 1.0) if line.get("speaker") == "Ragg" else Color(0.85, 0.5, 1.0)
 		)
 	if dialogue_label != null:
 		dialogue_label.text = line.get("text", "")

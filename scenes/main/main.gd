@@ -3,9 +3,11 @@ extends Control
 ## Title screen for Absanter - Tales of Calindra with New Game, Continue, and Quit options.
 
 const STARTING_WORLD_SCENE: String = "res://scenes/world/kakariko.tscn"
+const STARTING_3D_SCENE: String = "res://scenes/world_3d/kakariko_3d.tscn"
 
 @onready var btn_new_game: Button = $VBoxMenu/BtnNewGame
 @onready var btn_continue: Button = $VBoxMenu/BtnContinue
+@onready var btn_mode_3d: Button = $VBoxMenu/BtnMode3D if has_node("VBoxMenu/BtnMode3D") else null
 @onready var btn_quit: Button = $VBoxMenu/BtnQuit
 @onready var btn_lang: Button = $VBoxMenu/BtnLang
 
@@ -16,6 +18,9 @@ func _ready() -> void:
 	if btn_new_game != null:
 		btn_new_game.pressed.connect(_on_new_game_pressed)
 		btn_new_game.grab_focus()
+
+	if btn_mode_3d != null:
+		btn_mode_3d.pressed.connect(_on_mode_3d_pressed)
 
 	if btn_continue != null:
 		btn_continue.disabled = not SaveManager.has_save(1)
@@ -38,6 +43,14 @@ func _on_new_game_pressed() -> void:
 	QuestManager.completed_quests.clear()
 	PartyManager.active_members = ["ragg", "calindra"]
 	SceneManager.change_scene(STARTING_WORLD_SCENE)
+
+
+func _on_mode_3d_pressed() -> void:
+	GameState.flags.clear()
+	InventoryManager.items.clear()
+	InventoryManager.gold = 100
+	PartyManager.active_members = ["ragg", "calindra"]
+	SceneManager.change_scene(STARTING_3D_SCENE)
 
 
 func _on_continue_pressed() -> void:
