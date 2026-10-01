@@ -10,6 +10,7 @@ var history: Array[String] = []
 var history_index: int = -1
 
 var _max_history: int = 50
+var _fps_overlay: Label = null
 
 @onready var panel: Control = $Panel
 @onready var output_label: RichTextLabel = $Panel/OutputLabel
@@ -22,20 +23,33 @@ func _ready() -> void:
 		panel.visible = false
 	if line_edit != null:
 		line_edit.text_submitted.connect(_on_text_submitted)
+	_setup_fps_overlay()
+
+
+func _process(_delta: float) -> void:
+	if _fps_overlay != null and _fps_overlay.visible:
+		var fps: float = Performance.get_monitor(Performance.TIME_FPS)
+		var draw_calls: float = Performance.get_monitor(
+			Performance.RENDER_TOTAL_DRAW_CALLS_IN_FRAME
+		)
+		var prims: float = Performance.get_monitor(Performance.RENDER_TOTAL_PRIMITIVES_IN_FRAME)
+		_fps_overlay.text = (
+			"FPS: %d | Draw: %d | Prims: %d" % [int(fps), int(draw_calls), int(prims)]
+		)
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_QUOTELEFT or event.keycode == KEY_F12:
-			toggle_console()
-			get_viewport().set_input_as_handled()
-		elif is_open and event.keycode == KEY_ESCAPE:
+	if event.is_action_pressed("debug_console"):
+		toggle_console()
+		get_viewport().set_input_as_handled()
+	elif is_open:
+		if event.is_action_pressed("ui_cancel"):
 			close_console()
 			get_viewport().set_input_as_handled()
-		elif is_open and event.keycode == KEY_UP:
+		elif event.is_action_pressed("ui_up"):
 			_navigate_history(-1)
 			get_viewport().set_input_as_handled()
-		elif is_open and event.keycode == KEY_DOWN:
+		elif event.is_action_pressed("ui_down"):
 			_navigate_history(1)
 			get_viewport().set_input_as_handled()
 
@@ -82,6 +96,12 @@ func execute_command(raw_text: String) -> String:
 			result = (
 				"Comandos disponíveis:\n"
 				+ "  help - Exibe esta ajuda\n"
+				+ "  scenario [id] - Aplica ou lista cenários de debug\n"
+				+ "  speed <x> - Altera velocidade do jogo (ex.: speed 2.0)\n"
+				+ "  fps - Alterna overlay de desempenho (FPS, draw calls, prims)\n"
+				+ "  encounter <normal|surprise|ambush> - Vantagem da próxima batalha\n"
+				+ "  restart - Reinicia a cena atual\n"
+				+ "  3d / battle3d / camp - Atalhos para cenas 3D\n"
 				+ "  teleport <kakariko|house|cave|boss> - Muda de mapa\n"
 				+ "  item <item_id> [qtd] - Adiciona item ao inventário\n"
 				+ "  gold <qtd> - Adiciona ouro\n"
@@ -112,6 +132,16 @@ func execute_command(raw_text: String) -> String:
 			result = _cmd_battle(args)
 		"flag":
 			result = _cmd_flag(args)
+		"scenario":
+			result = _cmd_scenario(args)
+		"speed":
+			result = _cmd_speed(args)
+		"fps":
+			result = _cmd_fps()
+		"encounter":
+			result = _cmd_encounter(args)
+		"restart":
+			result = _cmd_restart()
 		"3d", "kakariko3d":
 			SceneManager.change_scene("res://scenes/world_3d/kakariko_3d.tscn")
 			close_console()
@@ -137,6 +167,27 @@ func execute_command(raw_text: String) -> String:
 	_log(result)
 	command_executed.emit(trimmed, result)
 	return result
+
+
+func _setup_fps_overlay() -> void:
+	_fps_overlay = Label.new()
+	_fps_overlay.name = "FPSOverlay"
+	_fps_overlay.visible = false
+	_fps_overlay.anchor_left = 1.0
+	_fps_overlay.anchor_top = 0.0
+	_fps_overlay.anchor_right = 1.0
+	_fps_overlay.anchor_bottom = 0.0
+	_fps_overlay.offset_left = -260.0
+	_fps_overlay.offset_top = 8.0
+	_fps_overlay.offset_right = -8.0
+	_fps_overlay.offset_bottom = 28.0
+	_fps_overlay.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	_fps_overlay.add_theme_font_size_override("font_size", 11)
+	_fps_overlay.add_theme_color_override("font_color", Color(0.2, 1.0, 0.4, 0.9))
+	_fps_overlay.add_theme_color_override("font_shadow_color", Color(0, 0, 0, 0.8))
+	_fps_overlay.add_theme_constant_override("shadow_offset_x", 1)
+	_fps_overlay.add_theme_constant_override("shadow_offset_y", 1)
+	add_child(_fps_overlay)
 
 
 func _cmd_teleport(args: PackedStringArray) -> String:
@@ -243,6 +294,80 @@ func _cmd_flag(args: PackedStringArray) -> String:
 		val = raw_val.to_int()
 	GameState.set_flag(flag_name, val)
 	return "Flag '%s' = %s" % [flag_name, str(val)]
+
+
+func _cmd_scenario(args: PackedStringArray) -> String:
+	var boot_node: Node = get_node_or_null("/root/DebugBoot")
+	if boot_node == null:
+		return "DebugBoot não disponível."
+
+	if args.is_empty():
+		var scenarios: PackedStringArray = []
+		if boot_node.has_method("get_available_scenarios"):
+			scenarios = boot_node.get_available_scenarios()
+		if scenarios.is_empty():
+			return "Nenhum cenário encontrado em res://data/debug/scenarios/"
+		var list_str: String = "Cenários disponíveis:\n"
+		for s in scenarios:
+			list_str += "  - %s\n" % s
+		list_str += "Uso: scenario <id>"
+		return list_str.strip_edges()
+
+	var s_id: String = args[0]
+	if boot_node.has_method("load_and_apply_scenario"):
+		var success: bool = boot_node.load_and_apply_scenario(s_id, true)
+		if success:
+			close_console()
+			return "Cenário '%s' aplicado com sucesso." % s_id
+		return "Falha ao carregar cenário '%s'." % s_id
+	return "DebugBoot não suporta load_and_apply_scenario."
+
+
+func _cmd_speed(args: PackedStringArray) -> String:
+	if args.is_empty():
+		return "Velocidade atual: %.2fx. Uso: speed <fator>" % Engine.time_scale
+	var s: float = args[0].to_float()
+	if s <= 0.0:
+		return "Fator de velocidade inválido: %s" % args[0]
+	Engine.time_scale = s
+	return "Velocidade do jogo definida para %.2fx." % s
+
+
+func _cmd_fps() -> String:
+	if _fps_overlay == null:
+		_setup_fps_overlay()
+	_fps_overlay.visible = not _fps_overlay.visible
+	return "Overlay de desempenho: %s" % ("ATIVADO" if _fps_overlay.visible else "DESATIVADO")
+
+
+func _cmd_encounter(args: PackedStringArray) -> String:
+	if args.is_empty():
+		return (
+			"Vantagem atual: %s. Uso: encounter <normal|surprise|ambush>" % GameState.encounter_type
+		)
+	var enc: String = args[0].to_lower()
+	if enc == "surpresa":
+		enc = "surprise"
+	elif enc == "emboscada":
+		enc = "ambush"
+
+	if enc in ["normal", "surprise", "ambush"]:
+		GameState.encounter_type = enc
+		return "Próximo encontro definido como '%s'." % enc
+	return "Vantagem inválida: '%s'. Use normal, surprise ou ambush." % args[0]
+
+
+func _cmd_restart() -> String:
+	close_console()
+	var current: Node = get_tree().current_scene
+	if current != null and not current.scene_file_path.is_empty():
+		if SceneManager != null:
+			SceneManager.change_scene(current.scene_file_path)
+		else:
+			get_tree().change_scene_to_file(current.scene_file_path)
+		return "Reiniciando cena '%s'..." % current.scene_file_path
+	get_tree().reload_current_scene()
+	return "Reiniciando cena atual..."
 
 
 func _log(text: String) -> void:

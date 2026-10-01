@@ -56,7 +56,7 @@ Revisado pelo Copilot em 29/09/2026 (dívidas D1–D33 no §4.2.1 do ARCHITECTUR
 | 8 | Sistema de Acampamento Camp3D (fogueira + diálogos + restauração HP/MP) | ⚠ a restauração não acontece (D5); quebra depois de carregar um save (D31) | G1-05, G1-07 |
 | 9 | `project.godot` atualizado para render 3D (1280×720, MSAA 2×, FXAA) | ⚠ stretch `disabled`, renderer não definido (D13) | G0-03 |
 | 10 | Documentação atualizada (`CHECKLIST.md`, `GDD.md`, `ARCHITECTURE.md`) | ✅ substituída pela rev. 2 do ARCHITECTURE | — |
-**Testes:** 111/111 no clone limpo via verify (G0-01–G0-04, 0 órfãos). Lint 100% verde (D20 corrigido). Todos os arquivos 3D e UIDs rastreados no Git (D1, D2). Commits: 14.
+**Testes:** 120/120 no clone limpo via verify (G0-01–G0-05, 0 órfãos). Lint 100% verde (D20 corrigido). Todos os arquivos 3D e UIDs rastreados no Git (D1, D2). Commits: 15.
 
 ---
 

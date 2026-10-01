@@ -54,3 +54,9 @@ enum BattleState {
 	DEFEAT,
 	ESCAPE,
 }
+
+enum Advantage {
+	NORMAL,
+	SURPRISE,
+	AMBUSH,
+}

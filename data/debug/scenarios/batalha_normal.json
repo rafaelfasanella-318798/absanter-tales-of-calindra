@@ -1,0 +1,19 @@
+{
+  "id": "batalha_normal",
+  "descricao": "Batalha 3D normal com vantagem neutra",
+  "scene": "res://scenes/battle_3d/battle_3d.tscn",
+  "party": {
+    "ragg": { "level": 1 },
+    "calindra": { "level": 1 }
+  },
+  "inventory": {
+    "potion": 2
+  },
+  "gold": 50,
+  "flags": {},
+  "battle": {
+    "encounter_id": "starter_battle",
+    "advantage": "normal"
+  },
+  "time_scale": 1.0
+}

@@ -1,0 +1,19 @@
+{
+  "id": "batalha_surpresa",
+  "descricao": "Batalha 3D com Surpresa (party age primeiro com IP alta)",
+  "scene": "res://scenes/battle_3d/battle_3d.tscn",
+  "party": {
+    "ragg": { "level": 1 },
+    "calindra": { "level": 1 }
+  },
+  "inventory": {
+    "potion": 2
+  },
+  "gold": 50,
+  "flags": {},
+  "battle": {
+    "encounter_id": "starter_battle",
+    "advantage": "surprise"
+  },
+  "time_scale": 1.0
+}

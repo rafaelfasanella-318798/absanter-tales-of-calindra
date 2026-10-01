@@ -28,6 +28,7 @@ InventoryManager="*res://scripts/autoload/inventory_manager.gd"
 PartyManager="*res://scripts/autoload/party_manager.gd"
 Localization="*res://scripts/autoload/localization.gd"
 DebugConsole="*res://scenes/ui/debug_console.tscn"
+DebugBoot="*res://scripts/autoload/debug_boot.gd"
 
 [display]
 

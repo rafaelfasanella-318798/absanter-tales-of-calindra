@@ -1,0 +1,21 @@
+{
+  "id": "chefe_golem_lv8",
+  "descricao": "Luta contra o Golem com a party no nível 8 e Calindra ferida",
+  "scene": "res://scenes/battle_3d/battle_3d.tscn",
+  "party": {
+    "ragg": { "level": 8 },
+    "calindra": { "level": 8, "hp_ratio": 0.5 }
+  },
+  "inventory": {
+    "potion": 5
+  },
+  "gold": 500,
+  "flags": {
+    "kakariko_mimic": true
+  },
+  "battle": {
+    "encounter_id": "kakariko_golem",
+    "advantage": "normal"
+  },
+  "time_scale": 1.0
+}

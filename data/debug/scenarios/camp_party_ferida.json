@@ -1,0 +1,17 @@
+{
+  "id": "camp_party_ferida",
+  "descricao": "Acampamento 3D ao redor da fogueira com a party ferida",
+  "scene": "res://scenes/world_3d/camp_3d.tscn",
+  "party": {
+    "ragg": { "level": 2, "hp_ratio": 0.4 },
+    "calindra": { "level": 2, "hp_ratio": 0.3 }
+  },
+  "inventory": {
+    "potion": 1
+  },
+  "gold": 120,
+  "flags": {
+    "camp_visited": 1
+  },
+  "time_scale": 1.0
+}

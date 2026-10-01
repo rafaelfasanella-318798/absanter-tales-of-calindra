@@ -12,6 +12,7 @@ func test_autoloads_exist() -> void:
 	assert_not_null(InventoryManager, "InventoryManager autoload should exist")
 	assert_not_null(PartyManager, "PartyManager autoload should exist")
 	assert_not_null(Localization, "Localization autoload should exist")
+	assert_not_null(DebugBoot, "DebugBoot autoload should exist")
 
 
 func test_main_scene_loads() -> void:

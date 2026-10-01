@@ -1,0 +1,15 @@
+{
+  "id": "kakariko_inicio",
+  "descricao": "Início da exploração em Kakariko 3D com party inicial",
+  "scene": "res://scenes/world_3d/kakariko_3d.tscn",
+  "party": {
+    "ragg": { "level": 1 },
+    "calindra": { "level": 1 }
+  },
+  "inventory": {
+    "potion": 3
+  },
+  "gold": 100,
+  "flags": {},
+  "time_scale": 1.0
+}

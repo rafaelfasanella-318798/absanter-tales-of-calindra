@@ -472,6 +472,10 @@ que o formato de dados acima (JSON com `requer`/`requer_qualquer`/`bloqueia`) é
 > no novo documento [`text-rpg-ia-agent-spec.md`](text-rpg-ia-agent-spec.md) — que pode ser usado
 > como base/prompt para montar o agente mencionado na seção seguinte de pendências.
 
+> Para um cenário concreto (vila + caverna) modelado primeiro em texto puro e depois formalizado
+> no mesmo schema, e um plano de execução granular ("próximos 100 passos") a partir dele, ver
+> [`text-rpg-ia-roadmap-100-passos.md`](text-rpg-ia-roadmap-100-passos.md).
+
 ---
 
 ## 12. Pendências em aberto
