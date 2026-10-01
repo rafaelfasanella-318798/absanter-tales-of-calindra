@@ -1,6 +1,7 @@
 # Godot 4 .gitignore
 .godot/
 export/
+captures/
 tools/godot/
 tools/godot-win/
 *.translation
