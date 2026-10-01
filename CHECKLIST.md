@@ -6,7 +6,7 @@ Divisão de trabalho combinada: **você descreve** (lore, personagens, regras, e
 
 Origem: plano aprovado na sessão do Claude Code de 18/09/2026 e reconstruído em 19/09/2026 (a sessão original foi encerrada antes de o arquivo ser gravado).
 
-Este arquivo é a fonte de verdade do progresso. Marque `[x]` conforme os itens forem concluídos. O roteiro de execução do primeiro milestone (M0) está em `AGENTE-INICIO.md`.
+Este arquivo registra o progresso funcional do jogo: marque `[x]` conforme os itens forem concluídos. As tarefas e o status do pivô 3D ficam só no §8 do [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). O `AGENTE-INICIO.md` é o roteiro histórico do M0 (2D).
 
 ---
 
@@ -24,33 +24,41 @@ Este arquivo é a fonte de verdade do progresso. Marque `[x]` conforme os itens 
 
 | Item | Decisão |
 |---|---|
-| Engine | Godot 4.x (GDScript) |
-| Visual | 2D pixel art top-down (tiles 16x16, estilo Chrono Trigger / Stardew Valley) |
-| Combate | Turnos clássico JRPG |
+| Engine | Godot 4.7.2 (GDScript), testes com GUT |
+| Visual | 3D estilizado cel/toon em HD, inspirado em Grandia I–III (o 2D pixel art fica na tag `v0.3.0-2d`) |
+| Renderer | Compatibility em todas as plataformas (a Web exige) |
+| Resolução base | 1280×720, stretch `canvas_items`, aspect `expand`, MSAA 3D 2× |
+| Combate | Estilo Grandia: barra IP, Combo × Crítico × Cancel, Aerial e posição na arena |
+| Câmera | Rotacionável (giro de 45°, órbita e zoom) |
+| Encontros | Inimigos visíveis no mapa; surpresa e emboscada pelo ângulo de contato |
 | Calindra | Companheira jogável em party, com habilidades próprias |
-| Idioma do jogo | PT-BR primeiro, EN como segundo (assumido; confirmar na seção 0) |
-| Plataformas | Windows + Linux + Web (assumido; mobile opcional; confirmar na seção 0) |
-| **Direcionamento visual** | **3D · estilo Grandia III (PS2)** — câmera de órbita, combate 3D com IP Timeline, exploração 3D com SpringArm |
-| **Resolução base** | **1280×720** (3D nativo, MSAA 2×, FXAA) |
+| Idioma do jogo | PT-BR primeiro, EN como segundo (assumido; confirmar na seção 0 e na pendência V10 do ARCHITECTURE) |
+| Plataformas | Windows + Linux + Web (Web confirmada; mobile em aberto: seção 0 e pendência V10 do ARCHITECTURE) |
+
+> **Pivô 3D (29/09/2026):** papéis (você decide, o Copilot planeja e revisa, o Agy executa), arquitetura e tarefas estão em
+> [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). O andamento do pivô fica no §8.1 de lá; as seções do 2D abaixo ficam como histórico.
 
 ---
 
-## Direcionamento 3D — Grandia III Style (implementado em 29/09/2026)
+## Protótipo 3D do Agy (29/09/2026)
 
-| # | Item | Status |
-|---|---|---|
-| 1 | Separação COMBO vs. CRITICAL no combate 3D | ✅ DONE |
-| 2 | Aerial Launch e Aerial Combo após CANCEL | ✅ DONE |
-| 3 | Comando Evade/Mover (reposicionamento tático na arena) | ✅ DONE |
-| 4 | IP Timeline visual enriquecida (nome, estado, linha COM, mini-SP) | ✅ DONE |
-| 5 | Atributos/habilidades via `EnemyData.tres` no battle_3d (sem hardcode) | ✅ DONE |
-| 6 | `SpringArm3D` + câmera de órbita na exploração 3D | ✅ DONE |
-| 7 | Surprise Attack / Ambush por ângulo de aproximação (`EnemyWanderer3D`) | ✅ DONE |
-| 8 | Sistema de Acampamento Camp3D (fogueira + diálogos + restauração HP/MP) | ✅ DONE |
-| 9 | `project.godot` atualizado para render 3D (1280×720, MSAA 2×, FXAA) | ✅ DONE |
-| 10 | Documentação atualizada (`CHECKLIST.md`, `GDD.md`, `ARCHITECTURE.md`) | ✅ DONE |
+Revisado pelo Copilot em 29/09/2026 (dívidas D1–D33 no §4.2.1 do ARCHITECTURE). "Protótipo" = funciona, mas ainda não segue a arquitetura alvo.
 
-**Testes:** 105/105 passando · Commits: 8 commits dedicados ao direcionamento 3D
+| # | Item | Status | Completa em |
+|---|---|---|---|
+| 1 | Separação COMBO vs. CRITICAL no combate 3D | ⚠ o Combo também cancela (D19); dois heróis no COM travam a batalha (D21) | G0-06, G3-03, G3-04, G4-02 |
+| 2 | Aerial Launch e Aerial Combo após CANCEL | ⚠ o parceiro pode ser do lado do alvo (D22) | G0-06, G3-04, G4-02 |
+| 3 | Comando Evade/Mover (reposicionamento tático na arena) | ⚠ posição sorteada em torno do centro da arena, não escolhida (D30) | G3-04, G4-05 |
+| 4 | IP Timeline visual enriquecida (nome, estado, linha COM, mini-SP) | ✅ protótipo (marcadores recriados a cada quadro, D29) | G4-04 |
+| 5 | Atributos/habilidades via `EnemyData.tres` no battle_3d | ⚠ só os inimigos; SPD/MAG da party e o encontro são fixos (D6, D7) | G2-05, G3-01, G3-02, G4-02 |
+| 6 | `SpringArm3D` + câmera de órbita na exploração 3D | ⚠ pitch invertido deixa a câmera no chão (D25); entrada crua (D11); mouse preso até a batalha (D24) | G0-06, G1-02 |
+| 7 | Surprise Attack / Ambush por ângulo de aproximação (`EnemyWanderer3D`) | ⚠ usa a frente do nó raiz, que não gira, e mistura as convenções +Z e −Z (D3) | G1-03, G2-03, G2-04 |
+| 8 | Sistema de Acampamento Camp3D (fogueira + diálogos + restauração HP/MP) | ⚠ a restauração não acontece (D5); quebra depois de carregar um save (D31) | G1-05, G1-07 |
+| 9 | `project.godot` atualizado para render 3D (1280×720, MSAA 2×, FXAA) | ⚠ stretch `disabled`, renderer não definido (D13) | G0-03 |
+| 10 | Documentação atualizada (`CHECKLIST.md`, `GDD.md`, `ARCHITECTURE.md`) | ✅ substituída pela rev. 2 do ARCHITECTURE | — |
+
+**Testes:** 105/105 só nesta máquina: 3 scripts, 3 cenas e 11 `.uid` ficaram fora do Git. Num clone limpo rodam 75 testes, com 1 falha (D1).
+O `./lint.sh` também falha (D20). Correção: G0-01. Commits: 9, ainda sem push.
 
 ---
 
