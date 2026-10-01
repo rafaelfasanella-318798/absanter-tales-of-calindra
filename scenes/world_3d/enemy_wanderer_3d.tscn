@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/world_3d/enemy_wanderer_3d.gd" id="1_script"]
 [ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
+[ext_resource type="Material" path="res://assets/materials/toon_enemy.tres" id="3_toon_enemy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_slime"]
 albedo_color = Color(0.25, 0.85, 0.35, 1)
@@ -21,6 +22,7 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="Visual" type="MeshInstance3D" parent="."]
+material_override = ExtResource("3_toon_enemy")
 mesh = SubResource("SphereMesh_slime")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

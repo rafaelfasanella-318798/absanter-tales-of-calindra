@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" path="res://scripts/world_3d/follower_3d.gd" id="1_script"]
 [ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
+[ext_resource type="Material" path="res://assets/materials/toon_character.tres" id="3_toon_char"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1"]
 radius = 0.35
@@ -38,6 +39,7 @@ shape = SubResource("CapsuleShape3D_1")
 
 [node name="BodyMesh" type="MeshInstance3D" parent="Visuals"]
 position = Vector3(0, 0.42, 0)
+material_override = ExtResource("3_toon_char")
 mesh = SubResource("CapsuleMesh_calindra_body")
 
 [node name="HeadMesh" type="MeshInstance3D" parent="Visuals"]

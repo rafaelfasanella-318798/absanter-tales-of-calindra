@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" path="res://scripts/battle_3d/battle_3d.gd" id="1_script"]
 [ext_resource type="FontFile" path="res://assets/fonts/PixelOperator8.ttf" id="2_font"]
+[ext_resource type="Material" path="res://assets/materials/toon_character.tres" id="3_toon_char"]
+[ext_resource type="Material" path="res://assets/materials/toon_enemy.tres" id="4_toon_enemy"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_arena"]
 albedo_color = Color(0.35, 0.35, 0.4, 1)
@@ -153,6 +155,7 @@ mesh = SubResource("SphereMesh_torch")
 position = Vector3(-2.2, 0.5, 1.5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Ragg3D"]
+material_override = ExtResource("3_toon_char")
 mesh = SubResource("CapsuleMesh_ragg")
 
 [node name="NameLabel" type="Label3D" parent="Combatants/Ragg3D"]
@@ -169,6 +172,7 @@ pixel_size = 0.005
 position = Vector3(-3.2, 0.45, -0.5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Calindra3D"]
+material_override = ExtResource("3_toon_char")
 mesh = SubResource("CapsuleMesh_calindra")
 
 [node name="NameLabel" type="Label3D" parent="Combatants/Calindra3D"]
@@ -186,6 +190,7 @@ pixel_size = 0.005
 position = Vector3(2.5, 0.3, 1.2)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Slime3D"]
+material_override = ExtResource("4_toon_enemy")
 mesh = SubResource("SphereMesh_slime")
 
 [node name="NameLabel" type="Label3D" parent="Combatants/Slime3D"]
@@ -203,6 +208,7 @@ pixel_size = 0.005
 position = Vector3(3.2, 0.8, -1.0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Combatants/Golem3D"]
+material_override = ExtResource("4_toon_enemy")
 mesh = SubResource("BoxMesh_golem")
 
 [node name="NameLabel" type="Label3D" parent="Combatants/Golem3D"]
