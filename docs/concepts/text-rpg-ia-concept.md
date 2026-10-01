@@ -478,7 +478,22 @@ que o formato de dados acima (JSON com `requer`/`requer_qualquer`/`bloqueia`) é
 
 ---
 
-## 12. Pendências em aberto
+## 12. Combate como grafo de interações
+
+O mesmo princípio de modelar com grafos vale para o **combate tático** (ataques, magias,
+empurrões, condições, superfícies interagindo entre si) — inspirado nas mecânicas de
+*Baldur's Gate 3* (economia de ação, vantagem/desvantagem, superfícies e combos ambientais,
+reações como ataque de oportunidade). A regra de ouro continua a mesma do resto do documento:
+**o grafo decide o resultado mecânico, a IA só narra**.
+
+O detalhamento completo — schema de nós/relações (`Personagem`, `Acao`, `Recurso`, `Condicao`,
+`Superficie`, `Combo`), consultas Cypher para resolver ações e combos, um combate de exemplo
+completo (o encontro com "o Eco" da Caverna do Eco) e o escopo de MVP recomendado — está em
+[`text-rpg-ia-combat-graph.md`](text-rpg-ia-combat-graph.md).
+
+---
+
+## 13. Pendências em aberto
 
 - [ ] Escolher a stack do script MVP (Python vs. Node vs. GDScript headless).
 - [ ] Escolher o modelo de IA local para o MVP (reaproveitar Qwen de `docs/local-ai.md`?).
@@ -491,3 +506,5 @@ que o formato de dados acima (JSON com `requer`/`requer_qualquer`/`bloqueia`) é
 - [ ] Prototipar o prompt que gera as 3-5 sugestões de ação com tags de consequência (seção 6.2).
 - [ ] Montar o agente de IA a partir de `text-rpg-ia-agent-spec.md` e testar com a história
       "O Templo Caído" (seção 11).
+- [ ] Prototipar o MVP de combate (seção 7 de `text-rpg-ia-combat-graph.md`) usando o encontro
+      com "o Eco" como primeiro caso de teste.

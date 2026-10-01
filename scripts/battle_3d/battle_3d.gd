@@ -48,6 +48,8 @@ var is_battle_over: bool = false
 var default_camera_pos: Vector3 = Vector3(0, 4.5, 7.5)
 var default_camera_look: Vector3 = Vector3(0, 0.5, 0)
 var camera_shake_amount: float = 0.0
+var hero_command_queue: Array[int] = []
+var _last_encounter_type: String = "normal"
 
 # ──────────────────────────────────────────────
 # Nós da cena
@@ -62,6 +64,7 @@ var camera_shake_amount: float = 0.0
 @onready var cancel_banner: Label = $UI/CancelBanner
 @onready var status_label: Label = $UI/StatusPanel/StatusLabel
 @onready var victory_panel: Panel = $UI/VictoryPanel
+@onready var defeat_panel: Panel = $UI/DefeatPanel
 
 @onready var btn_combo: Button = $UI/CommandPanel/VBox/BtnCombo
 @onready var btn_critical: Button = $UI/CommandPanel/VBox/BtnCritical
@@ -84,11 +87,12 @@ var camera_shake_amount: float = 0.0
 # ──────────────────────────────────────────────
 func _ready() -> void:
 	GameState.current_mode = "battle_3d"
-	AudioManager.play_music("res://assets/audio/music/battle_theme.ogg", 0.3)
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	AudioManager.play_music("battle_theme", 0.3)
 
 	_init_combatants()
-	_apply_encounter_type(GameState.encounter_type)
 	_setup_ui()
+	_apply_encounter_type(GameState.encounter_type)
 	_update_status_display()
 
 
@@ -96,6 +100,7 @@ func _apply_encounter_type(enc_type: String) -> void:
 	## Ajusta a IP inicial dos combatentes de acordo com o tipo de encontro.
 	## Surprise Attack (player atacou pelas costas): party começa com IP alta.
 	## Ambush (inimigo veio pelas costas): inimigos começam com IP alta.
+	_last_encounter_type = enc_type
 	match enc_type:
 		"surprise":
 			# Party começa perto do ponto COM — pode agir quase imediatamente
@@ -380,14 +385,10 @@ func _handle_camera(delta: float) -> void:
 func _on_combatant_reached_command(idx: int) -> void:
 	var c: Dictionary = combatants[idx]
 	if c["is_player"]:
-		is_time_stopped = true
-		active_player_index = idx
-		if command_panel != null:
-			command_panel.visible = true
-			if actor_name_label != null:
-				actor_name_label.text = "— %s —" % c["name"]
-			if action_banner != null:
-				action_banner.text = "%s: escolha o comando!" % c["name"]
+		if active_player_index < 0:
+			_open_hero_command(idx)
+		else:
+			hero_command_queue.append(idx)
 	else:
 		# IA inimiga: escolhe CRITICAL com 30% de chance; COMBO caso contrário
 		var living_players: Array[int] = _get_living_player_indices()
@@ -399,6 +400,36 @@ func _on_combatant_reached_command(idx: int) -> void:
 		if action_banner != null:
 			var prep_type: String = "Critical" if c["chosen_action"] == "critical" else "Combo"
 			action_banner.text = "⚠ %s prepara um %s!" % [c["name"], prep_type]
+
+
+func _open_hero_command(idx: int) -> void:
+	if is_battle_over:
+		return
+	is_time_stopped = true
+	active_player_index = idx
+	var c: Dictionary = combatants[idx]
+	if command_panel != null:
+		command_panel.visible = true
+		if actor_name_label != null:
+			actor_name_label.text = "— %s —" % c["name"]
+		if action_banner != null:
+			action_banner.text = "%s: escolha o comando!" % c["name"]
+		if btn_combo != null:
+			btn_combo.grab_focus()
+
+
+func _finish_hero_command() -> void:
+	if command_panel != null:
+		command_panel.visible = false
+	if target_panel != null:
+		target_panel.visible = false
+	active_player_index = -1
+
+	if not hero_command_queue.is_empty():
+		var next_idx: int = hero_command_queue.pop_front()
+		_open_hero_command(next_idx)
+	else:
+		is_time_stopped = false
 
 
 # ──────────────────────────────────────────────
@@ -417,24 +448,19 @@ func _on_skill_chosen() -> void:
 
 
 func _on_defend_chosen() -> void:
+	if active_player_index < 0:
+		return
 	var c: Dictionary = combatants[active_player_index]
 	c["chosen_action"] = "defend"
 	c["state"] = "act"
-	if command_panel != null:
-		command_panel.visible = false
-	if target_panel != null:
-		target_panel.visible = false
-	is_time_stopped = false
+	_finish_hero_command()
 
 
 func _on_evade_chosen() -> void:
-	## Evasão não precisa de alvo — o personagem se move imediatamente.
+	if active_player_index < 0:
+		return
 	var c: Dictionary = combatants[active_player_index]
-	if command_panel != null:
-		command_panel.visible = false
-	if target_panel != null:
-		target_panel.visible = false
-	is_time_stopped = false
+	_finish_hero_command()
 	_resolve_evade(c)
 
 
@@ -492,6 +518,7 @@ func _open_target_selection(action_type: String) -> void:
 	for child in target_vbox.get_children():
 		child.queue_free()
 
+	var first_btn: Button = null
 	for i in range(combatants.size()):
 		var target: Dictionary = combatants[i]
 		if not target["is_player"] and target["hp"] > 0:
@@ -505,17 +532,21 @@ func _open_target_selection(action_type: String) -> void:
 			btn.add_theme_font_size_override("font_size", 8)
 			btn.pressed.connect(_on_target_selected.bind(action_type, i))
 			target_vbox.add_child(btn)
+			if first_btn == null:
+				first_btn = btn
+
+	if first_btn != null:
+		first_btn.grab_focus()
 
 
 func _on_target_selected(action_type: String, target_idx: int) -> void:
+	if active_player_index < 0:
+		return
 	var c: Dictionary = combatants[active_player_index]
 	c["chosen_action"] = action_type
 	c["chosen_target"] = target_idx
 	c["state"] = "act"
-
-	if target_panel != null:
-		target_panel.visible = false
-	is_time_stopped = false
+	_finish_hero_command()
 
 
 # ──────────────────────────────────────────────
@@ -577,10 +608,8 @@ func _resolve_combo(attacker: Dictionary, target: Dictionary) -> void:
 	var hit1: int = maxi(3, int(base * COMBO_HIT_1_MULT))
 	var hit2: int = maxi(3, int(base * COMBO_HIT_2_MULT))
 
-	# Aplica IP push independente da fase do alvo
+	# Aplica IP push independente da fase do alvo (sem cancelar ACT)
 	target["ip"] = maxf(0.0, target["ip"] - IP_PUSH_COMBO)
-	if target["state"] == "act":
-		target["state"] = "wait"
 
 	target["hp"] = maxi(0, target["hp"] - hit1 - hit2)
 
@@ -630,8 +659,8 @@ func _resolve_critical(attacker: Dictionary, target: Dictionary) -> void:
 
 	_animate_attack_3d(attacker["node"], target["node"], is_cancel)
 
-	# Se foi um CANCEL e o alvo ainda está vivo → Aerial Launch
-	if is_cancel and target["hp"] > 0:
+	# Se foi um CANCEL e o alvo ainda está vivo → Aerial Launch (apenas player)
+	if is_cancel and target["hp"] > 0 and attacker.get("is_player", false):
 		_trigger_aerial_launch(target, attacker)
 	elif target["hp"] <= 0 and target["node"] != null:
 		target["node"].visible = false
@@ -696,7 +725,7 @@ func _trigger_aerial_launch(target: Dictionary, launcher: Dictionary) -> void:
 	tween.tween_interval(0.2)  # Pausa dramática no ar
 
 	# Verifica se algum parceiro pode realizar o Aerial Combo
-	var aerial_partner: Dictionary = _find_aerial_partner(launcher)
+	var aerial_partner: Dictionary = _find_aerial_partner(launcher, target)
 	var has_aerial: bool = not aerial_partner.is_empty()
 
 	if has_aerial:
@@ -727,13 +756,14 @@ func _trigger_aerial_launch(target: Dictionary, launcher: Dictionary) -> void:
 		)
 
 
-func _find_aerial_partner(launcher: Dictionary) -> Dictionary:
-	## Retorna o dicionário de um parceiro player (diferente do launcher)
-	## que tenha SP suficiente e IP >= 0.5 para executar o Aerial Combo.
+func _find_aerial_partner(launcher: Dictionary, target: Dictionary = {}) -> Dictionary:
+	## Retorna o dicionário de um parceiro do mesmo lado do launcher
+	## (diferente do launcher e do alvo) com SP suficiente e IP >= 0.5.
 	for c in combatants:
 		if (
-			c["is_player"]
+			c["is_player"] == launcher.get("is_player", true)
 			and c["id"] != launcher["id"]
+			and (target.is_empty() or c["id"] != target.get("id", ""))
 			and c["hp"] > 0
 			and c["sp"] >= SP_COST_AERIAL
 			and c["ip"] >= 0.5
@@ -823,66 +853,11 @@ func _execute_aerial_combo(partner: Dictionary, target: Dictionary, land_pos: Ve
 # Animações 3D
 # ──────────────────────────────────────────────
 func _animate_attack_3d(attacker_node: Node3D, target_node: Node3D, is_cancel: bool) -> void:
-	if attacker_node == null or target_node == null:
-		return
-
-	var orig_pos: Vector3 = attacker_node.global_position
-	var target_pos: Vector3 = target_node.global_position
-
-	default_camera_pos = target_pos + Vector3(0, 2.5, 4.0)
-	default_camera_look = target_pos + Vector3(0, 0.5, 0)
-	camera_shake_amount = 0.35 if is_cancel else 0.15
-
-	var tween: Tween = create_tween()
-	var charge_pos: Vector3 = target_pos + (orig_pos - target_pos).normalized() * 0.8
-	tween.tween_property(attacker_node, "global_position", charge_pos, 0.18).set_trans(
-		Tween.TRANS_QUAD
-	)
-	tween.tween_interval(0.20)
-	tween.tween_property(attacker_node, "global_position", orig_pos, 0.22).set_trans(
-		Tween.TRANS_QUAD
-	)
-	tween.finished.connect(
-		func():
-			default_camera_pos = Vector3(0, 4.5, 7.5)
-			default_camera_look = Vector3(0, 0.5, 0)
-	)
+	Battle3DUI.animate_attack_3d(self, attacker_node, target_node, is_cancel)
 
 
 func _animate_combo_3d(attacker_node: Node3D, target_node: Node3D) -> void:
-	## Dois avanços rápidos: hit 1 + recuo + hit 2 + recuo
-	if attacker_node == null or target_node == null:
-		return
-
-	var orig_pos: Vector3 = attacker_node.global_position
-	var target_pos: Vector3 = target_node.global_position
-	var charge_pos: Vector3 = target_pos + (orig_pos - target_pos).normalized() * 0.9
-
-	default_camera_pos = target_pos + Vector3(0, 2.0, 3.5)
-	default_camera_look = target_pos + Vector3(0, 0.5, 0)
-	camera_shake_amount = 0.12
-
-	var tween: Tween = create_tween()
-	# Hit 1
-	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(
-		Tween.TRANS_QUAD
-	)
-	tween.tween_property(attacker_node, "global_position", orig_pos, 0.12).set_trans(
-		Tween.TRANS_QUAD
-	)
-	# Hit 2
-	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(
-		Tween.TRANS_QUAD
-	)
-	tween.tween_property(attacker_node, "global_position", orig_pos, 0.14).set_trans(
-		Tween.TRANS_QUAD
-	)
-
-	tween.finished.connect(
-		func():
-			default_camera_pos = Vector3(0, 4.5, 7.5)
-			default_camera_look = Vector3(0, 0.5, 0)
-	)
+	Battle3DUI.animate_combo_3d(self, attacker_node, target_node)
 
 
 func _trigger_cancel_effect(target_name: String) -> void:
@@ -934,9 +909,19 @@ func _check_battle_end() -> void:
 
 	if living_enemies.is_empty():
 		is_battle_over = true
+		if command_panel != null:
+			command_panel.visible = false
+		if target_panel != null:
+			target_panel.visible = false
+		hero_command_queue.clear()
 		_on_victory()
 	elif living_players.is_empty():
 		is_battle_over = true
+		if command_panel != null:
+			command_panel.visible = false
+		if target_panel != null:
+			target_panel.visible = false
+		hero_command_queue.clear()
 		_on_defeat()
 
 
@@ -946,13 +931,34 @@ func _on_victory() -> void:
 	if victory_panel != null:
 		victory_panel.visible = true
 	var btn_leave: Button = $UI/VictoryPanel/VBox/BtnReturn
-	if btn_leave != null and not btn_leave.pressed.is_connected(_on_return_to_kakariko):
-		btn_leave.pressed.connect(_on_return_to_kakariko)
+	if btn_leave != null:
+		if not btn_leave.pressed.is_connected(_on_return_to_kakariko):
+			btn_leave.pressed.connect(_on_return_to_kakariko)
+		btn_leave.grab_focus()
 
 
 func _on_defeat() -> void:
 	if action_banner != null:
-		action_banner.text = "A party foi derrotada! Pressione ESC para tentar novamente."
+		action_banner.text = "A party foi derrotada!"
+	if defeat_panel != null:
+		defeat_panel.visible = true
+	var btn_retry: Button = get_node_or_null("UI/DefeatPanel/VBox/BtnRetry")
+	if btn_retry != null:
+		if not btn_retry.pressed.is_connected(_on_retry_battle):
+			btn_retry.pressed.connect(_on_retry_battle)
+		btn_retry.grab_focus()
+	var btn_title: Button = get_node_or_null("UI/DefeatPanel/VBox/BtnTitle")
+	if btn_title != null and not btn_title.pressed.is_connected(_on_title_return):
+		btn_title.pressed.connect(_on_title_return)
+
+
+func _on_retry_battle() -> void:
+	GameState.encounter_type = _last_encounter_type
+	SceneManager.change_scene("res://scenes/battle_3d/battle_3d.tscn")
+
+
+func _on_title_return() -> void:
+	SceneManager.change_scene("res://scenes/main/main.tscn")
 
 
 func _on_return_to_kakariko() -> void:

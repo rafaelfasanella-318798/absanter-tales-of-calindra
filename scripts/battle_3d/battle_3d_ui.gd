@@ -120,3 +120,64 @@ static func show_damage_popup(
 	var tween: Tween = target_node.create_tween()
 	tween.tween_property(label, "global_position", label.global_position + Vector3(0, 0.9, 0), 0.85)
 	tween.finished.connect(label.queue_free)
+
+
+static func animate_attack_3d(
+	battle: Node3D, attacker_node: Node3D, target_node: Node3D, is_cancel: bool
+) -> void:
+	if attacker_node == null or target_node == null:
+		return
+
+	var orig_pos: Vector3 = attacker_node.global_position
+	var target_pos: Vector3 = target_node.global_position
+
+	battle.default_camera_pos = target_pos + Vector3(0, 2.5, 4.0)
+	battle.default_camera_look = target_pos + Vector3(0, 0.5, 0)
+	battle.camera_shake_amount = 0.35 if is_cancel else 0.15
+
+	var tween: Tween = battle.create_tween()
+	var charge_pos: Vector3 = target_pos + (orig_pos - target_pos).normalized() * 0.8
+	tween.tween_property(attacker_node, "global_position", charge_pos, 0.18).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.tween_interval(0.20)
+	tween.tween_property(attacker_node, "global_position", orig_pos, 0.22).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.finished.connect(
+		func():
+			battle.default_camera_pos = Vector3(0, 4.5, 7.5)
+			battle.default_camera_look = Vector3(0, 0.5, 0)
+	)
+
+
+static func animate_combo_3d(battle: Node3D, attacker_node: Node3D, target_node: Node3D) -> void:
+	if attacker_node == null or target_node == null:
+		return
+
+	var orig_pos: Vector3 = attacker_node.global_position
+	var target_pos: Vector3 = target_node.global_position
+	var charge_pos: Vector3 = target_pos + (orig_pos - target_pos).normalized() * 0.9
+
+	battle.default_camera_pos = target_pos + Vector3(0, 2.0, 3.5)
+	battle.default_camera_look = target_pos + Vector3(0, 0.5, 0)
+	battle.camera_shake_amount = 0.12
+
+	var tween: Tween = battle.create_tween()
+	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.tween_property(attacker_node, "global_position", orig_pos, 0.12).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.tween_property(attacker_node, "global_position", charge_pos, 0.12).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.tween_property(attacker_node, "global_position", orig_pos, 0.14).set_trans(
+		Tween.TRANS_QUAD
+	)
+	tween.finished.connect(
+		func():
+			battle.default_camera_pos = Vector3(0, 4.5, 7.5)
+			battle.default_camera_look = Vector3(0, 0.5, 0)
+	)

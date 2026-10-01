@@ -638,7 +638,7 @@ anterior com status `OK` (validado por você). Tarefas `RASCUNHO` não são exec
 | G0-03 | `project.godot`: renderer, tela, Input Map e camadas | G0-01 | DONE | gl_compatibility, 1280x720 canvas_items, camadas e ações do §3.16 |
 | G0-04 | `test.ps1`, `play`, VS Code, hook `pre-push`, smoke automático, zero órfãos | G0-01 | DONE | test.ps1, play.{sh,ps1}, tasks VS Code, hook pre-push, smoke dinâmico, 0 órfãos |
 | G0-05 | Cenários de debug e comandos novos no console | G0-03, G0-04 | DONE | 6 cenários, DebugBoot autoload, ações e novos comandos no console, 120 testes |
-| G0-06 | Estabilizar o protótipo para playtest (softlocks, mouse, câmera, diálogo e música) | G0-05 | TODO | |
+| G0-06 | Estabilizar o protótipo para playtest (softlocks, mouse, câmera, diálogo e música) | G0-05 | DONE | D19, D21, D22, D23, D24, D25, D26, D27, D28 corrigidos, bot de playtest, 134 testes |
 | G0-07 | Captura visual (Movie Maker) | G0-04 | TODO | |
 | G0-08 | Shader toon, contorno e cena vitrine | G0-03 | TODO | |
 | G0-09 | Export Web do 3D validado | G0-06, G0-08 | TODO | |

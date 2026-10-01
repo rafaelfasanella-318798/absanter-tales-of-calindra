@@ -52,5 +52,5 @@ func _on_dialogue_closed(_id: String) -> void:
 func _lock_players(lock: bool) -> void:
 	var players: Array[Node] = get_tree().get_nodes_in_group("player")
 	for p in players:
-		if p is Player:
+		if p.has_method("lock_movement"):
 			p.lock_movement(lock)

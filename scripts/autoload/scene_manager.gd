@@ -29,6 +29,9 @@ func _setup_fade_overlay() -> void:
 
 
 func change_scene(scene_path: String, fade_duration: float = 0.4) -> void:
+	if DialogueManager != null and DialogueManager.is_active:
+		DialogueManager.end_dialogue(DialogueManager.current_dialogue_id)
+
 	if _is_transitioning:
 		return
 	if suppress_transitions:

@@ -14,8 +14,8 @@ extends Node3D
 @export var camera_height_offset: float = 1.2  ## Altura do CameraRig acima do player
 @export var orbit_speed_mouse: float = 0.3  ## Sensibilidade de órbita pelo mouse (graus/pixel)
 @export var orbit_speed_gamepad: float = 80.0  ## Sensibilidade de órbita pelo analógico (graus/s)
-@export var orbit_pitch_min: float = -15.0  ## Ângulo de inclinação mínimo (graus)
-@export var orbit_pitch_max: float = 55.0  ## Ângulo de inclinação máximo (graus)
+@export var orbit_pitch_min: float = 5.0  ## Ângulo de inclinação mínimo (graus)
+@export var orbit_pitch_max: float = 60.0  ## Ângulo de inclinação máximo (graus)
 
 # Estado interno da órbita
 var _orbit_yaw: float = 0.0  ## Rotação horizontal (Y) em graus
@@ -38,13 +38,17 @@ var _is_mouse_orbiting: bool = false
 # ──────────────────────────────────────────────
 func _ready() -> void:
 	GameState.current_mode = "exploration_3d"
-	AudioManager.play_music("res://assets/audio/music/title_theme.ogg", 0.5)
+	AudioManager.play_music("title_theme", 0.5)
 
 	if battle_portal != null:
 		battle_portal.body_entered.connect(_on_battle_trigger_entered)
 
 	# Captura o mouse para câmera de órbita quando a janela tiver foco
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+
+func _exit_tree() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 # ──────────────────────────────────────────────
@@ -71,9 +75,9 @@ func _process(delta: float) -> void:
 			_orbit_pitch - joy_y * orbit_speed_gamepad * delta, orbit_pitch_min, orbit_pitch_max
 		)
 
-	# 3. Aplica a rotação ao CameraRig
+	# 3. Aplica a rotação ao CameraRig (pitch negativo para mirar para baixo)
 	camera_rig.rotation_degrees.y = _orbit_yaw
-	camera_rig.rotation_degrees.x = _orbit_pitch
+	camera_rig.rotation_degrees.x = -_orbit_pitch
 
 	# 4. Faz o SpringArm apontar sempre para frente a partir do rig (sem rotação extra)
 	if spring_arm != null:

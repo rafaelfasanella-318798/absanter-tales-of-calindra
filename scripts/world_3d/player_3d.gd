@@ -60,8 +60,13 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 
-	if Input.is_action_just_pressed("interact"):
+
+func _unhandled_input(event: InputEvent) -> void:
+	if is_movement_locked:
+		return
+	if event.is_action_pressed("interact"):
 		_try_interact()
+		get_viewport().set_input_as_handled()
 
 
 func _record_position_step() -> void:
