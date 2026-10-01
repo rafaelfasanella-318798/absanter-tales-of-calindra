@@ -642,7 +642,7 @@ anterior com status `OK` (validado por você). Tarefas `RASCUNHO` não são exec
 | G0-07 | Captura visual (Movie Maker) | G0-04 | DONE | capture.{sh,ps1} funcionando em ~27s, grava 01,02,03.png por cena |
 | G0-08 | Shader toon, contorno e cena vitrine | G0-03 | DONE | toon/outline shaders, 3 materiais com next_pass, toon_showcase e 138 testes |
 | G0-09 | Export Web do 3D validado | G0-06, G0-08 | DONE | Export Web gerado com variant/thread_support=false, build 41MB OK |
-| G0-10 | Relatório G0 + reconciliar o CHECKLIST | G0-01…G0-09 | TODO | Parar para revisão |
+| G0-10 | Relatório G0 + reconciliar o CHECKLIST | G0-01…G0-09 | DONE | docs/RELATORIO-G0.md e CHECKLIST.md atualizados; parar para revisão |
 | **G1** | **Exploração 3D** | | | |
 | G1-01 | Modelos CC0 de Ragg e Calindra + `CharacterModel3D` | G0-10 `OK` | TODO | |
 | G1-02 | `CameraRig3D` + `CameraMath` | G0-10 `OK` | TODO | |

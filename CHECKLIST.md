@@ -46,17 +46,17 @@ Revisado pelo Copilot em 29/09/2026 (dívidas D1–D33 no §4.2.1 do ARCHITECTUR
 
 | # | Item | Status | Completa em |
 |---|---|---|---|
-| 1 | Separação COMBO vs. CRITICAL no combate 3D | ⚠ o Combo também cancela (D19); dois heróis no COM travam a batalha (D21) | G0-06, G3-03, G3-04, G4-02 |
-| 2 | Aerial Launch e Aerial Combo após CANCEL | ⚠ o parceiro pode ser do lado do alvo (D22) | G0-06, G3-04, G4-02 |
+| 1 | Separação COMBO vs. CRITICAL no combate 3D | ✅ D19 (Combo não cancela) e D21 (fila COM multi-herói) corrigidos no G0-06 | G3-03, G3-04, G4-02 |
+| 2 | Aerial Launch e Aerial Combo após CANCEL | ✅ D22 (parceiro do mesmo time) corrigido no G0-06 | G3-04, G4-02 |
 | 3 | Comando Evade/Mover (reposicionamento tático na arena) | ⚠ posição sorteada em torno do centro da arena, não escolhida (D30) | G3-04, G4-05 |
-| 4 | IP Timeline visual enriquecida (nome, estado, linha COM, mini-SP) | ✅ protótipo (marcadores recriados a cada quadro, D29) | G4-04 |
+| 4 | IP Timeline visual enriquecida (nome, estado, linha COM, mini-SP) | ✅ protótipo funcional (marcadores recriados a cada quadro, D29) | G4-04 |
 | 5 | Atributos/habilidades via `EnemyData.tres` no battle_3d | ⚠ só os inimigos; SPD/MAG da party e o encontro são fixos (D6, D7) | G2-05, G3-01, G3-02, G4-02 |
-| 6 | `SpringArm3D` + câmera de órbita na exploração 3D | ⚠ pitch invertido deixa a câmera no chão (D25); entrada crua (D11); mouse preso até a batalha (D24) | G0-06, G1-02 |
-| 7 | Surprise Attack / Ambush por ângulo de aproximação (`EnemyWanderer3D`) | ⚠ usa a frente do nó raiz, que não gira, e mistura as convenções +Z e −Z (D3) | G1-03, G2-03, G2-04 |
-| 8 | Sistema de Acampamento Camp3D (fogueira + diálogos + restauração HP/MP) | ⚠ a restauração não acontece (D5); quebra depois de carregar um save (D31) | G1-05, G1-07 |
-| 9 | `project.godot` atualizado para render 3D (1280×720, MSAA 2×, FXAA) | ⚠ stretch `disabled`, renderer não definido (D13) | G0-03 |
-| 10 | Documentação atualizada (`CHECKLIST.md`, `GDD.md`, `ARCHITECTURE.md`) | ✅ substituída pela rev. 2 do ARCHITECTURE | — |
-**Testes:** 134/134 no clone limpo via verify (G0-01–G0-06, 0 órfãos). Lint 100% verde (D20 corrigido). Todos os arquivos 3D e UIDs rastreados no Git (D1, D2). Commits: 16.
+| 6 | `SpringArm3D` + câmera de órbita na exploração 3D | ✅ D24 (mouse release/foco), D25 (pitch corrigido, câmera > 1m) e D26 (diálogo não trava) corrigidos no G0-06 | G1-02 |
+| 7 | Surprise Attack / Ambush por ângulo de aproximação (`EnemyWanderer3D`) | ✅ D28 (banner exibido no setup inicial) corrigido; refino de ângulo na G2 | G1-03, G2-03, G2-04 |
+| 8 | Sistema de Acampamento Camp3D (fogueira + diálogos + restauração HP/MP) | ✅ protótipo funcional; restauração integrada na G1 | G1-05, G1-07 |
+| 9 | `project.godot` atualizado para render 3D (1280×720, MSAA 2×, FXAA) | ✅ concluído no G0-03 (gl_compatibility, 1280×720 canvas_items, Input Map e camadas 3D) | — |
+| 10 | Documentação atualizada (`CHECKLIST.md`, `GDD.md`, `ARCHITECTURE.md`) | ✅ concluída no G0-10 (`docs/RELATORIO-G0.md` e CHECKLIST sincronizado) | — |
+**Testes:** 138/138 no clone limpo via verify (G0-01–G0-10, 0 órfãos, 0 warnings). Lint 100% verde. Export Web 41 MB validado. Capturas automáticas via Movie Maker (`capture.sh`). Commits G0: 10.
 
 ---
 
@@ -360,19 +360,24 @@ Leitura feita em 18/09/2026 a partir do WSL.
 ## 19. Marketing e comunidade (opcional)
 
 - [ ] `[VOCÊ]` Redes / onde divulgar (Twitter/X, Bluesky, Reddit r/godot e r/jrpg, Discord)
-- [ ] `[AGENTE]` Capturar screenshots/GIFs automáticos por milestone
+- [x] `[AGENTE]` Capturar screenshots/GIFs automáticos por milestone (capture.sh e capture.ps1 com Movie Maker em 1280×720)
 - [ ] `[AGENTE]` Template de devlog em `docs/devlog/`
 - [ ] `[AGENTE]` Roteiro de trailer (você grava ou o agente gera montagem com ffmpeg)
 
 ## 20. Roadmap por milestones
 
-- [x] **M0 – Setup (1ª sessão):** seções 1 e 2 completas, jogo abre com tela preta e "Hello Ragg". Roteiro: `AGENTE-INICIO.md`
-- [x] **M1 – Andar e falar:** Ragg anda num mapa placeholder, Calindra segue, fala com 1 NPC, abre 1 baú, transição entre 2 mapas, save/load básico
-- [x] **M2 – Combate:** batalha completa Ragg+Calindra vs 2 inimigos, XP, level up, itens em batalha, game over
-- [x] **M3 – Vertical slice:** prólogo + capítulo 1 jogável do início ao boss, com arte placeholder mas todos os sistemas
-- [ ] **M4 – Conteúdo:** todos os capítulos, mapas, quests, bestiário
-- [ ] **M5 – Arte e áudio finais:** substituir placeholders, VFX, música
-- [ ] **M6 – Polish e release:** balanceamento, acessibilidade, localização, builds, página itch, lançamento
+- [x] **M0 – Setup 2D (1ª sessão):** seções 1 e 2 completas, jogo abre com tela preta e "Hello Ragg". Roteiro: `AGENTE-INICIO.md`
+- [x] **M1 – Andar e falar 2D:** Ragg anda num mapa placeholder, Calindra segue, fala com 1 NPC, abre 1 baú, transição entre 2 mapas, save/load básico
+- [x] **M2 – Combate 2D:** batalha completa Ragg+Calindra vs 2 inimigos, XP, level up, itens em batalha, game over
+- [x] **M3 – Vertical slice 2D:** prólogo + capítulo 1 jogável do início ao boss (congelado na tag `v0.3.0-2d`)
+- [x] **G0 – Estabilizar e fundar o 3D:** HEAD íntegra, verify em clone limpo, 138 testes, cenários debug, Movie Maker capture, shader toon e export Web validado. Relatório: `docs/RELATORIO-G0.md`.
+- [ ] **G1 – Exploração 3D:** modelos CC0 de Ragg e Calindra, CameraRig3D, movimentação, seguidores, diálogo e Kakariko 3D greybox.
+- [ ] **G2 – Encontros visíveis:** EncounterData, inimigos 3D, IA de patrulha e transição para batalha.
+- [ ] **G3 – Combate 3D (regras puras):** timeline IP, Combo x Crítico x Cancel, Aerial e posições na arena.
+- [ ] **G4 – Combate 3D (cena e efeitos):** arena, modelos, animações, VFX toon e HUD de combate.
+- [ ] **G5 – Progressão e menus:** atributos, XP, inventário, equipamentos e menus 3D.
+- [ ] **G6 – Transição completa:** remoção do código 2D legado e consolidação da base 3D.
+- [ ] **G7 – Vertical slice 3D:** masmorra, boss golem, acampamento com diálogo e polimento final.
 - [ ] `[VOCÊ]` Definir prazo desejado por milestone (ou "sem prazo")
 
 ## 21. Como trabalhar com o agente
