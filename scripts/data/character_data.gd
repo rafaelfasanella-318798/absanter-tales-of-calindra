@@ -8,6 +8,9 @@ extends Resource
 @export_multiline var description: String = ""
 @export var portrait: Texture2D
 @export var sprite_frames: SpriteFrames
+@export var model_scene: PackedScene
+@export var ip_marker_color: Color = Color.WHITE
+@export var ip_marker_icon: Texture2D
 @export var level: int = 1
 @export var max_hp: int = 100
 @export var max_mp: int = 20

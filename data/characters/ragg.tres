@@ -1,9 +1,10 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=5 format=3]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="1_script"]
 [ext_resource type="Resource" path="res://data/skills/slash.tres" id="2_skill1"]
 [ext_resource type="Resource" path="res://data/skills/focus_strike.tres" id="3_skill2"]
 [ext_resource type="Resource" path="res://data/skills/arcane_blade.tres" id="4_skill3"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/ragg/ragg_model.tscn" id="5_model"]
 
 [resource]
 script = ExtResource("1_script")
@@ -11,6 +12,8 @@ id = "ragg"
 character_name = "Ragg"
 title = "Guerreiro de Absanter"
 description = "Protagonista focado em combate corpo a corpo e golpes de espada incisivos."
+model_scene = ExtResource("5_model")
+ip_marker_color = Color(0.2, 0.5, 0.9, 1)
 level = 1
 max_hp = 120
 max_mp = 30

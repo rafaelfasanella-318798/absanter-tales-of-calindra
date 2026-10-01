@@ -41,3 +41,14 @@ Todos os recursos de terceiros utilizados neste projeto possuem licenças permis
 - **Autor**: Tom "Bitwes" Boulden e colaboradores
 - **Origem**: [github.com/bitwes/Gut](https://github.com/bitwes/Gut)
 - **Licença**: MIT License
+
+---
+
+## 4. Modelos 3D (Personagens)
+
+### KayKit: Adventurers Character Pack
+- **Autor**: Kay Lousberg (KayKit)
+- **Origem**: [kaylousberg.itch.io](https://kaylousberg.itch.io) / [GitHub](https://github.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0)
+- **Licença**: [Creative Commons Zero (CC0) 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)
+- **Uso no projeto**: Modelos 3D de Ragg (Barbarian) e Calindra (Mage) em `assets/models/characters/`.
+

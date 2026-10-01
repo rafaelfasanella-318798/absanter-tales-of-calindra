@@ -644,7 +644,7 @@ anterior com status `OK` (validado por você). Tarefas `RASCUNHO` não são exec
 | G0-09 | Export Web do 3D validado | G0-06, G0-08 | DONE | Export Web gerado com variant/thread_support=false, build 41MB OK |
 | G0-10 | Relatório G0 + reconciliar o CHECKLIST | G0-01…G0-09 | DONE | docs/RELATORIO-G0.md e CHECKLIST.md atualizados; parar para revisão |
 | **G1** | **Exploração 3D** | | | |
-| G1-01 | Modelos CC0 de Ragg e Calindra + `CharacterModel3D` | G0-10 `OK` | TODO | |
+| G1-01 | Modelos CC0 de Ragg e Calindra + `CharacterModel3D` | G0-10 `OK` | DONE | Modelos KayKit Adventurers integrados com CharacterModel3D, toon shader e animações mapeadas |
 | G1-02 | `CameraRig3D` + `CameraMath` | G0-10 `OK` | TODO | |
 | G1-03 | `Player3D` relativo à câmera, corrida, animações e trava | G1-01, G1-02 | TODO | |
 | G1-04 | `PartySpawner3D` e seguidores para N membros | G1-03 | TODO | |

@@ -7,11 +7,13 @@ signal interacted
 const MAX_HISTORY: int = 50
 
 @export var character_name: String = "Ragg"
+@export var character_data: CharacterData = null
 @export var move_speed: float = 6.0
 @export var rotation_speed: float = 12.0
 
 var is_movement_locked: bool = false
 var position_history: Array[Vector3] = []
+var model_instance: CharacterModel3D = null
 
 @onready var name_label: Label3D = $NameLabel
 @onready var interact_ray: RayCast3D = $InteractRay
@@ -19,9 +21,34 @@ var position_history: Array[Vector3] = []
 
 
 func _ready() -> void:
+	if character_data == null:
+		character_data = load("res://data/characters/ragg.tres") as CharacterData
+	if (
+		character_data != null
+		and character_name == "Ragg"
+		and not character_data.character_name.is_empty()
+	):
+		character_name = character_data.character_name
 	if name_label != null:
 		name_label.text = character_name
 	position_history.append(global_position)
+	_setup_model()
+
+
+func _setup_model() -> void:
+	if visual_root == null or character_data == null or character_data.model_scene == null:
+		return
+	for child in visual_root.get_children():
+		if child is CharacterModel3D:
+			model_instance = child
+			return
+	for child in visual_root.get_children():
+		if child is MeshInstance3D:
+			child.visible = false
+	var inst: Node = character_data.model_scene.instantiate()
+	visual_root.add_child(inst)
+	if inst is CharacterModel3D:
+		model_instance = inst
 
 
 func _physics_process(delta: float) -> void:

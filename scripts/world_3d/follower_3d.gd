@@ -3,23 +3,51 @@ extends CharacterBody3D
 ## 3D companion follower (Calindra) following Player3D in Grandia style.
 
 @export var follower_name: String = "Calindra"
+@export var character_data: CharacterData = null
 @export var target_player: Player3D
 @export var follow_distance_steps: int = 4
 @export var follow_speed: float = 6.0
 @export var rotation_speed: float = 12.0
+
+var model_instance: CharacterModel3D = null
 
 @onready var name_label: Label3D = $NameLabel
 @onready var visual_root: Node3D = $Visuals
 
 
 func _ready() -> void:
+	if character_data == null:
+		character_data = load("res://data/characters/calindra.tres") as CharacterData
+	if (
+		character_data != null
+		and follower_name == "Calindra"
+		and not character_data.character_name.is_empty()
+	):
+		follower_name = character_data.character_name
 	if name_label != null:
 		name_label.text = follower_name
+	_setup_model()
 
 	if target_player == null:
 		var players: Array[Node] = get_tree().get_nodes_in_group("player_3d")
 		if not players.is_empty():
 			target_player = players[0] as Player3D
+
+
+func _setup_model() -> void:
+	if visual_root == null or character_data == null or character_data.model_scene == null:
+		return
+	for child in visual_root.get_children():
+		if child is CharacterModel3D:
+			model_instance = child
+			return
+	for child in visual_root.get_children():
+		if child is MeshInstance3D:
+			child.visible = false
+	var inst: Node = character_data.model_scene.instantiate()
+	visual_root.add_child(inst)
+	if inst is CharacterModel3D:
+		model_instance = inst
 
 
 func _physics_process(delta: float) -> void:
@@ -50,9 +78,13 @@ func _physics_process(delta: float) -> void:
 			visual_root.rotation.y = lerp_angle(
 				visual_root.rotation.y, target_angle, rotation_speed * delta
 			)
+		if model_instance != null and model_instance.get_current_animation() != "walk":
+			model_instance.play("walk")
 	else:
 		velocity.x = move_toward(velocity.x, 0, follow_speed)
 		velocity.z = move_toward(velocity.z, 0, follow_speed)
+		if model_instance != null and model_instance.get_current_animation() != "idle":
+			model_instance.play("idle")
 
 	if not is_on_floor():
 		velocity.y -= 18.0 * delta

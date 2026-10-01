@@ -1,10 +1,11 @@
-[gd_resource type="Resource" script_class="CharacterData" load_steps=6 format=3]
+[gd_resource type="Resource" script_class="CharacterData" load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://scripts/data/character_data.gd" id="1_script"]
 [ext_resource type="Resource" path="res://data/skills/magic_spark.tres" id="2_skill1"]
 [ext_resource type="Resource" path="res://data/skills/heal.tres" id="3_skill2"]
 [ext_resource type="Resource" path="res://data/skills/aegis.tres" id="4_skill3"]
 [ext_resource type="Resource" path="res://data/skills/arcane_blade.tres" id="5_skill4"]
+[ext_resource type="PackedScene" path="res://assets/models/characters/calindra/calindra_model.tscn" id="6_model"]
 
 [resource]
 script = ExtResource("1_script")
@@ -12,6 +13,8 @@ id = "calindra"
 character_name = "Calindra"
 title = "Maga e Guardiã do Conhecimento"
 description = "Companheira de party versada em magias arcanas, cura e suporte tático."
+model_scene = ExtResource("6_model")
+ip_marker_color = Color(0.65, 0.35, 0.85, 1)
 level = 1
 max_hp = 90
 max_mp = 60
