@@ -636,7 +636,7 @@ anterior com status `OK` (validado por você). Tarefas `RASCUNHO` não são exec
 | G0-01 | HEAD íntegra, lint verde e `verify` em clone limpo (**P0**) | — | DONE | 105/105 testes, lint verde, verify criado |
 | G0-02 | Higiene do repositório: tag do 2D, sem LFS, CI | G0-01 | DONE | Tag v0.3.0-2d criada/enviada, sem LFS, captures/ no gitignore |
 | G0-03 | `project.godot`: renderer, tela, Input Map e camadas | G0-01 | DONE | gl_compatibility, 1280x720 canvas_items, camadas e ações do §3.16 |
-| G0-04 | `test.ps1`, `play`, VS Code, hook `pre-push`, smoke automático, zero órfãos | G0-01 | TODO | |
+| G0-04 | `test.ps1`, `play`, VS Code, hook `pre-push`, smoke automático, zero órfãos | G0-01 | DONE | test.ps1, play.{sh,ps1}, tasks VS Code, hook pre-push, smoke dinâmico, 0 órfãos |
 | G0-05 | Cenários de debug e comandos novos no console | G0-03, G0-04 | TODO | |
 | G0-06 | Estabilizar o protótipo para playtest (softlocks, mouse, câmera, diálogo e música) | G0-05 | TODO | |
 | G0-07 | Captura visual (Movie Maker) | G0-04 | TODO | |

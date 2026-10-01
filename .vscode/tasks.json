@@ -1,0 +1,48 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "GUT: Rodar todos os testes",
+      "type": "shell",
+      "command": "./test.sh",
+      "windows": {
+        "command": "powershell.exe -File .\\test.ps1"
+      },
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "GUT: Rodar teste atual",
+      "type": "shell",
+      "command": "./test.sh -gtest=${file}",
+      "windows": {
+        "command": "powershell.exe -File .\\test.ps1 -File ${file}"
+      },
+      "group": "test",
+      "problemMatcher": []
+    },
+    {
+      "label": "Jogar cena aberta",
+      "type": "shell",
+      "command": "./play.sh ${file}",
+      "windows": {
+        "command": "powershell.exe -File .\\play.ps1 -Target ${file}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Verify: Validar clone limpo",
+      "type": "shell",
+      "command": "./verify.sh",
+      "windows": {
+        "command": "powershell.exe -File .\\verify.ps1"
+      },
+      "group": "build",
+      "problemMatcher": []
+    }
+  ]
+}

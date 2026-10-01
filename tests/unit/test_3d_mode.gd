@@ -42,7 +42,7 @@ func test_npc_3d_instantiation() -> void:
 
 func test_kakariko_3d_scene_loads() -> void:
 	var village: Node3D = KAKARIKO_3D_SCENE.instantiate() as Node3D
-	add_child_autofree(village)
+	add_child(village)
 	assert_not_null(village, "Cena Kakariko3D deve instanciar")
 	assert_not_null(village.player, "Player3D presente em Kakariko3D")
 	assert_not_null(village.follower, "Follower3D presente em Kakariko3D")
@@ -51,6 +51,8 @@ func test_kakariko_3d_scene_loads() -> void:
 	assert_not_null(village.camera_rig, "CameraRig deve estar presente")
 	assert_not_null(village.battle_portal, "BattlePortal presente em Kakariko3D")
 	assert_true(village.spring_arm.spring_length > 0.0, "SpringArm3D deve ter spring_length > 0")
+	remove_child(village)
+	village.free()
 
 
 # ──────────────────────────────────────────────
@@ -140,7 +142,7 @@ func test_critical_no_cancel_outside_act_phase() -> void:
 	# (pode estar visível de outra vez, mas o teste verifica que o hp diminuiu)
 	assert_lt(target["hp"], hp_before, "CRITICAL fora de ACT ainda causa dano")
 	# IP não deve ter recuado pelo push de cancel (só pelo combo_push não é aplicado aqui)
-	assert_true(target["ip"] >= 0.0, "IP >= 0 sempre")
+	assert_eq(target["ip"], 0.3, "CRITICAL fora de ACT preserva o valor da IP")
 
 
 func test_combo_does_not_cancel_banner() -> void:
@@ -161,12 +163,14 @@ func test_combo_does_not_cancel_banner() -> void:
 
 
 func test_debug_console_3d_commands() -> void:
+	SceneManager.suppress_transitions = true
 	var console: DebugConsole = DebugConsole
 	assert_not_null(console)
 	var res_3d: String = console.execute_command("3d")
 	assert_true(res_3d.contains("Kakariko 3D"))
 	var res_bat: String = console.execute_command("battle3d")
 	assert_true(res_bat.contains("Batalha 3D Grandia"))
+	SceneManager.suppress_transitions = false
 
 
 # ──────────────────────────────────────────────
@@ -276,9 +280,8 @@ func test_evade_updates_home_pos() -> void:
 
 	battle._resolve_evade(ragg)
 
-	# home_pos deve ter mudado
-	# (pode ser igual por acaso, mas estatisticamente é improvável com posição aleatória)
-	assert_not_null(ragg["home_pos"], "home_pos deve continuar válido após evasão")
+	# home_pos deve ter mudado após a evasão
+	assert_ne(ragg["home_pos"], original_home, "home_pos deve mudar de posição após a evasão")
 
 
 # ──────────────────────────────────────────────

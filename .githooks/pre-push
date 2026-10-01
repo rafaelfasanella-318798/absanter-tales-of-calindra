@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+# .githooks/pre-push - Executa verify antes de cada push
+# Ativar com: git config core.hooksPath .githooks
+
+set -euo pipefail
+
+REPO_ROOT="$(git rev-parse --show-toplevel)"
+
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" || "$OSTYPE" == "cygwin" ]]; then
+    powershell.exe -ExecutionPolicy Bypass -File "${REPO_ROOT}/verify.ps1"
+else
+    "${REPO_ROOT}/verify.sh"
+fi

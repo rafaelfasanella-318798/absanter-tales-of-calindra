@@ -5,6 +5,8 @@ extends Node
 signal scene_transition_started(target_scene_path: String)
 signal scene_transition_finished(target_scene_path: String)
 
+var suppress_transitions: bool = false
+
 var _fade_layer: CanvasLayer
 var _fade_rect: ColorRect
 var _is_transitioning: bool = false
@@ -28,6 +30,10 @@ func _setup_fade_overlay() -> void:
 
 func change_scene(scene_path: String, fade_duration: float = 0.4) -> void:
 	if _is_transitioning:
+		return
+	if suppress_transitions:
+		scene_transition_started.emit(scene_path)
+		scene_transition_finished.emit(scene_path)
 		return
 	_is_transitioning = true
 	scene_transition_started.emit(scene_path)
